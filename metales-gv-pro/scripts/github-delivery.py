@@ -20,6 +20,8 @@ assert re.fullmatch(r"\d+\.\d+\.\d+", VERSION)
 TAG = "metales-gv-pro-v" + VERSION
 REPO = os.environ.get("GITHUB_REPOSITORY", "stajia42-alt/POS")
 BRANCH = "entrega-metales-gv-pro"
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 
 def save(file, value):
@@ -72,6 +74,13 @@ def build():
 
 def prepare_assets():
     ASSETS.mkdir(exist_ok=True)
+    original_dir = ROOT / "originales"
+    for item in json.loads((original_dir / "SHA256.json").read_text(encoding="utf-8")):
+        assert hashlib.sha256((original_dir / item["archivo"]).read_bytes()).hexdigest() == item["sha256"], "Original modificado: " + item["archivo"]
+    with zipfile.ZipFile(original_dir / "RESTAURANTE_9_2_33_INSTALADOR_FINAL_SQL_CLOUDFLARE.zip") as original_zip:
+        for item in original_zip.infolist():
+            if not item.is_dir():
+                assert (original_dir / item.filename).read_bytes() == original_zip.read(item), "Original extraído modificado: " + item.filename
     basename = f"METales-GV-Pro-Setup-{VERSION}-x64.exe"
     installer = ASSETS / basename
     source = APP / "dist" / basename
@@ -83,7 +92,7 @@ def prepare_assets():
     tracked = command(["git", "ls-files", "-z"]).stdout.split("\0")
     with zipfile.ZipFile(project, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for name in sorted(filter(None, tracked)):
-            if name.startswith(("descargas/", "release-assets/", "ci-logs/")):
+            if name == "docs/entrega-github.json" or name.startswith(("descargas/", "release-assets/", "ci-logs/")):
                 continue
             file = ROOT / name
             if file.is_file():

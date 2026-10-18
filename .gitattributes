@@ -1,0 +1,2 @@
+# Los originales deben conservar exactamente sus bytes, también en Windows.
+originales/** -text
