@@ -1,58 +1,95 @@
 {
-  "state": "failed",
-  "source_commit": "4a1761c8120d9df16c0ef32e63b349f3a8895d50",
-  "build_outcome": "failure",
-  "publish_outcome": "skipped",
-  "run_url": "https://github.com/stajia42-alt/POS/actions/runs/39095415144",
+  "state": "published",
+  "source_commit": "25b40904283fd855d312bba57c9ce9fe08d3dc03",
+  "build_outcome": "success",
+  "publish_outcome": "success",
+  "run_url": "https://github.com/stajia42-alt/POS/actions/runs/39095767612",
   "build": {
-    "success": false,
+    "success": true,
     "stages": [
       {
         "stage": "install",
         "exit_code": 0,
-        "seconds": 12.44,
-        "tail": "npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported\nnpm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me\nnpm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.\n\nadded 339 packages, and audited 340 packages in 11s\n\n72 packages are looking for funding\n  run `npm fund` for details\n\n8 moderate severity vulnerabilities\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\nnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:\nnpm warn install-scripts   electron-winstaller@5.4.0 (install: node ./script/select-7z-arch.js)\nnpm warn install-scripts\nnpm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.\n"
+        "seconds": 8.53,
+        "tail": "npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported\nnpm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me\nnpm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.\n\nadded 339 packages, and audited 340 packages in 7s\n\n72 packages are looking for funding\n  run `npm fund` for details\n\n8 moderate severity vulnerabilities\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\nnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:\nnpm warn install-scripts   electron-winstaller@5.4.0 (install: node ./script/select-7z-arch.js)\nnpm warn install-scripts\nnpm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.\n"
       },
       {
         "stage": "syntax",
         "exit_code": 0,
-        "seconds": 1.02,
+        "seconds": 0.8,
         "tail": "\n> metales-gv-pro@1.0.0 check\n> node scripts/check.js\n\nSintaxis JavaScript válida.\n"
       },
       {
         "stage": "backend",
         "exit_code": 0,
-        "seconds": 3.86,
-        "tail": "o y margen (111.4669ms)\n✔ costo promedio ponderado de dos compras y venta (121.8015ms)\n✔ rollback completo cuando dos renglones exceden stock agregado (96.0313ms)\n✔ efectivo insuficiente cancela también compra e inventario (92.4613ms)\n✔ redondeo exacto a centavos con pesos de tres decimales (101.4356ms)\n✔ idempotencia evita doble cobro con solicitudes concurrentes y rechaza cambios (111.5596ms)\n✔ USD conserva cambio en MXN, dólares en caja y reversa exacta (108.3114ms)\n✔ transferencias y tarjeta no afectan efectivo (115.2756ms)\n✔ pago incompleto y material inactivo no generan operación (92.3677ms)\n✔ cancelación de compra se impide si el material fue consumido (102.6779ms)\n✔ ajustes dejan kardex, motivo obligatorio y no permiten saldos negativos (95.8734ms)\n✔ gastos, entrada y retiro; cierre y respaldo automático con diferencias (150.4948ms)\n✔ permisos reales en API, restricción de precios y revocación de sesiones (220.1331ms)\n✔ usuario consulta solo lee; no puede mover caja ni inventario (187.8628ms)\n✔ fechas inválidas se rechazan y zona horaria define el día del reporte (124.3954ms)\n✔ CSV neutraliza fórmulas y tickets no ejecutan texto HTML (91.3604ms)\n✔ SQLite real, respaldo completo, restauración y reautenticación (146.5599ms)\n✔ bloqueo de restauración con turno abierto y de archivo corrupto (101.8514ms)\n✔ importación V15 calcula saldo, conserva mínimo e historial; no importa PIN (89.9541ms)\n✔ importación rechaza stock negativo y turnos abiertos del respaldo (69.6984ms)\n✔ persistencia tras reinicio y bloqueo de segundo escritor (32.4962ms)\n✔ fallo de escritura no deja cambios confirmados en memoria (21.3169ms)\n✔ gramos y centavos exactos; rechaza precisión excesiva, negativos y valores no numéricos (1.5803ms)\n✔ wrapTicket conserva palabras largas y respeta ancho en 58 y 80 mm (0.7245ms)\n✔ ESC/POS agrega inicialización y corte y elimina controles de texto (1.5028ms)\nℹ tests 30\nℹ suites 0\nℹ pass 30\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 3497.098\n"
+        "seconds": 5.17,
+        "tail": "io y margen (98.5743ms)\n✔ costo promedio ponderado de dos compras y venta (105.3847ms)\n✔ rollback completo cuando dos renglones exceden stock agregado (79.2952ms)\n✔ efectivo insuficiente cancela también compra e inventario (79.5307ms)\n✔ redondeo exacto a centavos con pesos de tres decimales (91.2293ms)\n✔ idempotencia evita doble cobro con solicitudes concurrentes y rechaza cambios (154.0702ms)\n✔ USD conserva cambio en MXN, dólares en caja y reversa exacta (173.9623ms)\n✔ transferencias y tarjeta no afectan efectivo (151.8836ms)\n✔ pago incompleto y material inactivo no generan operación (186.1762ms)\n✔ cancelación de compra se impide si el material fue consumido (219.0187ms)\n✔ ajustes dejan kardex, motivo obligatorio y no permiten saldos negativos (126.61ms)\n✔ gastos, entrada y retiro; cierre y respaldo automático con diferencias (318.1589ms)\n✔ permisos reales en API, restricción de precios y revocación de sesiones (320.6681ms)\n✔ usuario consulta solo lee; no puede mover caja ni inventario (189.6086ms)\n✔ fechas inválidas se rechazan y zona horaria define el día del reporte (191.8501ms)\n✔ CSV neutraliza fórmulas y tickets no ejecutan texto HTML (159.434ms)\n✔ SQLite real, respaldo completo, restauración y reautenticación (182.4259ms)\n✔ bloqueo de restauración con turno abierto y de archivo corrupto (165.0165ms)\n✔ importación V15 calcula saldo, conserva mínimo e historial; no importa PIN (99.3233ms)\n✔ importación rechaza stock negativo y turnos abiertos del respaldo (72.8288ms)\n✔ persistencia tras reinicio y bloqueo de segundo escritor (68.5334ms)\n✔ fallo de escritura no deja cambios confirmados en memoria (49.3934ms)\n✔ gramos y centavos exactos; rechaza precisión excesiva, negativos y valores no numéricos (1.5893ms)\n✔ wrapTicket conserva palabras largas y respeta ancho en 58 y 80 mm (0.4082ms)\n✔ ESC/POS agrega inicialización y corte y elimina controles de texto (1.5607ms)\nℹ tests 30\nℹ suites 0\nℹ pass 30\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 4781.2043\n"
       },
       {
         "stage": "chromium",
         "exit_code": 0,
-        "seconds": 18.45,
-        "tail": "                                                     |  30% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 118.1 MiB\nChrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to C:\\Users\\runneradmin\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1248\nDownloading Winldd (playwright winldd v1007)\u001b[2m from https://cdn.playwright.dev/dbazure/download/playwright/builds/winldd/1007/winldd-win64.zip\u001b[22m\n|■■■■■■■■                                                                        |  12% of 0.1 MiB\n|■■■■■■■■■■■■■■■■                                                                |  25% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  38% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  63% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  76% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  89% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 0.1 MiB\nWinldd (playwright winldd v1007) downloaded to C:\\Users\\runneradmin\\AppData\\Local\\ms-playwright\\winldd-1007\n"
+        "seconds": 12.28,
+        "tail": "■■■■■■■■■■■■■■■■■                                        |  50% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 118.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 118.1 MiB\nChrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to C:\\Users\\runneradmin\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1248\nDownloading Winldd (playwright winldd v1007)\u001b[2m from https://cdn.playwright.dev/dbazure/download/playwright/builds/winldd/1007/winldd-win64.zip\u001b[22m\n|                                                                                |   1% of 0.1 MiB\n|■■■■■■■■                                                                        |  10% of 0.1 MiB\n|■■■■■■■■■■■■■■■■                                                                |  20% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  31% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  61% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  74% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  86% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  99% of 0.1 MiB\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 0.1 MiB\nWinldd (playwright winldd v1007) downloaded to C:\\Users\\runneradmin\\AppData\\Local\\ms-playwright\\winldd-1007\n"
       },
       {
         "stage": "interface",
         "exit_code": 0,
-        "seconds": 23.34,
-        "tail": "\n> metales-gv-pro@1.0.0 test:ui\n> playwright test\n\n\nRunning 7 tests using 1 worker\n\n  ok 1 tests\\ui\\workflow.spec.js:15:1 › flujo real: catálogo, apertura, compra con tara, venta, cancelación, gasto y corte (3.3s)\n  ok 2 tests\\ui\\workflow.spec.js:30:1 › venta en USD muestra tipo de cambio y no permite exceder existencias (3.2s)\n  ok 3 tests\\ui\\workflow.spec.js:34:1 › usuarios consulta, inicio de sesión, contraseña y permisos en interfaz (3.5s)\n  ok 4 tests\\ui\\workflow.spec.js:39:1 › configuración y contacto se guardan; texto HTML se muestra como texto (2.9s)\n  ok 5 tests\\ui\\workflow.spec.js:44:1 › importación V15 con revisión previa, kardex y archivo original descargable (3.0s)\n  ok 6 tests\\ui\\workflow.spec.js:48:1 › interfaz móvil permite navegación y mantiene contenidos dentro de la pantalla (2.5s)\n  ok 7 tests\\ui\\workflow.spec.js:53:1 › una respuesta lenta de reportes no reemplaza el módulo elegido después (2.6s)\n\n  7 passed (22.4s)\n"
+        "seconds": 13.51,
+        "tail": "\n> metales-gv-pro@1.0.0 test:ui\n> playwright test\n\n\nRunning 7 tests using 1 worker\n\n  ok 1 tests\\ui\\workflow.spec.js:15:1 › flujo real: catálogo, apertura, compra con tara, venta, cancelación, gasto y corte (3.3s)\n  ok 2 tests\\ui\\workflow.spec.js:30:1 › venta en USD muestra tipo de cambio y no permite exceder existencias (920ms)\n  ok 3 tests\\ui\\workflow.spec.js:34:1 › usuarios consulta, inicio de sesión, contraseña y permisos en interfaz (1.1s)\n  ok 4 tests\\ui\\workflow.spec.js:39:1 › configuración y contacto se guardan; texto HTML se muestra como texto (691ms)\n  ok 5 tests\\ui\\workflow.spec.js:44:1 › importación V15 con revisión previa, kardex y archivo original descargable (718ms)\n  ok 6 tests\\ui\\workflow.spec.js:48:1 › interfaz móvil permite navegación y mantiene contenidos dentro de la pantalla (418ms)\n  ok 7 tests\\ui\\workflow.spec.js:53:1 › una respuesta lenta de reportes no reemplaza el módulo elegido después (2.5s)\n\n  7 passed (12.8s)\n"
       },
       {
         "stage": "electron_source",
         "exit_code": 0,
-        "seconds": 6.36,
+        "seconds": 5.25,
         "tail": "\n> metales-gv-pro@1.0.0 test:desktop\n> node scripts/desktop-smoke.js\n\nDownloading Electron binary...\nElectron fuente: interfaz, sesión, SQLite, IPC, aislamiento y cierre con ticket pendiente verificados.\n"
       },
       {
         "stage": "installer",
-        "exit_code": 1,
-        "seconds": 219.25,
-        "tail": "\n> metales-gv-pro@1.0.0 build:win\n> electron-builder --win nsis --x64\n\n  • electron-builder  version=26.15.3 os=10.0.26100\n  • Implicit publishing triggered by CI detection. This behavior will be disabled in electron-builder v27. Please use --publish explicitly.\n  • loaded configuration  file=package.json (\"build\" field)\n  • executing @electron/rebuild  electronVersion=44.9.0 arch=x64 buildFromSource=false workspaceRoot=D:\\a\\POS\\POS\\metales-gv-pro projectDir=./ appDir=./\n  • installing native dependencies  arch=x64\n  • completed installing native dependencies\n  • packaging       platform=win32 arch=x64 electron=44.9.0 appOutDir=dist\\win-unpacked\n  • downloaded      label=electron progress=100%\n  • downloaded electron zip extracted successfully  output=D:\\a\\POS\\POS\\metales-gv-pro\\dist\\win-unpacked\n  • searching for node modules  pm=npm searchDir=D:\\a\\POS\\POS\\metales-gv-pro\n  • duplicate dependency references  dependencies=[\"mime-types@3.0.2\",\"debug@4.4.3\",\"http-errors@2.0.1\",\"on-finished@2.4.1\",\"qs@6.16.1\",\"http-errors@2.0.1\",\"iconv-lite@0.7.3\",\"type-is@2.1.0\",\"debug@4.4.3\",\"on-finished@2.4.1\",\"get-intrinsic@1.3.0\",\"call-bind-apply-helpers@1.0.2\",\"call-bind-apply-helpers@1.0.2\",\"es-object-atoms@1.1.2\",\"call-bound@1.0.4\",\"get-intrinsic@1.3.0\",\"side-channel-map@1.0.1\",\"debug@4.4.3\",\"debug@4.4.3\",\"http-errors@2.0.1\",\"mime-types@3.0.2\",\"on-finished@2.4.1\",\"send@1.2.1\",\"mime-types@3.0.2\"]\n  • updating asar integrity executable resource  executablePath=dist\\win-unpacked\\METales-GV Pro.exe\n  • executable resource editing and code signing skipped — signAndEditExecutable is false. To skip only code signing while keeping icon and metadata applied, use signExecutable: false instead.  exe=dist\\win-unpacked\\METales-GV Pro.exe\n  • building        target=nsis file=dist\\METales-GV-Pro-Setup-1.0.0-x64.exe archs=x64 oneClick=false perMachine=false\n  • downloaded      label=nsis-3.0.4.1.7z progress=100%\n  • downloaded      label=7zip-win-x64.tar.gz progress=100%\n  • downloaded      label=nsis-resources-3.4.1.7z progress=100%\n  • uninstaller is not signed by electron-builder  reason=custom NSIS script is used\n  • signing with signtool.exe  path=dist\\METales-GV-Pro-Setup-1.0.0-x64.exe\n  • building block map  blockMapFile=dist\\METales-GV-Pro-Setup-1.0.0-x64.exe.blockmap\n  ⨯ GitHub Personal Access Token is not set, neither programmatically, nor using env \"GH_TOKEN\"\n"
+        "exit_code": 0,
+        "seconds": 210.74,
+        "tail": " file=package.json (\"build\" field)\n  • executing @electron/rebuild  electronVersion=44.9.0 arch=x64 buildFromSource=false workspaceRoot=D:\\a\\POS\\POS\\metales-gv-pro projectDir=./ appDir=./\n  • installing native dependencies  arch=x64\n  • completed installing native dependencies\n  • packaging       platform=win32 arch=x64 electron=44.9.0 appOutDir=dist\\win-unpacked\n  • downloaded      label=electron progress=100%\n  • downloaded electron zip extracted successfully  output=D:\\a\\POS\\POS\\metales-gv-pro\\dist\\win-unpacked\n  • searching for node modules  pm=npm searchDir=D:\\a\\POS\\POS\\metales-gv-pro\n  • duplicate dependency references  dependencies=[\"mime-types@3.0.2\",\"debug@4.4.3\",\"http-errors@2.0.1\",\"on-finished@2.4.1\",\"qs@6.16.1\",\"http-errors@2.0.1\",\"iconv-lite@0.7.3\",\"type-is@2.1.0\",\"debug@4.4.3\",\"on-finished@2.4.1\",\"get-intrinsic@1.3.0\",\"call-bind-apply-helpers@1.0.2\",\"call-bind-apply-helpers@1.0.2\",\"es-object-atoms@1.1.2\",\"call-bound@1.0.4\",\"get-intrinsic@1.3.0\",\"side-channel-map@1.0.1\",\"debug@4.4.3\",\"debug@4.4.3\",\"http-errors@2.0.1\",\"mime-types@3.0.2\",\"on-finished@2.4.1\",\"send@1.2.1\",\"mime-types@3.0.2\"]\n  • updating asar integrity executable resource  executablePath=dist\\win-unpacked\\METales-GV Pro.exe\n  • executable resource editing and code signing skipped — signAndEditExecutable is false. To skip only code signing while keeping icon and metadata applied, use signExecutable: false instead.  exe=dist\\win-unpacked\\METales-GV Pro.exe\n  • building        target=nsis file=dist\\METales-GV-Pro-Setup-1.0.0-x64.exe archs=x64 oneClick=false perMachine=false\n  • downloaded      label=nsis-3.0.4.1.7z progress=100%\n  • downloaded      label=7zip-win-x64.tar.gz progress=100%\n  • downloaded      label=nsis-resources-3.4.1.7z progress=100%\n  • uninstaller is not signed by electron-builder  reason=custom NSIS script is used\n  • signing with signtool.exe  path=dist\\METales-GV-Pro-Setup-1.0.0-x64.exe\n  • building block map  blockMapFile=dist\\METales-GV-Pro-Setup-1.0.0-x64.exe.blockmap\n"
+      },
+      {
+        "stage": "package",
+        "exit_code": 0,
+        "seconds": 0.36,
+        "tail": "\n> metales-gv-pro@1.0.0 verify:package\n> node scripts/verify-package.js\n\nPaquete verificado: 476 entradas; código fuente coincidente; instalador 110.5 MiB.\n"
+      },
+      {
+        "stage": "electron_packaged",
+        "exit_code": 0,
+        "seconds": 15.31,
+        "tail": "\n> metales-gv-pro@1.0.0 test:desktop\n> node scripts/desktop-smoke.js --packaged\n\nElectron empaquetado: interfaz, sesión, SQLite, IPC, aislamiento y cierre con ticket pendiente verificados.\n"
       }
     ]
   },
-  "failure": {
-    "action": "build",
-    "error": "Falló la etapa installer; consulta ci-logs/installer.log"
-  }
+  "failure": null,
+  "tag": "metales-gv-pro-v1.0.0",
+  "release_url": "https://github.com/stajia42-alt/POS/releases/tag/metales-gv-pro-v1.0.0",
+  "assets": [
+    {
+      "name": "METales-GV-Pro-Setup-1.0.0-x64.exe",
+      "bytes": 115868958,
+      "sha256": "e514039d539fcfcd75b713dd627e088b54d16f962eae54fdbb90fae8b0c76e22",
+      "download_url": "https://github.com/stajia42-alt/POS/releases/download/metales-gv-pro-v1.0.0/METales-GV-Pro-Setup-1.0.0-x64.exe"
+    },
+    {
+      "name": "METales-GV-Pro-Instalador-Windows-1.0.0.zip",
+      "bytes": 115869409,
+      "sha256": "8ae40cce8cb35d8ce4383e642654e5b70bb6c36e724a1b62e7fc81510c6606fe",
+      "download_url": "https://github.com/stajia42-alt/POS/releases/download/metales-gv-pro-v1.0.0/METales-GV-Pro-Instalador-Windows-1.0.0.zip"
+    },
+    {
+      "name": "METales-GV-Pro-Proyecto-Completo-1.0.0.zip",
+      "bytes": 1486002,
+      "sha256": "ab2f49a93889262bb987bb5d9a8d3e3cb43d97d48199852cf462c7d270c2f07b",
+      "download_url": "https://github.com/stajia42-alt/POS/releases/download/metales-gv-pro-v1.0.0/METales-GV-Pro-Proyecto-Completo-1.0.0.zip"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 323,
+      "sha256": "31fdb3c5b7e6cfc03c7f73fc8664b55a18f076a6e73920f6e6ea9dd04ce069f8",
+      "download_url": "https://github.com/stajia42-alt/POS/releases/download/metales-gv-pro-v1.0.0/SHA256SUMS.txt"
+    }
+  ]
 }
