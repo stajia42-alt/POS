@@ -1,0 +1,15 @@
+RESTAURANTE 9.2.31 — INVENTARIOS (DIAGNÓSTICO INICIAL)
+
+Esta versión conserva el sistema de menús 9.2.30 y agrega un diagnóstico de solo lectura.
+
+1. Abre ABRIR_RESTAURANTE.cmd (como siempre).
+2. Abre http://127.0.0.1:3000/inventarios/diagnostico
+3. Pulsa Analizar mi SQL y después Descargar diagnóstico JSON.
+4. Envía el JSON para implementar altas de insumos, presentaciones, proveedores y recetas.
+
+No se realizan escrituras SQL ni se cambia el esquema.
+No importa LOTE28.ZIP directamente a Soft Restaurant.
+LOTE28.ZIP confirma relaciones exportadas en XML, no garantiza la estructura interna de tablas SQL.
+El archivo de diagnóstico incluye muestras de nombres, códigos y costos; revísalo antes de compartir.
+
+No se han agregado funciones de alta a SQL de inventarios, compras ni existencias.

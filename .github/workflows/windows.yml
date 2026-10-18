@@ -1,0 +1,49 @@
+name: Entregar METales-GV Pro para Windows
+on:
+  push:
+    branches: [entrega-metales-gv-pro]
+    paths-ignore: [docs/entrega-github.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: entrega-metales-gv-pro
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: metales-gv-pro/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validar y compilar en Windows
+        id: build
+        run: python metales-gv-pro/scripts/github-delivery.py build
+      - name: Publicar archivos descargables
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python metales-gv-pro/scripts/github-delivery.py publish
+      - name: Registrar resultado de la entrega
+        if: always()
+        env:
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          PUBLISH_OUTCOME: ${{ steps.publish.outcome }}
+        run: python metales-gv-pro/scripts/github-delivery.py report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: METales-GV-Pro-Windows-x64
+          path: |
+            release-assets/*
+            ci-logs/*
+          if-no-files-found: warn

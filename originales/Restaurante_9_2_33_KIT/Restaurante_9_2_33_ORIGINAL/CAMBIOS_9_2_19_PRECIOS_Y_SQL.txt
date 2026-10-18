@@ -1,0 +1,28 @@
+RESTAURANTE 9.2.19 — PRECIOS POR PRESENTACIÓN Y GUARDADO RECUPERABLE
+
+Mejoras sobre el código 9.2.18 (no es una aplicación nueva):
+1. Captura IA (Gemini): reconoce N precios horizontales asociados a presentaciones del mismo platillo. Se le pide conservar precio individual sin sumar recargos.
+2. Conversión compatible con la integración SQL ya existente: cada presentación se registra como producto independiente, con su propia clave y precio. NO se asume que el catálogo SQL soporte modificadores automáticos.
+3. Cuando un precio no está presente en la transcripción, no se inventa: se conserva sin precio y será necesario completarlo para importarlo.
+4. Reconocimiento auxiliar de columnas de SIN PAPAS / PAPAS A LA FRANCESA / PAPAS SAZONADAS con 3 importes explícitos en la evidencia del producto.
+5. Revisión OCR opcional: se omite el bloqueo automático por advertencias textuales; sólo se detiene el guardado ante información SQL indispensable inválida o ante estructuras de opciones no compatibles.
+6. Vistas previas SQL y guardado en segundo plano con identificadores recuperables. Si el teléfono pierde la conexión, el proceso sigue en Node.js y se consulta el resultado con su identificador.
+7. Inicio duplicado del mismo token no repite las inserciones. Transacción y rollback de la versión existente sin cambios en el esquema SQL.
+8. Una confirmación final del lote; se eliminan las casillas de revisión reiterativas.
+9. Proyecto exportado por el usuario incluido como copia de respaldo dentro del ZIP.
+
+USO SIMPLE:
+- Extrae todo el ZIP en una carpeta nueva.
+- Abre ABRIR_RESTAURANTE.cmd.
+- Usa 'Analizar menú completo', comprueba los productos y pulsa guardar en Soft Restaurant.
+- Si detecta 3 precios por platillo, verás 3 productos vendibles con nombres diferenciados.
+- Para 2, 4 o más precios, la IA debe proporcionar el nombre y valor exactos de cada presentación.
+- Cerrar la ventana del resumen durante un guardado no cancela la escritura. No repitas sin comprobar el estado.
+
+LIMITACIONES IMPORTANTES:
+- No se ejecutaron escrituras ni pruebas en SQL Server 2014 real.
+- No se validó esta versión con Safari/Cloudflare, Node.js 24 de Windows, PaddleOCR real o Gemini real.
+- Los modificadores y extras cuyo esquema SQL no está comprobado no se configuran ni se cobran automáticamente.
+- Si falta el nombre/precio válido, la unidad, la empresa, el grupo, la clave o un impuesto compatible, SQL puede rechazar el lote: no se omiten estas validaciones.
+- El proceso de guardado está diseñado para continuar mientras Node.js siga abierto. Si se cierra Node.js durante la transacción, consulta el estado en SQL antes de volver a intentar.
+- No contiene node_modules ni credenciales SQL. Node.js 24 y las dependencias originales siguen siendo necesarios.

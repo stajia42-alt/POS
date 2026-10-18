@@ -1,0 +1,9 @@
+MEJORA: Asignación automática de grupos (OCR rápido)
+- Reconoce encabezados habituales en español y traducciones de encabezados en inglés.
+- Relaciona el encabezado con un grupo existente en SQL por nombre normalizado y equivalencias conocidas.
+- Solo asigna automáticamente si existe una coincidencia única.
+- Si el grupo no existe o no se puede identificar, deja el selector vacío para revisión.
+- El alcance del encabezado es la fotografía actual; no se hereda automáticamente entre fotografías.
+- Conserva el control manual de grupos, las claves automáticas y la detección de duplicados.
+- No crea grupos ni modifica SQL al analizar.
+- Prueba primero con una fotografía y revisa cada grupo antes de guardar.

@@ -1,0 +1,31 @@
+RESTAURANTE 9.2.17 — LECTURA AUTOMÁTICA GUIADA POR CUADROS
+
+NUEVO: ya NO necesitas transcribir a mano el texto de cada recuadro.
+
+1. Cierra Restaurante y haz una copia de seguridad de tu carpeta anterior.
+2. Extrae este ZIP completo en una carpeta independiente.
+3. Abre ABRIR_RESTAURANTE.cmd. Se preserva el acceso a Soft Restaurant 11.
+4. En Capturar menú, analiza o abre una fotografía y pulsa «Corregir sobre la imagen».
+5. Coloca todos los recuadros. Se permiten varios del mismo color y en la misma foto.
+6. Pulsa «✦ Leer todos los cuadros con IA» para leer todos los recortes juntos.
+7. Revisa productos, precios, descripciones y grupos creados automáticamente. Si algún
+   dato es dudoso, puedes volver a leer solo el cuadro afectado o corregirlo puntualmente.
+8. Confirma explícitamente el lote antes de cualquier escritura en Soft Restaurant.
+
+COLORES: rojo=grupo, amarillo=producto, azul=descripción, verde=precio,
+morado=modificador, turquesa=componente de combo, gris=ignorar.
+
+Gemini gratuito: usa la clave ya configurada en este usuario Windows; no se activa
+facturación desde esta aplicación. Google controla cuotas y la situación de facturación.
+Si Gemini no está disponible, se intenta PaddleOCR local con coordenadas.
+
+La lectura de modificadores y componentes se conserva como PENDIENTE de configuración:
+NO inserta opciones/recetas en SQL. Estos productos se excluyen del lote hasta
+verificar el esquema real de Soft Restaurant 11. Los productos simples siguen igual.
+
+LÍMITES: no se verificó contra tu SQL real, tu cuenta Google ni tu Safari físico.
+Los resultados se validaron mediante pruebas automáticas y un navegador de escritorio
+con tamaño móvil simulado. El OCR real depende de los motores instalados en la PC.
+
+Si la instalación es una compilación .exe, primero compila esta versión desde el código;
+el ZIP incluye código fuente y scripts, no un .exe compilado.

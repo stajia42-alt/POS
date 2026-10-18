@@ -1,0 +1,634 @@
+{
+  "version": "9.2.31",
+  "tipo": "proyecto_completo_no_exe",
+  "files": [
+    {
+      "path": "00_EMPIEZA_AQUI.txt",
+      "sha256": "a9b2b6129092ff0198e12ecb3de72e5c57475e2b70435b9de55dde16858c11eb"
+    },
+    {
+      "path": "ABRIR_RESTAURANTE.cmd",
+      "sha256": "383d22095e2726b90289fcacec26e6fbd5066e09b3b51db3104fa68a51270085"
+    },
+    {
+      "path": "AUDITORIA_RESTAURANTE_9_2.md",
+      "sha256": "5b81491d1517d573f16da1267a8508d6841272cc82bbe1bdfc5f67f004dd66e9"
+    },
+    {
+      "path": "CAMBIOS_9_2_10_GEMINI.txt",
+      "sha256": "8556a3112a6b7887b25de10e37ab1a748062cf88daab7eb4bb87298a0fd772ba"
+    },
+    {
+      "path": "CAMBIOS_9_2_11_GEMINI_GRATIS.txt",
+      "sha256": "0e02a68d0e3fde7683ecba6ac71436d05f67a672ed78a22a4f819822681b60af"
+    },
+    {
+      "path": "CAMBIOS_9_2_12_CORRECCION_VISUAL.txt",
+      "sha256": "975ec0a8e420d2a7cec5c2014e2b891f5ca7a94e897cc2db25f573e00011e8d2"
+    },
+    {
+      "path": "CAMBIOS_9_2_13_GUIADO_COLORES.txt",
+      "sha256": "3ab4ec2f87fe669c8b78a894eddee327597bb8cbaf8c8209c1b12313596383be"
+    },
+    {
+      "path": "CAMBIOS_9_2_14_CUADROS_LISTOS.txt",
+      "sha256": "989bff0a68b97a6a9f55b5ba95a67b3fe7247b1cddeff9bbc0446a54224d7ff7"
+    },
+    {
+      "path": "CAMBIOS_9_2_15_MULTIPLES_CUADROS.txt",
+      "sha256": "30d3952d3a0bb5588a32cfdd47a51a207f24caed2a43794ecc0e3ab33a6f2ee6"
+    },
+    {
+      "path": "CAMBIOS_9_2_17_LECTURA_AUTOMATICA.txt",
+      "sha256": "9b067afb8697c5d44b0c58bd54459fed0f5a2bd81bad76d40e6f11d314982903"
+    },
+    {
+      "path": "CAMBIOS_9_2_18_CAPTURA_INTELIGENTE.txt",
+      "sha256": "c1e62981956698be3aaec8a6bd35bd85e30f568962a7a5768f88aff89b778a61"
+    },
+    {
+      "path": "CAMBIOS_9_2_19_PRECIOS_Y_SQL.txt",
+      "sha256": "979df081d4dc3eb5fc65d3cd07baa71137ede5b7652719bd7f42623a51ca6701"
+    },
+    {
+      "path": "CAMBIOS_9_2_20_COMPUESTOS.txt",
+      "sha256": "a1ab45b2488a2c15794c3af39d71c63d1298b2ab0af415a12dfa19267a62863c"
+    },
+    {
+      "path": "CAMBIOS_9_2_21_CORRECCION_REAL.txt",
+      "sha256": "10ee0166a286d642905ff6fca89f6d90726f85c0941b5f48429b3087f1c6df15"
+    },
+    {
+      "path": "CAMBIOS_9_2_22_CATALOGO_MODIFICADORES.txt",
+      "sha256": "6ef51926dcf9f44b35c3be27d5f66bf31e896475e709dc26591f211f4b46b339"
+    },
+    {
+      "path": "CAMBIOS_9_2_23_SQL_Y_REUTILIZACION.txt",
+      "sha256": "5bbfafb5b57b19b068fe47e045a88103f070741a8c64619b2d3b3d563e53ac57"
+    },
+    {
+      "path": "CAMBIOS_9_2_24_GRUPOS_MODIFICADORES_SQL.txt",
+      "sha256": "5965fb1bb9c00404273dd538da3ee0993d7a548a8d72176bcdedebbeeac7ec1b"
+    },
+    {
+      "path": "CAMBIOS_9_2_25_PERFIL_SQL_SIN_PRUEBAS.txt",
+      "sha256": "ca635c5973499e8768ed3fba8e4826adf923ef561222deaada4fc2c95d98eaa3"
+    },
+    {
+      "path": "CAMBIOS_9_2_26_PRIMER_CATALOGO.txt",
+      "sha256": "bff9d9d06798cd74feaf4004d5ebff25a6c57ea79aac4b40c6098fc018d556a9"
+    },
+    {
+      "path": "CAMBIOS_9_2_27_CONFIRMACION_INICIAL.txt",
+      "sha256": "645e23072b1dc3b093373ce6cd08a97718c8de49799a38af061ca29ba1868adf"
+    },
+    {
+      "path": "CAMBIOS_9_2_28_DEFAULTS.txt",
+      "sha256": "15d246ea2be1f4eda7b2a20549381e3a77536297e176f97dd78c44009f79d525"
+    },
+    {
+      "path": "CAMBIOS_9_2_2_MENU_RAPIDO.txt",
+      "sha256": "38315096a2f6b9bab6d0146fd72298c56800b67cc362239b6115a93643c1840a"
+    },
+    {
+      "path": "CAMBIOS_9_2_3_EMPRESA_UNICA.txt",
+      "sha256": "83abd83ea89a558acd8ec442bb410e3a146364a9b661850cc34d17cbf033554e"
+    },
+    {
+      "path": "CAMBIOS_9_2_5_REVISION_FINAL.txt",
+      "sha256": "e2b9fd969bd9ba18a3714cc857a535ec5ffd48c27ee845146061f679bbb2376d"
+    },
+    {
+      "path": "CAMBIOS_9_2_6_CLASIFICACION_Y_COLOR.txt",
+      "sha256": "c5410852d73d2bf55ca60cd01c062d0027e291fbdcf3c4830d1cf2401d3d89bd"
+    },
+    {
+      "path": "CAMBIOS_9_2_7_ACCESO_MOVIL_IA.txt",
+      "sha256": "4b1c856cb50f63c6b314c6b524387605326a0a7e0fdd8512371fc09fe93dd821"
+    },
+    {
+      "path": "CAMBIOS_9_2_9_FOTOS_IPHONE.txt",
+      "sha256": "f4ccee6e7ec6dfe607d24ba8031189b9e7030e3d3725c659bfaf3cb6b32cc2de"
+    },
+    {
+      "path": "CAMBIOS_MENU_ADMIN.md",
+      "sha256": "d4eeb70cbdd94a6ee8bea83f56d58cd53c3064638f8b07d3a1f052e4ed0085f4"
+    },
+    {
+      "path": "CAMBIOS_V8.md",
+      "sha256": "0ca152937ead90f0ca59d111760766f6fc6f568b528c32114bf8a5b639ee0bd3"
+    },
+    {
+      "path": "CAMBIOS_V9_1.md",
+      "sha256": "8ee2f0a1ec48b8f4642086630b09187f49dd178bec58b41e3e3b002fa8cf5ae5"
+    },
+    {
+      "path": "CAMBIOS_V9_2.md",
+      "sha256": "3ad271d4e9fb84ac8a95f36eb64c805b8ff460ed3809fd1e46e3be5aeee9a03b"
+    },
+    {
+      "path": "CAMBIO_GEMINI_CLAVES_CON_PUNTO.txt",
+      "sha256": "51a9abf463cf1ed88b5269db50a8467518eade65c5c796f295a62317ac6c48ed"
+    },
+    {
+      "path": "COMPILAR_RESTAURANTE.cmd",
+      "sha256": "cdab77bdb360d746380e2d975df23e432aebac8cade915bae09fa58182e16754"
+    },
+    {
+      "path": "CONFIGURAR_ACCESO_REMOTO.cmd",
+      "sha256": "b42a9905ffb315bd91785d3b6f4c96535c4c5942cf149b5f46e5e3a653276877"
+    },
+    {
+      "path": "CONFIGURAR_ACCESO_REMOTO.ps1",
+      "sha256": "745b53a48fa58b63d52d3d1daa43f06b9cbdec8ddb9af64fe7fa60c9fef039a4"
+    },
+    {
+      "path": "CONFIGURAR_GEMINI_GRATIS.cmd",
+      "sha256": "ab269402eed2bbcb2c1d2c244f3fbb27f1143b5283f798547fc42dc7d58ab21e"
+    },
+    {
+      "path": "CONFIGURAR_GEMINI_GRATIS.ps1",
+      "sha256": "77a63844dc2f0858fc96161a1fa30fc54a07c92426115b6a731f650b7db131d0"
+    },
+    {
+      "path": "DESINSTALAR_CLIENTE.cmd",
+      "sha256": "0df96559ba324afee3b19fcea2928f2bdfff31760313a5d27bdb0c426706ca8d"
+    },
+    {
+      "path": "DIAGNOSTICAR_INVENTARIOS.cmd",
+      "sha256": "ca667fc5a23162cb95d58d8715369b3c142c66f0348ef4a11f7850c320aaad89"
+    },
+    {
+      "path": "DIAGNOSTICO_MENU_SOLO_LECTURA.sql",
+      "sha256": "815b6b094f6b080f96f64f6ba3bf8d8bad0dacb99e42e73d7aa5f4bf2ba61902"
+    },
+    {
+      "path": "INICIAR_RESTAURANTE.cmd",
+      "sha256": "ce0949977823bb2037873d65c2ae0f4f802b1bb58d9d6abdab66280245c0f287"
+    },
+    {
+      "path": "INSTALAR_CLIENTE_FIJO.cmd",
+      "sha256": "3d2083e582ef041b9ee430f775c11fc6a37b4d2ebffba7d320a9cc26c1cb6357"
+    },
+    {
+      "path": "INSTALAR_CLIENTE_FIJO.ps1",
+      "sha256": "73080481f93d8e78f56cfa889c885b44d6b1524497efc96668c25a45efb703d9"
+    },
+    {
+      "path": "INSTALAR_OCR_GRATIS.cmd",
+      "sha256": "4b2d4d85ceae821e71969cd562f70c8e7b0b8b26ad1850c893c37205a40e6872"
+    },
+    {
+      "path": "LEEME_DIAGNOSTICO_OCR.txt",
+      "sha256": "685bca30d7a9fff6aef283a343b4b7076a74b8cec601fea4e3c9d57907249c7e"
+    },
+    {
+      "path": "LEEME_ESTA_VERSION.txt",
+      "sha256": "dbc7543d0b5ab2f29ce7cc584175662cdd4f338afb5635325e8b1cd042d98e6a"
+    },
+    {
+      "path": "LEEME_FIX_ONEDNN.txt",
+      "sha256": "12b74d73ae8fc3751048d5a510f5b8facc2f6d4d74a9da4ccaa87e6f1ebe5212"
+    },
+    {
+      "path": "LEEME_GEMINI_GRATIS.txt",
+      "sha256": "2b9622f6b174a30611e242389d7198c0fc71bd3e866f9783703f9f80f52c8e25"
+    },
+    {
+      "path": "LEEME_IA.md",
+      "sha256": "199f67dc6878597312f75605b31f99fb4ec082d3fdc24dffd86ba55bb79fa66f"
+    },
+    {
+      "path": "LEEME_INVENTARIOS_ETAPA1.txt",
+      "sha256": "165bb072b8eb8e231656a5b4448a8988189ee717168953666d6daeec0a1b96de"
+    },
+    {
+      "path": "LEEME_MENUS_ZIP.txt",
+      "sha256": "a3f96bf3b43a84dba6aee7d42836687cd8010df3fa045d0f265a7f6bed99ecb0"
+    },
+    {
+      "path": "LEEME_OCR_HIBRIDO.txt",
+      "sha256": "eef75c32e2f01c96a8470d9801b3fbb61d99278af445a4791aeea2036a296650"
+    },
+    {
+      "path": "LEEME_OCR_PY311.txt",
+      "sha256": "ef5321c62201100742d61db1ce358091a40cb66fc6ba5dcb6db51cd8f4449e19"
+    },
+    {
+      "path": "LEEME_OLLAMA.md",
+      "sha256": "ca3f83dbf43d0d977fc176dbbcfba2a6b77992506e662539b839fc1864ab29c2"
+    },
+    {
+      "path": "LEEME_V9.md",
+      "sha256": "7363695b0c224a799a83e899e62fc9d57c0c9826d9b6ea118387ff3e2f12aaf6"
+    },
+    {
+      "path": "MEJORAS_DUPLICADOS_OCR.txt",
+      "sha256": "061b30c101adc9d77a66c599830d0b429e8e087ffa7deaf7245b1c7b8502f83a"
+    },
+    {
+      "path": "MEJORA_GRUPOS_AUTOMATICOS.txt",
+      "sha256": "8b8d43520f9142ecd849fe66d8aeb0e0f8cee7af4bf7c9354166c4aaca9a558e"
+    },
+    {
+      "path": "RESUMEN_INVENTARIOS_LOTE28.txt",
+      "sha256": "3f6d906d9fe8bfe5ec58fe58bfc381be7b2304433702ab034436a95c67d304af"
+    },
+    {
+      "path": "VER_ESTADO_CLIENTE.cmd",
+      "sha256": "f9fb1585afaeeb85093ee52481771bcd7ffc34fae2637c977a6ae1f2e5c6eb9c"
+    },
+    {
+      "path": "activar_celular.html",
+      "sha256": "e182bf267c49f1faba378106f10593287590aace49bd00f7a2a7758c208c6fc3"
+    },
+    {
+      "path": "app.js",
+      "sha256": "7c03c70bd5195a985b88f42936c572325747fc12d72972bc99a834a3a8d30b96"
+    },
+    {
+      "path": "configuracion.html",
+      "sha256": "6703ca0e1c687615e36a990e652c51fa3c629dca9422305523b39e33eafc249b"
+    },
+    {
+      "path": "diagnostico_menu.js",
+      "sha256": "6942eb50559a6f9577ed7ffd4d841f815fc032f5d70b415213f3f00812bfe026"
+    },
+    {
+      "path": "diagnostico_producto.js",
+      "sha256": "87a25dd44994085c97594074289e8a6f3e0d71cf0ae3351b10dc546129209168"
+    },
+    {
+      "path": "fuentes.js",
+      "sha256": "14779cf595439a0291fb4d2424d07d53308bffd1b8928db34a75861c871ad18a"
+    },
+    {
+      "path": "gemini_gratis.js",
+      "sha256": "639640525962fa7cbd3ec8daca44bc6b4366ef8de947c4ac016d88a8addbdab7"
+    },
+    {
+      "path": "gestion.js",
+      "sha256": "c33d256ce9bfdedce784957c8072c8a83787d30f5e9240baf96e52b2f89756ae"
+    },
+    {
+      "path": "grupos_ocr.js",
+      "sha256": "9daca070b6737e063dc6dc83b26d00027478601eac0c12e2c4d2faddcf2ce13b"
+    },
+    {
+      "path": "iniciar.js",
+      "sha256": "2df24df753aa3b49a702a6cacced0740862273c12a2419f4e27ae50b2c76ef87"
+    },
+    {
+      "path": "instalar_local.js",
+      "sha256": "2c1edf00dae2491e52f4feabb4fd32da397df6ecefd3659d9a687ff6a58c0018"
+    },
+    {
+      "path": "interfaz.js",
+      "sha256": "0e862e46db8fb80d172a81a1720af05f1905e96c8f9a82f90797c9251f57bec3"
+    },
+    {
+      "path": "inventario_diagnostico.js",
+      "sha256": "960c3a29ffaf06707f814b1e1502514ddab864187ad0c1aa9296d7755acedf90"
+    },
+    {
+      "path": "mejoras.js",
+      "sha256": "e3fb97d5d34797948b50c6c8da48ff3beb9d7f7fcfaa0a12860a64578415e60b"
+    },
+    {
+      "path": "menu_admin.js",
+      "sha256": "1debe2976a47c3626ab7ffb99f5ed1aa2fc71d70248e1d0f7281c34032f7cdae"
+    },
+    {
+      "path": "menu_captura_inteligente.js",
+      "sha256": "c636301c477d7458e2735715b621c22a405e0dbb2a918ed2e3d158aac97db9bd"
+    },
+    {
+      "path": "menu_colores.js",
+      "sha256": "5c8d7ce35d8a23eef3a8d243079e661620ca418a4846f37aae0071aa22c8290f"
+    },
+    {
+      "path": "menu_colores_detector.py",
+      "sha256": "52276c6c7a25b6b0521fd7173e4dccec0ce55a99aeeb9701a79f2742a90d38d0"
+    },
+    {
+      "path": "menu_compuestos.js",
+      "sha256": "dc8747fcee74750649d037355eb7efeb68aa30b04e072422e6ac89932b7fb82c"
+    },
+    {
+      "path": "menu_contexto.js",
+      "sha256": "9590d561be114d35bb8567f8b839cc693653598c04fb7d2be8e6fef7c267dbcb"
+    },
+    {
+      "path": "menu_contrato.js",
+      "sha256": "77abde6ee5ebbbe4cf4c172321913353c0ff01c9fd2e9f57a41e69956ee374b7"
+    },
+    {
+      "path": "menu_cuadros_lectura.js",
+      "sha256": "82fa3c8cb7ab7ea8e9049e0dbbc8b05c894100c5f71b51c1366ea7df614064dc"
+    },
+    {
+      "path": "menu_diagnostico.js",
+      "sha256": "de5334c823721806f22f95a1d325b72d971026db11b14622816f4000c6d7d2f6"
+    },
+    {
+      "path": "menu_ensayo.js",
+      "sha256": "cfe16f61bb347a5f28f3f6716b97766cf01509b5d7cb19824b1c181a7ae4d997"
+    },
+    {
+      "path": "menu_grupo_config.js",
+      "sha256": "30421dd5025f6ad217fe3b8b18706d35be6d13f860968dda6af3928d302fe847"
+    },
+    {
+      "path": "menu_guardar.js",
+      "sha256": "4aad97439c795112584e991e506199c1daa1eaede76729d62a61e77ff0adf8ac"
+    },
+    {
+      "path": "menu_ia.js",
+      "sha256": "8c343a7f644553402ae8e6f3ea452613b3a27fb488459c9c53cee9f710e019d7"
+    },
+    {
+      "path": "menu_inicio_limpio.js",
+      "sha256": "43fb0a1a91fcda88869e9906da25c29ff0bbab7cda382e2526b0ae1c149bdf93"
+    },
+    {
+      "path": "menu_nube.js",
+      "sha256": "b4be96f21b392b881062b096ca850ff31fb241dd16971d4be2ae4de68517d4c2"
+    },
+    {
+      "path": "menu_operaciones.js",
+      "sha256": "871f23f5442d16d5326e6b2257008ea35e6828235f3c3354b9bc3cc8a2fbc6c0"
+    },
+    {
+      "path": "menu_paquetes.js",
+      "sha256": "3c620c4a4344298ff3427e99485266ca3a1687089aa4af9f129ca7ce6370a848"
+    },
+    {
+      "path": "menu_perfil_compuesto.js",
+      "sha256": "2e0c3d753ce92164f6ccea0cd01073c302762ecb4e0b9bf87a393db5e46e49e7"
+    },
+    {
+      "path": "menu_perfil_sql.js",
+      "sha256": "fdb3b15931d79daeebd45415b7d9bcaca94859180224608d976cddb4da385178"
+    },
+    {
+      "path": "menu_precios_multiples.js",
+      "sha256": "07af58dcad16881bd62decabcb33f50f049bda7e1d02535dc6abb6d6d81e3860"
+    },
+    {
+      "path": "menu_preflight.js",
+      "sha256": "9611af0320259861b567750382bc1fab07862bc42b6744edb70fc733aa054b46"
+    },
+    {
+      "path": "menu_seguridad.js",
+      "sha256": "f16dee293280f958022076267950faf815359d410f7a09cb525a12210f563c35"
+    },
+    {
+      "path": "menu_trabajos.js",
+      "sha256": "bd0d71bf5890c141598d8fd7ec3a9e57ea6a68a4c3f48088830082960f7c4833"
+    },
+    {
+      "path": "menu_visual_fotos.js",
+      "sha256": "99a8543b881b800b9851c62d2e0a58142adee180d907a5a6fbac5963ffac32d8"
+    },
+    {
+      "path": "menu_visual_sugerencias.js",
+      "sha256": "3c3938a2d093d6886ea4fbb622115c1ace6f1ae3a840f17d883d8b99ca539a4b"
+    },
+    {
+      "path": "ocr_local.py",
+      "sha256": "c99dcef7dd45402dbc70670588152e1d005a0af243235d9c3f9a52319b438241"
+    },
+    {
+      "path": "ocr_proceso.js",
+      "sha256": "addd0335375ebf4f045f26acb34e184e9886a504116bc9081765d8d857387abe"
+    },
+    {
+      "path": "ocr_productos.js",
+      "sha256": "ec5023707686ed7a04488050b92dc0a795869c492390151b636baca4b3f87934"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "ffa0968abc9a9cfba3fc82d572adfc540ff4a215a2926e912090e39346168a34"
+    },
+    {
+      "path": "package.json",
+      "sha256": "b292ad3f78b3c1173150e2af9f2be0688952a3340497693613383c0ca80d1a20"
+    },
+    {
+      "path": "preparar_interfaz.js",
+      "sha256": "ca94f115689ee9ba975feecde011a6eef13a92dcc592133eb667547b1c834b0e"
+    },
+    {
+      "path": "public/app.js",
+      "sha256": "559d3648b7807a9865a600982fed1dce055c634db4a8c9dbb7b08b898e686bc1"
+    },
+    {
+      "path": "public/extra.js",
+      "sha256": "3f10ba7693facbbf73a2b23e7e771d00be18cfe4092a331964fa1dbdee527052"
+    },
+    {
+      "path": "public/index.html",
+      "sha256": "8e3d72f802b4cf107d73a9ce5dd96acf6b675be3ecb7a9f3958dc1e5c4e10edf"
+    },
+    {
+      "path": "public/menu-consolidar.js",
+      "sha256": "0f96a3e25383b382e2929c27f8067cc1c448053f884be66f96d68b413254d4bf"
+    },
+    {
+      "path": "public/menu-imagen.js",
+      "sha256": "88044868d136105f7a900eaf44d945bf41cbb283d28555b24b5d1e19676ea31a"
+    },
+    {
+      "path": "public/menu-proyecto.js",
+      "sha256": "e12388d1cbe8b536deea873dffecf38fdfe785d68a1550d59fffe450598fd20c"
+    },
+    {
+      "path": "public/menu-sql.js",
+      "sha256": "1e0b10eeead169a42cffbb94bac0616c0316be9de3d7e18b67bee455a6febec2"
+    },
+    {
+      "path": "public/menu-visual-logica.js",
+      "sha256": "5b2abe2be87aa87faf7bb8e78257ee6ef20826d7924c2d62039411ef5935c5ca"
+    },
+    {
+      "path": "public/menu-visual.js",
+      "sha256": "d629cf61804440ddddd7883e50d6649ee46fba29e1f430c2e93e7506c0b73f1b"
+    },
+    {
+      "path": "public/menu.css",
+      "sha256": "36eee1c100632a92a5143d62b3f3cda6b90bde02c9d453d50c80a3eef1ab2a13"
+    },
+    {
+      "path": "public/menu.html",
+      "sha256": "f4f69ba3b114dc6ed3f317a7cdd82445d2d8971fc4293a06c8b8988a7b944ef4"
+    },
+    {
+      "path": "public/menu.js",
+      "sha256": "abb141e036742520d78b42b7edab29a4280c2ca6ab32234252cc470962052b42"
+    },
+    {
+      "path": "public/style.css",
+      "sha256": "9440bea028ed9f0fb1d60985b96178d31bf901415ca35b9d327e27a4a0452feb"
+    },
+    {
+      "path": "reportes.js",
+      "sha256": "e80f5c2dc8d768cd0efce5d1b2b625a8bbafc233be4bdaa9863fe255f58aa60e"
+    },
+    {
+      "path": "tests/compuestos-fixture.json",
+      "sha256": "8808d21c26a9997ba0b6ffe05e506516956947eef41498e2d697b1b012f9552b"
+    },
+    {
+      "path": "tests/fotos-iphone-929.test.js",
+      "sha256": "d8f14662cba3211032097f1b7c0d978dca4c3c8ab13fe3bac6c3f3c1b9cd1b02"
+    },
+    {
+      "path": "tests/fotos-rutas-929.test.js",
+      "sha256": "8f2b38352f371503927aef16f56698e8ec421b175966de8531d67ae3caed11b0"
+    },
+    {
+      "path": "tests/gemini-gratis.test.js",
+      "sha256": "e4146d99af299d67a96fb91e8e6a405b5ff91abb0cb40e84c804cc6d8b5898c6"
+    },
+    {
+      "path": "tests/gemini-modelos-9211.test.js",
+      "sha256": "a1276436ace936ca7c2fa3697543ef7ba04d7ebdf88e0280f2422863576ed0b6"
+    },
+    {
+      "path": "tests/gemini-respaldo-9211.test.js",
+      "sha256": "709dcd2c4db4ca8c501935f541b04820394845c9b411153a6354b6d773568082"
+    },
+    {
+      "path": "tests/generate_sql_cases.js",
+      "sha256": "20d80ac757ffafcbbcc59f35871477dc22faa1d41c747e56fb6a4699892031be"
+    },
+    {
+      "path": "tests/gestion.test.js",
+      "sha256": "9b96a0287da14614475040e185ecb968110dc2bb42a025b8ba99305105aa3e31"
+    },
+    {
+      "path": "tests/inventario-diagnostico.test.js",
+      "sha256": "f62351f8e11cdf4b26e0a9cf40656d5eca4c341513873cabec81c81148368e2d"
+    },
+    {
+      "path": "tests/menu-browser.cjs",
+      "sha256": "747325537dbe64e6852f78e180befd393a6c488c0af3ef35b39de20fcb8ddf02"
+    },
+    {
+      "path": "tests/menu-captura-9218.test.js",
+      "sha256": "a7653581b1e322726bc9ac7694600678a3aa123fdebef2b00987957716267a47"
+    },
+    {
+      "path": "tests/menu-colores-9213.test.js",
+      "sha256": "7e0518d78d95be64de031930a3846eedddc158b6c5b969a409fdea1aeec4376b"
+    },
+    {
+      "path": "tests/menu-compuestos-9220.test.js",
+      "sha256": "4a705910cd2c7e3b833971c1c50a264042b0a03f028a4259f5351fb39128fb88"
+    },
+    {
+      "path": "tests/menu-compuestos-924.test.js",
+      "sha256": "edd55cdfeebf8553169022b63c766823dc2b43798a76824aac9e874f1c159b9e"
+    },
+    {
+      "path": "tests/menu-contexto.test.js",
+      "sha256": "7d7821845670445146af51e66fd532a7032ba69e5082166d426f680acbf5dc75"
+    },
+    {
+      "path": "tests/menu-contrato.test.js",
+      "sha256": "15d2337955e2cb9820eb8ca65f63de7188318ac135ec0a039bdf96e00259901f"
+    },
+    {
+      "path": "tests/menu-cuadros-9214.test.js",
+      "sha256": "6ef5c542fc0adddda00c7fdd7828694285e6d7b7035d4fdf6b0be642322ee581"
+    },
+    {
+      "path": "tests/menu-cuadros-9215.test.js",
+      "sha256": "848963f8238caeb7e6a68cd0ed44c303aa6dbbb248cdf028506cd531cdd2bf07"
+    },
+    {
+      "path": "tests/menu-cuadros-9217.test.js",
+      "sha256": "4fe0e24d4e9ffb81d26b1217c7d760ae047688965a48ad24c0a030a97f9a3334"
+    },
+    {
+      "path": "tests/menu-flujo-9221.test.js",
+      "sha256": "52d7221281d6e4a366ab1a4632e93e38abdcbea947c3ca6613b5520db3139158"
+    },
+    {
+      "path": "tests/menu-inicio-limpio-926.test.js",
+      "sha256": "df16dea834ba4307108b438029b36ec4596d0044ccf3d8aee21a2bddc193b6c0"
+    },
+    {
+      "path": "tests/menu-operaciones-923.test.js",
+      "sha256": "411979c72301e301cc68579bb111535482816a731cf716dfe3e85a45d1ae1c85"
+    },
+    {
+      "path": "tests/menu-paquetes-portables.test.js",
+      "sha256": "f588623825fdf612d4c2871d9044d87d970afd5412f2acaa0e332206f313a563"
+    },
+    {
+      "path": "tests/menu-perfil-compuesto-925.test.js",
+      "sha256": "9333e0ed00a3a9edd59ccb03be2b37b5f86b15e96a164ca6a5a60037b0ba529e"
+    },
+    {
+      "path": "tests/menu-perfil-sql.test.js",
+      "sha256": "cab997b491f938b3ee80b4252436e46e8bbcad5f8d765c74a37cbbcaad4bb21b"
+    },
+    {
+      "path": "tests/menu-proyecto.test.js",
+      "sha256": "2ee3331de8c77a12ee12275ec376efb490e6a79f4fc643bdaf9be89ba772bf41"
+    },
+    {
+      "path": "tests/menu-seguridad.test.js",
+      "sha256": "757af8b36025d0bae15d26db4d163375e6503e04b8d85ffe8484d28ec66eeb4a"
+    },
+    {
+      "path": "tests/menu-unificacion-9221.test.js",
+      "sha256": "cb4fab55e1a4030ca9b197db7d05ad493b690fec7601cf0e1397d32e6589d5ac"
+    },
+    {
+      "path": "tests/menu-variantes-9219.test.js",
+      "sha256": "090ce786d0dc8eccd87818e835b299f647d506563b846e130de6dad231875d20"
+    },
+    {
+      "path": "tests/menu-visual-9212.test.js",
+      "sha256": "d3b0d2284f96b11a6ebc8e1064af2946ee03fda4b8a3bbcbf42f76b190b7e72a"
+    },
+    {
+      "path": "tests/movil-927.test.js",
+      "sha256": "a44c67ba448db856825f10b58d8e7b9c5268e99e24f5853c19ad7e0c4b092ceb"
+    },
+    {
+      "path": "tests/ocr-proceso.test.js",
+      "sha256": "18be8e97fce64b10a9478311a72bfaa6e07afc004b5c96c07d3ac6fae307c247"
+    },
+    {
+      "path": "tests/primer-catalogo-confirmacion-927.test.js",
+      "sha256": "59f73b48b8b7f2c85e92276de83a56ebfe23621c20ff65a7948a82837bd5d18e"
+    },
+    {
+      "path": "tests/reports.test.js",
+      "sha256": "6ae96a507e7ccae39f5eeae2e43b63774605836ab1c3f47e793ce64cef4626f6"
+    },
+    {
+      "path": "tests/schema_fixture.json",
+      "sha256": "e16c9d8694ac93df5c2b40287b7b87f65f94c96289c9ab305caa8f4d2925872c"
+    },
+    {
+      "path": "tests/soft11-estructura-revisada.json",
+      "sha256": "d2f364564117ebb98422a236f0ff24618e7594eb36a24f79d00bc8a0296b1cd9"
+    },
+    {
+      "path": "tests/sql_fixtures.py",
+      "sha256": "bee91801b5c043572785777c6d50fcbd6ec9cc16ccf349b06cb745a7dbb28075"
+    },
+    {
+      "path": "tests/test_ocr_adapter.py",
+      "sha256": "d5685236ffec0363d9e432b63d0cf2e1a0478b51cf8fb50f8e9300d1a5722953"
+    },
+    {
+      "path": "version.js",
+      "sha256": "859680ce19c063a4fafb96f97135e593463241d59308d795b0aede63b6fd84a8"
+    }
+  ]
+}

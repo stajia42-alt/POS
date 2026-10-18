@@ -1,0 +1,36 @@
+METales-GV PC V15.0
+
+1) Instalar Node.js LTS en Windows.
+2) Abrir PowerShell en esta carpeta.
+3) Ejecutar: npm install
+4) Probar: npm start
+5) Crear instalador: npm run build
+
+La aplicación incluye:
+- Interfaz de escritorio para Windows.
+- Configuración de impresora térmica 58/80 mm.
+- Detección de impresoras instaladas en Windows desde Electron.
+- Impresión ESC/POS RAW con comando de corte para impresoras térmicas compatibles.
+- Alternativa mediante controlador de Windows.
+- Ticket automático opcional.
+- Corte de caja imprimible.
+- Captura rápida de kilos con Enter.
+- Atajos F2 Compras, F3 Ventas, F4 Caja y Escape para cerrar modal.
+
+IMPORTANTE SOBRE USB:
+La impresora térmica debe estar instalada y visible en Windows. En modo ESC/POS RAW se envían los comandos directamente al spooler de Windows. El corte físico depende de que la impresora tenga cortador y acepte el comando ESC/POS.
+
+No ejecutar npm audit fix --force como primer paso. Primero probar la aplicación y la impresión.
+
+
+IMPRESORA DE TICKETS - VERSIÓN PC
+1. Instala la impresora térmica en Windows mediante USB y su controlador.
+2. Abre METALES-GV y entra en la nueva sección “Impresora”.
+3. Pulsa “Actualizar lista” y selecciona la impresora.
+4. Elige 58 mm u 80 mm.
+5. Elige ESC/POS directo para una térmica compatible o Controlador de Windows si el fabricante requiere su driver.
+6. Guarda la configuración.
+7. Pulsa “Imprimir ticket de prueba”.
+8. Si la impresora no aparece, pulsa “Impresoras de Windows” para abrir la configuración de impresoras de Windows.
+
+NOTA: para impresión USB, Windows debe reconocer e instalar la impresora primero. La conexión USB física por sí sola no permite a Electron enviar RAW si no existe una impresora instalada en Windows.

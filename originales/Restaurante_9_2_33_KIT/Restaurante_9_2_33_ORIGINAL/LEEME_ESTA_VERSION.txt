@@ -1,0 +1,27 @@
+RESTAURANTE 9.2.30 — MENÚS ZIP PORTABLES PARA TODOS LOS CLIENTES
+
+Sin menú Costa Amura ni botones o proyectos de otros clientes.
+En Estudio de menú, utiliza Importar menú ZIP o Guardar menú ZIP.
+Lee LEEME_MENUS_ZIP.txt.
+
+RESTAURANTE 9.2.26 - PRIMER CATÁLOGO Y DISTRIBUCIÓN POR CLIENTE
+
+PROYECTO COMPLETO PARA WINDOWS. NO ES UN INSTALADOR EXE AUTÓNOMO.
+
+1. Cierra versiones anteriores de Restaurante, pero no SQL Server ni Soft Restaurant.
+2. Extrae el ZIP en una carpeta nueva. No lo mezcles con otro cliente.
+3. Abre ABRIR_RESTAURANTE.cmd y configura la conexión SQL de ESTE cliente.
+4. Abre http://127.0.0.1:3000/menu-ia.
+5. Si la base de Soft Restaurant no tiene productos, puedes crear el primer catálogo SIN producto ni modificador PRUEBA.
+6. La aplicación detecta la empresa en SQL, muestra las unidades disponibles y pide confirmar la tasa fiscal real. Si ningún producto anterior permite comprobar el modo de precio, también requiere confirmar el modo inicial 2 antes de importar.
+7. Revisa e importa UN producto compuesto y comprueba su venta/recargo en Soft Restaurant antes de continuar con todo el menú.
+
+Con un catálogo existente se reutilizan los productos auxiliares y grupos compatibles cuando corresponda; no se borran productos, grupos ni ventas previas.
+
+LIMITACIONES Y SEGURIDAD
+- Requiere Node.js 24 o posterior. Si faltan dependencias de Node, el primer arranque usa npm ci y puede necesitar Internet. El OCR puede requerir instalaciones independientes.
+- No se incluyen contraseñas SQL, proyectos de clientes anteriores ni archivos de conexión. La configuración se realiza en la computadora de cada negocio.
+- No se ha validado contra una instalación REAL de Soft Restaurant sin productos. Las pruebas de catálogo vacío usaron un esquema SQL de referencia y simulaciones sin escrituras.
+- Si no existe ninguna empresa o ninguna unidad de medida en SQL, el programa detiene la importación para no inventar datos.
+- Si la estructura del cliente es distinta de la verificada, se detiene la creación de compuestos en lugar de modificar el esquema SQL.
+- Conserve 9.2.25 para recuperación hasta completar una prueba de venta real con 9.2.26.

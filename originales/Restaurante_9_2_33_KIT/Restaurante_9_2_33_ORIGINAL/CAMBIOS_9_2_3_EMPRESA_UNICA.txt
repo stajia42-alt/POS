@@ -1,0 +1,35 @@
+RESTAURANTE 9.2.3 - EMPRESA ÚNICA / DESBLOQUEO DE IMPORTACIÓN
+
+CORRECCIÓN PRINCIPAL
+- No se pide seleccionar, registrar ni escribir una empresa para importar el menú.
+- Consulta directamente dbo.empresas (máximo dos IDs). Si hay uno, usa EXACTAMENTE ese ID.
+- Cuando SQL contiene empresas históricas, sólo selecciona una si esa es la única utilizada en dbo.productosdetalle.
+- Cuando hay más de una empresa efectivamente utilizada, bloquea el lote para no importarlo a la empresa equivocada.
+- No se presupone el código 0000-001 ni 0000000001.
+- El producto fiscal de referencia se detecta automáticamente dentro de la empresa comprobada, priorizando el grupo y la combinación de unidad/impuestos más utilizada.
+- La referencia no se exige como un campo obligatorio al usuario cuando hay una referencia compatible; existe un selector en ajustes avanzados si necesita cambiarla.
+
+SI NO EXISTE NINGÚN PRODUCTO FISCAL COMPATIBLE
+- Se comprueba la empresa de manera independiente, por lo que ya no se informa falsamente "no hay empresa".
+- Para avanzar se pide indicar sólo la unidad ya registrada en SQL, el impuesto real que aplica a los precios (exento / 8 % / 16 %) y un modo de precio existente en SQL.
+- No se inventan datos fiscales o unidades. Si no se encuentran valores registrados suficientes, no se permite escribir y se indica el dato faltante.
+- Se exige confirmación humana antes de preparar el lote.
+
+SEGURIDAD CONSERVADA
+- Revalida la empresa y configuración antes del plan y dentro de la transacción SQL.
+- Cada producto conserva su clave y nombre; un duplicado no se reemplaza.
+- Se mantiene la reversión del lote ante fallos, y el registro de operación local.
+- Los modificadores no compatibles siguen sin importarse incompletos.
+
+PRUEBAS
+- 40 pruebas unitarias pasaron con el doble aislado de MSSQL.
+- La prueba SQL real sobre tu computadora todavía está pendiente; esta entrega no altera tu base.
+- No se pudo ejecutar la prueba de Chromium mediante HTTP local en este entorno (bloqueada por el navegador sandbox), por lo que la interfaz necesita validación en tu instalación.
+
+INSTALACIÓN
+- Cierra la versión antigua y haz respaldo de su carpeta.
+- Extrae esta versión completa en una carpeta nueva, sin combinar archivos.
+- Ejecuta ABRIR_RESTAURANTE.cmd.
+- En Capturar menú / Revisar productos, revisa el resumen.
+- Si no aparece el proyecto, usa Abrir proyecto y selecciona PROYECTO_MENU_ENVIADO.json.
+- No introduzcas empresa manualmente. La que muestre el resumen vendrá de SQL.

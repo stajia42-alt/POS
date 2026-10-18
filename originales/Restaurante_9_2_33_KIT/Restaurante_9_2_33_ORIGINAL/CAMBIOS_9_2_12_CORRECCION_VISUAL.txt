@@ -1,0 +1,31 @@
+RESTAURANTE 9.2.12 — CORRECCIÓN VISUAL INTELIGENTE
+
+Base: Restaurante 9.2.11 (Gemini gratuito y Soft Restaurant 11).
+
+NOVEDADES:
+- Después de analizar una foto, abre "Corregir sobre la imagen" desde la tarjeta de la fotografía o "Ver imagen" desde un producto.
+- Si hay coordenadas OCR compatibles, verás recuadros reales; Gemini no ofrece posiciones exactas en este proyecto, por lo que puedes dibujar recuadros con el mouse o el dedo.
+- Cambia el tipo de cada línea: categoría, producto, precio, descripción o ignorar.
+- Vincula precios a productos concretos. No se envía ninguna instrucción SQL.
+- Deshacer/rehacer mientras el editor esté abierto y guardado en el proyecto después de cada cambio.
+- Solicita, si lo deseas, propuestas de Gemini gratuitas en lenguaje natural. La IA no aplica nada sin tu confirmación.
+- Opción para reutilizar patrones de correcciones anteriores como referencia para el OCR de Gemini; se puede desactivar desde Fotografías. No reentrena el modelo.
+- En proyectos nuevos, las fotografías procesadas se almacenan como JPEG comprimido en la carpeta privada menu-fotos de la configuración de Restaurante, con acceso autenticado sólo para la cuenta de dueño.
+- En proyectos de versiones anteriores, usa "Vincular foto original" para recuperar una fotografía sin duplicar productos.
+- Los proyectos compartidos incluyen las correcciones. Las imágenes compartidas necesitan haber sido guardadas previamente en el servidor.
+
+LÍMITES CONOCIDOS:
+- Un ZIP JSON antiguo no contiene imágenes: deben vincularse manualmente si faltan.
+- Las coordenadas de Gemini no se inventan; los textos sin coordenadas se seleccionan en la lista o se marcan manualmente.
+- Gemini sólo envía propuestas, puede equivocarse y requiere cuota gratuita disponible.
+- Las imágenes son datos locales del servidor; no van incrustadas en el JSON descargable. Respáldalas junto con la configuración si necesitas migrar la PC.
+- Los cambios visuales no actualizan artículos ya registrados en SQL; se aplican sólo al borrador.
+
+INSTALACIÓN:
+1. Realiza copia del proyecto JSON y conserva la versión anterior.
+2. Cierra Restaurante completamente.
+3. Extrae el ZIP y abre ABRIR_RESTAURANTE.cmd o usa el actualizador existente.
+4. Reabre tu proyecto, analiza una foto y selecciona "Corregir sobre la imagen".
+5. Sólo importa al SQL después de confirmar productos, grupos, claves y precios.
+
+Verificación: las pruebas automatizadas son simuladas y no reemplazan las pruebas en SQL Server real, Safari/iPhone y Google Gemini con tu clave.

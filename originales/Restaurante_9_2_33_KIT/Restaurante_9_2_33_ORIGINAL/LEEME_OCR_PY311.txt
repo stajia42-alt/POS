@@ -1,0 +1,10 @@
+Restaurante 9.2 - OCR Python 3.11
+
+Esta actualización selecciona Python 3.11 de forma explícita para el OCR.
+En esta PC ya instalaste PaddleOCR y Visual C++ x64, así que no necesitas reinstalarlos.
+Ejecuta INICIAR_RESTAURANTE.cmd y prueba Menús con IA > Rápido.
+
+El archivo INSTALAR_OCR_GRATIS.cmd sirve para equipos nuevos: comprueba Python 3.11, consulta el estado de Visual C++ x64, instala dependencias y prueba la importación. Si falta Visual C++, muestra el enlace oficial para instalarlo; todavía NO es un instalador autónomo completo.
+
+El análisis OCR puede descargar modelos adicionales la primera vez.
+Revisa todos los productos antes de guardar.

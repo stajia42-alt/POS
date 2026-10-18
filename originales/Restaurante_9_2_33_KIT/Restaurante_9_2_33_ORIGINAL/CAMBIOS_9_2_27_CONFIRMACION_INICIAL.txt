@@ -1,0 +1,7 @@
+Restaurante 9.2.27 - Corrección de primera importación
+
+Se eliminó la casilla de confirmación fiscal oculta bajo el resumen.
+Seleccionar unidad e impuesto y pulsar «Continuar a guardar» constituye la confirmación explícita enviada al servidor.
+Se mantienen validación de unidad e impuestos contra SQL, validación de modo de precio y la confirmación final del lote.
+No se cambia la escritura SQL ni el sistema de modificadores de 9.2.26.
+Validar en Windows con una base vacía antes de utilizar en producción.

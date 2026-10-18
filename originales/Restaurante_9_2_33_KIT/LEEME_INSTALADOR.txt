@@ -1,0 +1,30 @@
+RESTAURANTE 9.2.33 - CREADOR DE INSTALADOR
+
+BASE: RESTAURANTE_933_CORRECCION_INNO(2).zip, el creador que funciono en el equipo.
+
+1. Extraer todo el ZIP. Abrir esta carpeta y ejecutar CREAR_INSTALADOR.cmd
+   con Node.js 24 x64 e Inno Setup 6/7 instalados en el equipo compilador.
+2. El creador generara output\Setup_Restaurante_9.2.33.exe.
+3. El instalador pedira la clave unoDOStres21@.
+4. El inicio del servidor con Windows queda automatico; el instalador permite
+   activar la apertura del navegador al iniciar sesion (activado por defecto).
+5. SQL: la instalacion busca primero instancias SQL y puertos reales TCP, prueba
+   el usuario fijo sa y la contrasena fija aprobada; no la pide. Guardara la
+   conexion solo si la base softrestaurant11 y credenciales responden.
+   Si no hay SQL accesible o credenciales no aceptadas, se conserva la
+   configuracion anterior y se registra el error en ProgramData.
+6. Cloudflare: desde el asistente o el menu Inicio > Configurar Cloudflare,
+   escribe un subdominio completo y el token del tunel. Instala el servicio.
+   IMPORTANTE: El token de servicio no puede crear por si solo el hostname/DNS;
+   debes vincular el subdominio al tunel desde el panel Cloudflare.
+7. Se elimina solo el MODULO DE PRUEBA Atun Urbano; no se borra ninguna fila,
+   producto, grupo o venta de SQL Server.
+
+PARA REVISAR FALLAS
+- REGISTRO_COMPILACION.txt  (compilacion)
+- C:\ProgramData\AvilesRestaurante933\logs\instalacion.log  (arranque)
+- C:\ProgramData\AvilesRestaurante933\logs\sql-automatico.log  (SQL)
+
+El ZIP es un creador de instalador, NO es el instalador .exe compilado.
+Pruebas realizadas fuera de Windows: integridad de ZIP, sintaxis JavaScript,
+archivos referenciados. Compilacion y prueba en Windows: pendiente.

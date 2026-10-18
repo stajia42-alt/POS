@@ -1,0 +1,23 @@
+RESTAURANTE 9.2.9 – CORRECCIÓN DE FOTOGRAFÍAS DESDE IPHONE
+
+Partiendo de Restaurante 9.2.8, sin cambiar las consultas ni las operaciones de escritura SQL.
+
+1. Preparación de fotografía compatible con Safari: HTMLImageElement primero y createImageBitmap como respaldo; JPEG comprimido con toBlob y FileReader, resolución limitada y mensaje de error por etapa.
+2. Análisis en una cola del servidor: POST /api/menu-ia/trabajos acepta la fotografía y devuelve un ID. GET /api/menu-ia/trabajos/:id consulta el estado. El servidor termina el análisis aun si se pierde la conexión después de recibirlo.
+3. Subida con reintentos e identificador idempotente por foto/intento; reintentar el acuse de recibo no lanza análisis duplicados.
+4. Se conservan los productos correctos, se puede reintentar una foto individual, y se puede consultar el error completo.
+5. Los estados de trabajo se conservan en el borrador del navegador, para recuperar el resultado cuando regrese la conexión; no se transfieren fotos originales en el JSON.
+6. Los trabajos residen en memoria del servidor: SI SE REINICIA NODE, los trabajos sin terminar se pierden y será necesario volver a adjuntar las fotografías afectadas. Los productos ya añadidos al borrador no se borran.
+7. No se cambia la clave de Gemini ni se añade facturación. PaddleOCR y el resto de modalidades siguen disponibles.
+
+INSTRUCCIONES DE ACTUALIZACIÓN
+- Primero descarga un respaldo JSON de tu proyecto de menú desde la aplicación, si contiene productos que no has importado.
+- Cierra Restaurante, pero NO detengas Soft Restaurant ni SQL Server.
+- Extrae el ZIP nuevo en una carpeta separada.
+- Ejecuta ACTUALIZAR_INSTALACION.cmd y selecciona la carpeta de la versión 9.2.8; el actualizador conserva archivos de configuración, dependencias instaladas y prepara un respaldo de la versión anterior.
+- Si tu instalación usa un Restaurante.exe compilado, compila primero la versión 9.2.9 con COMPILAR_RESTAURANTE.cmd.
+- Vuelve a abrir Restaurante y actualiza la página en tu iPhone.
+- Comprueba primero UNA fotografía; después prueba un lote pequeño. No vuelvas a importar productos que ya se vendieron.
+
+VERIFICACIÓN Y LÍMITES
+Se realizan pruebas automatizadas aisladas de preparación de fotos, cola, control de acceso a los resultados y Gemini simulado. No hay acceso a tu iPhone, cuenta Gemini, servidor Cloudflare ni SQL real; sus resultados no se pueden certificar desde este entorno.

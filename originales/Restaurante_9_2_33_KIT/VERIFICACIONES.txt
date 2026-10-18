@@ -1,0 +1,14 @@
+Verificaciones sobre Restaurante_9_2_33_COMPLETO_Arreglo_Nivel1(1).zip:
+- Integridad ZIP origen: sin errores, 163 entradas totales.
+- Carpeta de fuente original: 160 archivos; manifest nuevo con SHA256 por archivo.
+- Compilacion sintactica con Node.js v22.16.0 Linux: 50 archivos JS revisados, 0 errores.
+- Pruebas seleccionadas de proyectos de menu: 30/30 pasadas.
+- Bateria completa desde Linux sin dependencias instaladas: 209/220 pasaron;
+  11 fallaron porque faltan paquetes npm 'express' y 'mssql' en ese entorno.
+  NO son una validacion de la instalacion en Windows ni una prueba de conexion SQL.
+- Nuevo instalador Inno Setup: NO compilado en este entorno Linux.
+- Arranque automatico SYSTEM, integracion Cloudflare y permisos Windows: pendientes
+  de prueba en una PC Windows, con usuario y SQL representativos.
+- La interfaz original se conserva sin modificaciones (hashes registrados).
+
+No entregar a un cliente como "100% probado" hasta ejecutar una instalacion real.

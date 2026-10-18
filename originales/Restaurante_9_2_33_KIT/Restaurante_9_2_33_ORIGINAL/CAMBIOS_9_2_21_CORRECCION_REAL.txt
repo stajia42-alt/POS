@@ -1,0 +1,40 @@
+RESTAURANTE 9.2.21 — CORRECCIÓN DE CAPTURA Y PROYECTOS
+
+CAMBIOS EN EL CÓDIGO
+- Corrige la conversión: tres variantes del MISMO hot dog o hamburguesa con
+  Sin papas / Con papas / Papas sazonadas ahora se unifican en UN SOLO
+  producto compuesto y un grupo obligatorio de modificadores.
+- No hay cargos predeterminados. Sólo calcula la diferencia entre precios
+  observados para EL MISMO producto. Si falta evidencia o precio, bloquea
+  la importación de ese compuesto en lugar de inventarlo.
+- Reparación opcional del borrador anterior: "Unir presentaciones".
+- Migración automática conservadora de un borrador anterior al abrir, con
+  copia local del estado previo cuando detecta grupos unificables.
+- Separa el flujo "Crear grupos primero" de la importación de productos:
+  guarda grupos en Soft Restaurant aunque aún no existan productos.
+- "Nuevo menú (limpio)" conserva copia descargable del borrador anterior
+  y elimina sólo los datos del proyecto local, NO los registros en SQL.
+- Limpieza explícita de grupos preparados sin productos, sin borrar SQL.
+- Mejor instrucción a Gemini: un producto principal por conjunto de papas.
+- No aplica nombres de papas a listas de precios sin encabezados.
+
+LO QUE NO HACE
+- No elimina grupos ni productos ya guardados en SQL Server.
+- No modifica el esquema SQL. No convierte tamaños arbitrarios en
+  modificadores obligatorios si el menú no demuestra esa intención.
+- No verifica escrituras SQL reales hasta probarlo en tu instalación.
+
+PRUEBA SUGERIDA
+1. Abrir ABRIR_RESTAURANTE.cmd.
+2. Si aparece Dumplings de un borrador antiguo, pulsar Nuevo menú (limpio).
+   Se descargará copia JSON; consultar el catálogo real y crear grupos
+   primero si se necesita.
+3. Subir la página de Hot dogs: confirmar una tarjeta por hot dog,
+   con el grupo TIPO DE PAPAS y los tres recargos comprobados.
+4. Revisar el plan SQL antes de guardar un SOLO producto de prueba.
+5. Verificar que Soft Restaurant abre el selector obligatorio y calcula
+   los precios. No probar primero con un catálogo de producción.
+
+LIMITACIONES DE PRUEBA EN ESTE ENTORNO
+No se instaló ni se ejecutó SQL Server 2014, OCR ni Safari reales.
+La batería total JavaScript incluye pruebas que requieren express/mssql.

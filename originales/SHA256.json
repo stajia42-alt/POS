@@ -1,0 +1,37 @@
+[
+  {
+    "archivo": "RESTAURANTE_9_2_33_INSTALADOR_FINAL_SQL_CLOUDFLARE.zip",
+    "bytes": 573641,
+    "sha256": "7236186bff9296511b898717c74f6e621d53fbe54656b71bf38a9a47548123e7"
+  },
+  {
+    "archivo": "INSTRUCCIONES-PC.txt",
+    "bytes": 1778,
+    "sha256": "4b75ecbe763af5984336905c3780bbc7beb15ee4e77d1ffee079a19326fa8763"
+  },
+  {
+    "archivo": "package.json",
+    "bytes": 699,
+    "sha256": "5b3d1977c5bb40a9bb804b12a8363dca844620602fe9d70d1000979f75d1b4f9"
+  },
+  {
+    "archivo": "main.js",
+    "bytes": 7293,
+    "sha256": "a507a9d7dc8b3018219d60b63a82207b6900a791ec1aec7b109ae2a395cb90a0"
+  },
+  {
+    "archivo": "preload.js",
+    "bytes": 643,
+    "sha256": "fcadf6e9cd81b89afc93aeb39654553e6120a69105e46cb854508634bb993124"
+  },
+  {
+    "archivo": "recicladora_v14_1_capacitacion_auto 2.html",
+    "bytes": 81853,
+    "sha256": "64a99705b068cd972c4fb1160f72327b25342512b2b32ac7c36575db2f9eb068"
+  },
+  {
+    "archivo": "recicladora_pc_v15.html",
+    "bytes": 109898,
+    "sha256": "59f131ad9e74e967ec2a224c76b647e87f8c0ba0c7122f261ff995eef0814086"
+  }
+]

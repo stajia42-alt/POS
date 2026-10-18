@@ -1,0 +1,1559 @@
+TAP version 13
+# Subtest: cola: un mismo envio repetido procesa solo una vez, incluso durante el análisis
+ok 1 - cola: un mismo envio repetido procesa solo una vez, incluso durante el análisis
+  ---
+  duration_ms: 82.322278
+  type: 'test'
+  ...
+# Subtest: cola: los trabajos no se pueden consultar desde otro usuario
+ok 2 - cola: los trabajos no se pueden consultar desde otro usuario
+  ---
+  duration_ms: 16.465554
+  type: 'test'
+  ...
+# Subtest: cola: errores de IA no se presentan como resultado completado
+ok 3 - cola: errores de IA no se presentan como resultado completado
+  ---
+  duration_ms: 23.836738
+  type: 'test'
+  ...
+# Subtest: cola: limita la cantidad simultánea y rechaza IDs inválidos
+ok 4 - cola: limita la cantidad simultánea y rechaza IDs inválidos
+  ---
+  duration_ms: 24.182171
+  type: 'test'
+  ...
+# Subtest: iPhone: convierte JPEG sin necesitar createImageBitmap
+ok 5 - iPhone: convierte JPEG sin necesitar createImageBitmap
+  ---
+  duration_ms: 13.615246
+  type: 'test'
+  ...
+# Subtest: iPhone: cuando falla Image usa createImageBitmap como respaldo
+ok 6 - iPhone: cuando falla Image usa createImageBitmap como respaldo
+  ---
+  duration_ms: 0.999385
+  type: 'test'
+  ...
+# Subtest: iPhone: rechaza imágenes incompatibles antes de convertir
+ok 7 - iPhone: rechaza imágenes incompatibles antes de convertir
+  ---
+  duration_ms: 0.722636
+  type: 'test'
+  ...
+# Subtest: API de trabajos: aceptar, idempotencia, resultado, aislamiento y validación
+ok 8 - API de trabajos: aceptar, idempotencia, resultado, aislamiento y validación
+  ---
+  duration_ms: 42.211355
+  type: 'test'
+  ...
+# Subtest: respuestas JSON validas
+ok 9 - respuestas JSON validas
+  ---
+  duration_ms: 10.249355
+  type: 'test'
+  ...
+# Subtest: rechaza respuesta sin lineas
+ok 10 - rechaza respuesta sin lineas
+  ---
+  duration_ms: 1.108505
+  type: 'test'
+  ...
+# Subtest: rechaza JSON incorrecto
+ok 11 - rechaza JSON incorrecto
+  ---
+  duration_ms: 1.335648
+  type: 'test'
+  ...
+# Subtest: no usa Gemini sin clave
+ok 12 - no usa Gemini sin clave
+  ---
+  duration_ms: 4.235246
+  type: 'test'
+  ...
+# Subtest: envia imagen al modelo gratuito y valida resultado
+ok 13 - envia imagen al modelo gratuito y valida resultado
+  ---
+  duration_ms: 4.63529
+  type: 'test'
+  ...
+# Subtest: rechaza claves con espacios, comillas, caracteres invisibles y Unicode sin iniciar HTTP
+ok 14 - rechaza claves con espacios, comillas, caracteres invisibles y Unicode sin iniciar HTTP
+  ---
+  duration_ms: 1.945731
+  type: 'test'
+  ...
+# Subtest: clave válida se acepta y se consulta su estado sin exponerla
+ok 15 - clave válida se acepta y se consulta su estado sin exponerla
+  ---
+  duration_ms: 1.060491
+  type: 'test'
+  ...
+# Subtest: estado explica clave incorrecta sin devolver la credencial
+ok 16 - estado explica clave incorrecta sin devolver la credencial
+  ---
+  duration_ms: 1.431527
+  type: 'test'
+  ...
+# Subtest: extracción no inicia una solicitud con clave inválida
+ok 17 - extracción no inicia una solicitud con clave inválida
+  ---
+  duration_ms: 1.636471
+  type: 'test'
+  ...
+# Subtest: acepta clave Google con punto y la pasa sin modificar al transporte
+ok 18 - acepta clave Google con punto y la pasa sin modificar al transporte
+  ---
+  duration_ms: 1.137849
+  type: 'test'
+  ...
+# Subtest: filtra solamente modelos con nivel gratis documentado y generateContent
+ok 19 - filtra solamente modelos con nivel gratis documentado y generateContent
+  ---
+  duration_ms: 11.363892
+  type: 'test'
+  ...
+# Subtest: consulta paginas adicionales sin revelar la clave en el resultado
+ok 20 - consulta paginas adicionales sin revelar la clave en el resultado
+  ---
+  duration_ms: 3.94294
+  type: 'test'
+  ...
+# Subtest: no confunde models.list con cuota o facturacion confirmada
+ok 21 - no confunde models.list con cuota o facturacion confirmada
+  ---
+  duration_ms: 2.165398
+  type: 'test'
+  ...
+# Subtest: extract usa primero nuevo Flash-Lite y devuelve modelo utilizado
+ok 22 - extract usa primero nuevo Flash-Lite y devuelve modelo utilizado
+  ---
+  duration_ms: 3.473683
+  type: 'test'
+  ...
+# Subtest: 404 avanza al siguiente modelo elegible; nunca prueba uno de pago
+ok 23 - 404 avanza al siguiente modelo elegible; nunca prueba uno de pago
+  ---
+  duration_ms: 0.901235
+  type: 'test'
+  ...
+# Subtest: 429 no evade limite con otros modelos aunque estén disponibles
+ok 24 - 429 no evade limite con otros modelos aunque estén disponibles
+  ---
+  duration_ms: 3.741242
+  type: 'test'
+  ...
+# Subtest: lista vacia detiene peticiones a IA y permite respaldo OCR
+ok 25 - lista vacia detiene peticiones a IA y permite respaldo OCR
+  ---
+  duration_ms: 0.324725
+  type: 'test'
+  ...
+# Subtest: no ejecuta modelos no incluidos aunque el listador los entregue
+ok 26 - no ejecuta modelos no incluidos aunque el listador los entregue
+  ---
+  duration_ms: 3.55675
+  type: 'test'
+  ...
+# Menú: Gemini no disponible, usando OCR local: GEMINI_SIN_MODELO
+# Subtest: sin modelos gratuitos, trabajo utiliza PaddleOCR y conserva productos
+ok 27 - sin modelos gratuitos, trabajo utiliza PaddleOCR y conserva productos
+  ---
+  duration_ms: 47.760529
+  type: 'test'
+  ...
+# Subtest: cuota 429 activa respaldo local sin intentar otro modelo
+ok 28 - cuota 429 activa respaldo local sin intentar otro modelo
+  ---
+  duration_ms: 0.866264
+  type: 'test'
+  ...
+# Subtest: 403 activa respaldo local sin exponer credenciales
+ok 29 - 403 activa respaldo local sin exponer credenciales
+  ---
+  duration_ms: 0.348745
+  type: 'test'
+  ...
+# node:internal/modules/cjs/loader:1404
+#   throw err;
+#   ^
+# Error: Cannot find module 'express'
+# Require stack:
+# - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/gestion.test.js
+#     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+#     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+#     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+#     at Function._load (node:internal/modules/cjs/loader:1211:37)
+#     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+#     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+#     at Module.require (node:internal/modules/cjs/loader:1487:12)
+#     at require (node:internal/modules/helpers:135:16)
+#     at Object.<anonymous> (/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/gestion.test.js:2:15)
+#     at Module._compile (node:internal/modules/cjs/loader:1730:14) {
+#   code: 'MODULE_NOT_FOUND',
+#   requireStack: [
+#     '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/gestion.test.js'
+#   ]
+# }
+# Node.js v22.16.0
+# Subtest: tests/gestion.test.js
+not ok 6 - tests/gestion.test.js
+  ---
+  duration_ms: 109.733561
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/gestion.test.js:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: Diagnóstico de inventarios solo usa SELECT y estructura conocida
+ok 31 - Diagnóstico de inventarios solo usa SELECT y estructura conocida
+  ---
+  duration_ms: 11.33861
+  type: 'test'
+  ...
+# Subtest: No consulta contactos de proveedores ni campos de credenciales
+ok 32 - No consulta contactos de proveedores ni campos de credenciales
+  ---
+  duration_ms: 7.284368
+  type: 'test'
+  ...
+# Subtest: Informa tablas ausentes sin fallar ni inventar datos
+ok 33 - Informa tablas ausentes sin fallar ni inventar datos
+  ---
+  duration_ms: 1.510756
+  type: 'test'
+  ...
+# Subtest: Los endpoints están protegidos por autorización de servidor
+ok 34 - Los endpoints están protegidos por autorización de servidor
+  ---
+  duration_ms: 0.703589
+  type: 'test'
+  ...
+# Subtest: transcripción y productos separados con nombres, precios, descripciones y categorías
+ok 35 - transcripción y productos separados con nombres, precios, descripciones y categorías
+  ---
+  duration_ms: 9.497546
+  type: 'test'
+  ...
+# Subtest: un precio tomado de otro renglón nunca queda listo sin revisión
+ok 36 - un precio tomado de otro renglón nunca queda listo sin revisión
+  ---
+  duration_ms: 5.125896
+  type: 'test'
+  ...
+# Subtest: nombre que Gemini inventó no se deja pasar como listo
+ok 37 - nombre que Gemini inventó no se deja pasar como listo
+  ---
+  duration_ms: 1.109001
+  type: 'test'
+  ...
+# Subtest: precio ausente queda sin precio, nunca se infiere
+ok 38 - precio ausente queda sin precio, nunca se infiere
+  ---
+  duration_ms: 0.535094
+  type: 'test'
+  ...
+# Subtest: los datos transcritos se guardan y validan sin depender de SQL
+ok 39 - los datos transcritos se guardan y validan sin depender de SQL
+  ---
+  duration_ms: 2.092772
+  type: 'test'
+  ...
+# Subtest: transcripción manual se puede reorganizar sin repetir OCR
+ok 40 - transcripción manual se puede reorganizar sin repetir OCR
+  ---
+  duration_ms: 5.064534
+  type: 'test'
+  ...
+# Subtest: no permite solicitar corrección de un precio invisible
+ok 41 - no permite solicitar corrección de un precio invisible
+  ---
+  duration_ms: 1.105668
+  type: 'test'
+  ...
+# Subtest: cambios propuestos requieren ids conocidos y campos permitidos
+ok 42 - cambios propuestos requieren ids conocidos y campos permitidos
+  ---
+  duration_ms: 0.219472
+  type: 'test'
+  ...
+# Subtest: aplicar correcciones no modifica productos importados o revisados
+ok 43 - aplicar correcciones no modifica productos importados o revisados
+  ---
+  duration_ms: 1.072265
+  type: 'test'
+  ...
+# Subtest: rechaza lista inválida o excesiva y no suprime líneas transcritas
+ok 44 - rechaza lista inválida o excesiva y no suprime líneas transcritas
+  ---
+  duration_ms: 0.876007
+  type: 'test'
+  ...
+# Subtest: conserva índices aunque existan líneas vacías en la transcripción
+ok 45 - conserva índices aunque existan líneas vacías en la transcripción
+  ---
+  duration_ms: 4.18997
+  type: 'test'
+  ...
+# Subtest: Gemini prepara un solo envío de imagen que contiene texto y propuestas
+ok 46 - Gemini prepara un solo envío de imagen que contiene texto y propuestas
+  ---
+  duration_ms: 1.214268
+  type: 'test'
+  ...
+# Subtest: Gemini genera sólo propuestas de cambios, no ejecuta importación
+ok 47 - Gemini genera sólo propuestas de cambios, no ejecuta importación
+  ---
+  duration_ms: 0.653296
+  type: 'test'
+  ...
+# Subtest: colores predeterminados mapean grupos/productos/precios, sin duplicados
+ok 48 - colores predeterminados mapean grupos/productos/precios, sin duplicados
+  ---
+  duration_ms: 11.936389
+  type: 'test'
+  ...
+# Subtest: nunca inventa precio que no coincide ni asigna grupo por palabra en nombre
+ok 49 - nunca inventa precio que no coincide ni asigna grupo por palabra en nombre
+  ---
+  duration_ms: 3.575657
+  type: 'test'
+  ...
+# Subtest: las regiones desconocidas, repetidas o inventadas se rechazan
+ok 50 - las regiones desconocidas, repetidas o inventadas se rechazan
+  ---
+  duration_ms: 2.510154
+  type: 'test'
+  ...
+# Subtest: los colores del usuario requieren valores distintos y hexadecimales correctos
+ok 51 - los colores del usuario requieren valores distintos y hexadecimales correctos
+  ---
+  duration_ms: 1.838341
+  type: 'test'
+  ...
+# Subtest: asociación OCR local respeta la geometría; no etiqueta líneas lejanas
+ok 52 - asociación OCR local respeta la geometría; no etiqueta líneas lejanas
+  ---
+  duration_ms: 0.990423
+  type: 'test'
+  ...
+# Subtest: detector OpenCV encuentra 5 colores en una imagen de prueba real
+ok 53 - detector OpenCV encuentra 5 colores en una imagen de prueba real
+  ---
+  duration_ms: 5615.038572
+  type: 'test'
+  ...
+# Subtest: regiones de menús sin marco real no se etiquetan por decoración sólida
+ok 54 - regiones de menús sin marco real no se etiquetan por decoración sólida
+  ---
+  duration_ms: 4922.030654
+  type: 'test'
+  ...
+# Subtest: proyectos antiguos y resultados coloreados conservan esquema compatible
+ok 55 - proyectos antiguos y resultados coloreados conservan esquema compatible
+  ---
+  duration_ms: 21.77477
+  type: 'test'
+  ...
+# Subtest: Gemini guiado sólo acepta transcripciones de IDs reales
+ok 56 - Gemini guiado sólo acepta transcripciones de IDs reales
+  ---
+  duration_ms: 28.468556
+  type: 'test'
+  ...
+# Subtest: ruta de análisis guiado integra detección y transcripción, sin consultar SQL
+ok 57 - ruta de análisis guiado integra detección y transcripción, sin consultar SQL
+  ---
+  duration_ms: 8341.398068
+  type: 'test'
+  ...
+# Subtest: diagnóstico real: tablas, campos y relaciones de modificadores existen
+ok 58 - diagnóstico real: tablas, campos y relaciones de modificadores existen
+  ---
+  duration_ms: 23.032877
+  type: 'test'
+  ...
+# Subtest: hamburguesa: una sola principal, 3 modificadores con precios propios
+ok 59 - hamburguesa: una sola principal, 3 modificadores con precios propios
+  ---
+  duration_ms: 19.437438
+  type: 'test'
+  ...
+# Subtest: chilaquiles: precio base cero y dos grupos, cada uno exige una opción
+ok 60 - chilaquiles: precio base cero y dos grupos, cada uno exige una opción
+  ---
+  duration_ms: 5.139811
+  type: 'test'
+  ...
+# Subtest: un grupo opcional, precio ausente o elección múltiple no se importan silenciosamente
+ok 61 - un grupo opcional, precio ausente o elección múltiple no se importan silenciosamente
+  ---
+  duration_ms: 28.488898
+  type: 'test'
+  ...
+# Subtest: faltan FK o permisos: bloquear escritura antes de transacción
+ok 62 - faltan FK o permisos: bloquear escritura antes de transacción
+  ---
+  duration_ms: 10.294103
+  type: 'test'
+  ...
+# Subtest: crea grupo auxiliar usando la clasificación real del grupo de alimentos, no un código universal
+ok 63 - crea grupo auxiliar usando la clasificación real del grupo de alimentos, no un código universal
+  ---
+  duration_ms: 11.019331
+  type: 'test'
+  ...
+# Subtest: integración con el plan transaccional existente: conserva principal y agrega sólo las opciones faltantes
+ok 64 - integración con el plan transaccional existente: conserva principal y agrega sólo las opciones faltantes
+  ---
+  duration_ms: 41.814638
+  type: 'test'
+  ...
+# Subtest: menús diferentes: bebidas y alimentos no comparten por fuerza el mismo catálogo de modificadores
+ok 65 - menús diferentes: bebidas y alimentos no comparten por fuerza el mismo catálogo de modificadores
+  ---
+  duration_ms: 15.548906
+  type: 'test'
+  ...
+# Subtest: menú OCR con categoría larga no excede 30 caracteres del grupo auxiliar SQL
+ok 66 - menú OCR con categoría larga no excede 30 caracteres del grupo auxiliar SQL
+  ---
+  duration_ms: 7.352595
+  type: 'test'
+  ...
+# Subtest: reutiliza SIN PAPAS de otro catálogo compatible sin duplicarlo
+ok 67 - reutiliza SIN PAPAS de otro catálogo compatible sin duplicarlo
+  ---
+  duration_ms: 14.819211
+  type: 'test'
+  ...
+# Subtest: productos auxiliares con nombre repetido en distintos catálogos no se adivinan
+ok 68 - productos auxiliares con nombre repetido en distintos catálogos no se adivinan
+  ---
+  duration_ms: 5.335539
+  type: 'test'
+  ...
+# Subtest: reutiliza una opción única creada antes con clasificación distinta sin tocar el producto existente
+ok 69 - reutiliza una opción única creada antes con clasificación distinta sin tocar el producto existente
+  ---
+  duration_ms: 3.933908
+  type: 'test'
+  ...
+# Subtest: no reutiliza MODIFICADORES BEBIDAS para alimento aunque tenga clasificación invertida
+ok 70 - no reutiliza MODIFICADORES BEBIDAS para alimento aunque tenga clasificación invertida
+  ---
+  duration_ms: 7.662173
+  type: 'test'
+  ...
+# Subtest: reutiliza el catálogo genérico MODIFICADORES de la misma clasificación
+ok 71 - reutiliza el catálogo genérico MODIFICADORES de la misma clasificación
+  ---
+  duration_ms: 8.981189
+  type: 'test'
+  ...
+# Subtest: regresión real: grupo nuevo utiliza IDGRUPOSMODIFICADORES, jamás IDGRUPO
+ok 72 - regresión real: grupo nuevo utiliza IDGRUPOSMODIFICADORES, jamás IDGRUPO
+  ---
+  duration_ms: 13.099508
+  type: 'test'
+  ...
+# Subtest: regresión de 9.2.23: validación de varios padres y el mismo catálogo compartido, antes de escritura
+ok 73 - regresión de 9.2.23: validación de varios padres y el mismo catálogo compartido, antes de escritura
+  ---
+  duration_ms: 9.854365
+  type: 'test'
+  ...
+# Subtest: referencia obligatoria errónea: no se inicia una importación incompleta
+ok 74 - referencia obligatoria errónea: no se inicia una importación incompleta
+  ---
+  duration_ms: 9.911711
+  type: 'test'
+  ...
+# Subtest: schema incompatible: no admitir una columna nueva de manera implícita
+ok 75 - schema incompatible: no admitir una columna nueva de manera implícita
+  ---
+  duration_ms: 2.595248
+  type: 'test'
+  ...
+# Subtest: duplicados de catálogo u opciones: fallan antes de comenzar transacción SQL
+ok 76 - duplicados de catálogo u opciones: fallan antes de comenzar transacción SQL
+  ---
+  duration_ms: 10.515515
+  type: 'test'
+  ...
+# Subtest: no se inventa importe para la opción
+ok 77 - no se inventa importe para la opción
+  ---
+  duration_ms: 5.718682
+  type: 'test'
+  ...
+# Subtest: se puede reutilizar un grupo sin crear otro
+ok 78 - se puede reutilizar un grupo sin crear otro
+  ---
+  duration_ms: 3.271913
+  type: 'test'
+  ...
+# Subtest: YUAN: cuatro dumplings, nombres completos y Opción A con precios por cantidad
+ok 79 - YUAN: cuatro dumplings, nombres completos y Opción A con precios por cantidad
+  ---
+  duration_ms: 22.974501
+  type: 'test'
+  ...
+# Subtest: OCR con posiciones: filas y columnas conservan cantidades, precios y evidencia
+ok 80 - OCR con posiciones: filas y columnas conservan cantidades, precios y evidencia
+  ---
+  duration_ms: 10.163146
+  type: 'test'
+  ...
+# Subtest: no se recortan 100 productos ni nombres largos
+ok 81 - no se recortan 100 productos ni nombres largos
+  ---
+  duration_ms: 42.691773
+  type: 'test'
+  ...
+# Subtest: arroz frito conserva contexto; ramen ambiguo no inventa caldo ni proteínas
+ok 82 - arroz frito conserva contexto; ramen ambiguo no inventa caldo ni proteínas
+  ---
+  duration_ms: 0.749296
+  type: 'test'
+  ...
+# Subtest: precios múltiples sin presentaciones permanecen sin asignación inventada
+ok 83 - precios múltiples sin presentaciones permanecen sin asignación inventada
+  ---
+  duration_ms: 1.60396
+  type: 'test'
+  ...
+# Subtest: nombres y precios ambiguos permanecen visibles en la evidencia
+ok 84 - nombres y precios ambiguos permanecen visibles en la evidencia
+  ---
+  duration_ms: 1.536044
+  type: 'test'
+  ...
+# Subtest: las páginas y los encabezados no heredan productos ni precios anteriores
+ok 85 - las páginas y los encabezados no heredan productos ni precios anteriores
+  ---
+  duration_ms: 1.36428
+  type: 'test'
+  ...
+# Subtest: líneas vacías no desplazan evidencia y traducción conserva el español
+ok 86 - líneas vacías no desplazan evidencia y traducción conserva el español
+  ---
+  duration_ms: 4.595659
+  type: 'test'
+  ...
+# Subtest: grupos únicos, acentos, alias y coincidencias ambiguas
+ok 87 - grupos únicos, acentos, alias y coincidencias ambiguas
+  ---
+  duration_ms: 6.196035
+  type: 'test'
+  ...
+# Subtest: repetidos y precios cero se conservan, nunca borrados silenciosamente
+ok 88 - repetidos y precios cero se conservan, nunca borrados silenciosamente
+  ---
+  duration_ms: 7.191153
+  type: 'test'
+  ...
+# Subtest: importes decimales válidos no sufren comparación de coma flotante
+ok 89 - importes decimales válidos no sufren comparación de coma flotante
+  ---
+  duration_ms: 2.903951
+  type: 'test'
+  ...
+# Subtest: demasiadas líneas provocan error visible, nunca truncamiento
+ok 90 - demasiadas líneas provocan error visible, nunca truncamiento
+  ---
+  duration_ms: 3.172863
+  type: 'test'
+  ...
+# Subtest: ingredientes explícitos se adjuntan; palabras sueltas no crean productos
+ok 91 - ingredientes explícitos se adjuntan; palabras sueltas no crean productos
+  ---
+  duration_ms: 1.897806
+  type: 'test'
+  ...
+# Subtest: dos columnas independientes no fusionan sus nombres
+ok 92 - dos columnas independientes no fusionan sus nombres
+  ---
+  duration_ms: 0.681657
+  type: 'test'
+  ...
+# Subtest: regresión del texto OCR YUAN: traducciones posteriores y precio por cuatro piezas
+ok 93 - regresión del texto OCR YUAN: traducciones posteriores y precio por cuatro piezas
+  ---
+  duration_ms: 8.106618
+  type: 'test'
+  ...
+# Subtest: traducciones entre nombre y precio no descartan el plato español
+ok 94 - traducciones entre nombre y precio no descartan el plato español
+  ---
+  duration_ms: 2.23234
+  type: 'test'
+  ...
+# Subtest: dos nombres posibles y un precio quedan visibles con aviso
+ok 95 - dos nombres posibles y un precio quedan visibles con aviso
+  ---
+  duration_ms: 1.444641
+  type: 'test'
+  ...
+# Subtest: nombre en mayúsculas seguido de precio no se convierte en categoría
+ok 96 - nombre en mayúsculas seguido de precio no se convierte en categoría
+  ---
+  duration_ms: 1.804918
+  type: 'test'
+  ...
+# Subtest: nombre español y traducción con precio permanecen en un mismo producto
+ok 97 - nombre español y traducción con precio permanecen en un mismo producto
+  ---
+  duration_ms: 1.935933
+  type: 'test'
+  ...
+# Subtest: precios con miles y decimales se conservan sin confundir coma decimal
+ok 98 - precios con miles y decimales se conservan sin confundir coma decimal
+  ---
+  duration_ms: 2.406055
+  type: 'test'
+  ...
+# Subtest: preparaciones sin columnas de cantidad producen un producto con opciones
+ok 99 - preparaciones sin columnas de cantidad producen un producto con opciones
+  ---
+  duration_ms: 0.522197
+  type: 'test'
+  ...
+# node:internal/test_runner/harness:99
+#       throw err;
+#       ^
+# Error: Cannot find module 'mssql'
+# Require stack:
+# - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-contrato.test.js
+#     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+#     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+#     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+#     at Function._load (node:internal/modules/cjs/loader:1211:37)
+#     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+#     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+#     at Module.require (node:internal/modules/cjs/loader:1487:12)
+#     at require (node:internal/modules/helpers:135:16)
+#     at Object.<anonymous> (/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-contrato.test.js:118:70)
+#     at Module._compile (node:internal/modules/cjs/loader:1730:14) {
+#   code: 'MODULE_NOT_FOUND',
+#   requireStack: [
+#     '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-contrato.test.js'
+#   ]
+# }
+# Node.js v22.16.0
+# Subtest: tests/menu-contrato.test.js
+not ok 13 - tests/menu-contrato.test.js
+  ---
+  duration_ms: 259.084862
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-contrato.test.js:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 7
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: todos los colores tienen un rectángulo predeterminado dentro de la fotografía
+ok 101 - todos los colores tienen un rectángulo predeterminado dentro de la fotografía
+  ---
+  duration_ms: 7.987168
+  type: 'test'
+  ...
+# Subtest: el recuadro listo se arrastra sin cambiar dimensiones y se limita al borde
+ok 102 - el recuadro listo se arrastra sin cambiar dimensiones y se limita al borde
+  ---
+  duration_ms: 1.183392
+  type: 'test'
+  ...
+# Subtest: el asa cambia el tamaño sin mover el origen ni salir de la imagen
+ok 103 - el asa cambia el tamaño sin mover el origen ni salir de la imagen
+  ---
+  duration_ms: 1.667522
+  type: 'test'
+  ...
+# Subtest: recupera automáticamente texto sólo cuando hay una coincidencia de OCR
+ok 104 - recupera automáticamente texto sólo cuando hay una coincidencia de OCR
+  ---
+  duration_ms: 2.95888
+  type: 'test'
+  ...
+# Subtest: guardado del cuadro rojo reutiliza el bloque OCR sin duplicarlo y no realiza SQL
+ok 105 - guardado del cuadro rojo reutiliza el bloque OCR sin duplicarlo y no realiza SQL
+  ---
+  duration_ms: 8.09438
+  type: 'test'
+  ...
+# Subtest: cuadro amarillo crea propuesta y no altera productos ya importados
+ok 106 - cuadro amarillo crea propuesta y no altera productos ya importados
+  ---
+  duration_ms: 1.675525
+  type: 'test'
+  ...
+# Subtest: UI integra cinco botones listos, arrastre táctil y botón cancelar
+ok 107 - UI integra cinco botones listos, arrastre táctil y botón cancelar
+  ---
+  duration_ms: 8.3455
+  type: 'test'
+  ...
+# Subtest: permite guardar múltiples cuadros pendientes del mismo color sin borrar ninguno
+ok 108 - permite guardar múltiples cuadros pendientes del mismo color sin borrar ninguno
+  ---
+  duration_ms: 32.473147
+  type: 'test'
+  ...
+# Subtest: guardar cuadros de cinco colores no crea grupos ni productos en SQL
+ok 109 - guardar cuadros de cinco colores no crea grupos ni productos en SQL
+  ---
+  duration_ms: 18.628003
+  type: 'test'
+  ...
+# Subtest: mover y redimensionar un cuadro pendiente no afecta otros cuadros
+ok 110 - mover y redimensionar un cuadro pendiente no afecta otros cuadros
+  ---
+  duration_ms: 1.787716
+  type: 'test'
+  ...
+# Subtest: eliminar solo el cuadro seleccionado no destruye los demás
+ok 111 - eliminar solo el cuadro seleccionado no destruye los demás
+  ---
+  duration_ms: 3.062197
+  type: 'test'
+  ...
+# Subtest: cuadros guardados se recuperan al exportar/importar proyectos anteriores y nuevos
+ok 112 - cuadros guardados se recuperan al exportar/importar proyectos anteriores y nuevos
+  ---
+  duration_ms: 2.578802
+  type: 'test'
+  ...
+# Subtest: rechaza marcas malformadas antes de recuperar un proyecto
+ok 113 - rechaza marcas malformadas antes de recuperar un proyecto
+  ---
+  duration_ms: 1.567776
+  type: 'test'
+  ...
+# Subtest: UI muestra Guardar arriba de la foto, y conserva la anterior al agregar otra
+ok 114 - UI muestra Guardar arriba de la foto, y conserva la anterior al agregar otra
+  ---
+  duration_ms: 7.486226
+  type: 'test'
+  ...
+# Subtest: los 7 tipos de marca pueden guardarse sin solicitar transcripción manual
+ok 115 - los 7 tipos de marca pueden guardarse sin solicitar transcripción manual
+  ---
+  duration_ms: 11.857869
+  type: 'test'
+  ...
+# Subtest: leer cuadro rojo, amarillo, verde y azul crea una ficha de borrador, nunca SQL
+ok 116 - leer cuadro rojo, amarillo, verde y azul crea una ficha de borrador, nunca SQL
+  ---
+  duration_ms: 7.094818
+  type: 'test'
+  ...
+# Subtest: el precio dudoso no se asigna a un producto lejano, queda pendiente
+ok 117 - el precio dudoso no se asigna a un producto lejano, queda pendiente
+  ---
+  duration_ms: 1.162164
+  type: 'test'
+  ...
+# Subtest: el precio previamente confirmado nunca se pisa por una nueva sugerencia automática
+ok 118 - el precio previamente confirmado nunca se pisa por una nueva sugerencia automática
+  ---
+  duration_ms: 2.630133
+  type: 'test'
+  ...
+# Subtest: morados y turquesas se vinculan al producto sin importar recetas u opciones sin esquema SQL
+ok 119 - morados y turquesas se vinculan al producto sin importar recetas u opciones sin esquema SQL
+  ---
+  duration_ms: 5.255901
+  type: 'test'
+  ...
+# Subtest: sin vinculación confiable no asigna modificador al producto incorrecto
+ok 120 - sin vinculación confiable no asigna modificador al producto incorrecto
+  ---
+  duration_ms: 0.766508
+  type: 'test'
+  ...
+# Subtest: releer un cuadro movido exige una nueva lectura sin borrar las otras marcas
+ok 121 - releer un cuadro movido exige una nueva lectura sin borrar las otras marcas
+  ---
+  duration_ms: 0.993524
+  type: 'test'
+  ...
+# Subtest: lectura requiere CSRF y contexto autenticado; SQL nunca es consultado
+ok 122 - lectura requiere CSRF y contexto autenticado; SQL nunca es consultado
+  ---
+  duration_ms: 0.471931
+  type: 'test'
+  ...
+# Subtest: prepara un montaje real usando coordenadas manuales, sin detectar colores
+ok 123 - prepara un montaje real usando coordenadas manuales, sin detectar colores
+  ---
+  duration_ms: 5824.003445
+  type: 'test'
+  ...
+# Subtest: API envía todos los recortes a Gemini simulado en una petición y conserva IDs de marca
+ok 124 - API envía todos los recortes a Gemini simulado en una petición y conserva IDs de marca
+  ---
+  duration_ms: 4368.851632
+  type: 'test'
+  ...
+# Subtest: acciones de menú nuevo, unificación y creación independiente se incluyen en paquete Windows
+ok 125 - acciones de menú nuevo, unificación y creación independiente se incluyen en paquete Windows
+  ---
+  duration_ms: 16.368299
+  type: 'test'
+  ...
+# Subtest: limpiar menú conserva SQL: no hay instrucciones de DELETE, DROP ni ALTER desde la acción
+ok 126 - limpiar menú conserva SQL: no hay instrucciones de DELETE, DROP ni ALTER desde la acción
+  ---
+  duration_ms: 1.495583
+  type: 'test'
+  ...
+# Subtest: creación de grupos tiene ruta independiente sin requerir un lote de productos
+ok 127 - creación de grupos tiene ruta independiente sin requerir un lote de productos
+  ---
+  duration_ms: 0.266884
+  type: 'test'
+  ...
+# Subtest: primera instalación sin producto prueba exige confirmación fiscal, no artículos ficticios
+ok 128 - primera instalación sin producto prueba exige confirmación fiscal, no artículos ficticios
+  ---
+  duration_ms: 3.37186
+  type: 'test'
+  ...
+# Subtest: catálogo existente no se trata como instalación vacía
+ok 129 - catálogo existente no se trata como instalación vacía
+  ---
+  duration_ms: 0.752406
+  type: 'test'
+  ...
+# Subtest: cero empresas o cero unidades bloquean primer guardado
+ok 130 - cero empresas o cero unidades bloquean primer guardado
+  ---
+  duration_ms: 0.466448
+  type: 'test'
+  ...
+# Subtest: esquema SQL observado permite primer grupo sin grupo modelo
+ok 131 - esquema SQL observado permite primer grupo sin grupo modelo
+  ---
+  duration_ms: 20.158341
+  type: 'test'
+  ...
+# Subtest: esquema compuesto comprobado compatible sin producto de prueba
+ok 132 - esquema compuesto comprobado compatible sin producto de prueba
+  ---
+  duration_ms: 14.304296
+  type: 'test'
+  ...
+# Subtest: unidad inexistente, empresa no verificada y tasa inválida no crean un perfil fiscal
+ok 133 - unidad inexistente, empresa no verificada y tasa inválida no crean un perfil fiscal
+  ---
+  duration_ms: 1.147549
+  type: 'test'
+  ...
+# Subtest: primer menú con 0 productos y 0 grupos prepara UN hot dog compuesto y 3 auxiliares (simulación sin INSERT)
+ok 134 - primer menú con 0 productos y 0 grupos prepara UN hot dog compuesto y 3 auxiliares (simulación sin INSERT)
+  ---
+  duration_ms: 29.027174
+  type: 'test'
+  ...
+# Subtest: primer menú no usa nombre ni ID fijo de empresa o grupos del negocio ejemplo
+ok 135 - primer menú no usa nombre ni ID fijo de empresa o grupos del negocio ejemplo
+  ---
+  duration_ms: 3.897669
+  type: 'test'
+  ...
+# Subtest: productos existentes sin referencia fiscal no se confunden con una base vacía
+ok 136 - productos existentes sin referencia fiscal no se confunden con una base vacía
+  ---
+  duration_ms: 2.944773
+  type: 'test'
+  ...
+# Subtest: peticiones mssql en la misma transacción deben correr EN SERIE (EREQINPROG)
+ok 137 - peticiones mssql en la misma transacción deben correr EN SERIE (EREQINPROG)
+  ---
+  duration_ms: 18.3251
+  type: 'test'
+  ...
+# Subtest: ZIP portable recupera una sola ficha y sus tres opciones sin SQL
+ok 138 - ZIP portable recupera una sola ficha y sus tres opciones sin SQL
+  ---
+  duration_ms: 27.955065
+  type: 'test'
+  ...
+# Subtest: proyecto portatil no conserva claves de SQL ni relación importado
+ok 139 - proyecto portatil no conserva claves de SQL ni relación importado
+  ---
+  duration_ms: 1.854229
+  type: 'test'
+  ...
+# Subtest: proyecto sin nombre de grupo debe pedir revisión, no usar grupo SQL numérico de otro cliente
+ok 140 - proyecto sin nombre de grupo debe pedir revisión, no usar grupo SQL numérico de otro cliente
+  ---
+  duration_ms: 0.628374
+  type: 'test'
+  ...
+# Subtest: archivo corrupto se rechaza por CRC sin perder el proyecto original
+ok 141 - archivo corrupto se rechaza por CRC sin perder el proyecto original
+  ---
+  duration_ms: 7.576575
+  type: 'test'
+  ...
+# Subtest: rechaza un ZIP que no es de Restaurante y archivos potencialmente peligrosos
+ok 142 - rechaza un ZIP que no es de Restaurante y archivos potencialmente peligrosos
+  ---
+  duration_ms: 0.376537
+  type: 'test'
+  ...
+# Subtest: precios de modificador dudosos permanecen pendientes, nunca se inventan
+ok 143 - precios de modificador dudosos permanecen pendientes, nunca se inventan
+  ---
+  duration_ms: 2.570896
+  type: 'test'
+  ...
+# Subtest: los paquetes exportados excluyen credenciales y referencias privadas
+ok 144 - los paquetes exportados excluyen credenciales y referencias privadas
+  ---
+  duration_ms: 1.435199
+  type: 'test'
+  ...
+# Subtest: la interfaz no contiene menús de clientes precargados
+ok 145 - la interfaz no contiene menús de clientes precargados
+  ---
+  duration_ms: 10.364465
+  type: 'test'
+  ...
+# Subtest: el perfil incorporado reconoce el esquema de compuestos observado sin un registro de prueba
+ok 146 - el perfil incorporado reconoce el esquema de compuestos observado sin un registro de prueba
+  ---
+  duration_ms: 21.192287
+  type: 'test'
+  ...
+# Subtest: un campo incompatible bloquea el perfil, no inventa parámetros
+ok 147 - un campo incompatible bloquea el perfil, no inventa parámetros
+  ---
+  duration_ms: 4.581202
+  type: 'test'
+  ...
+# Subtest: clasificaciones SQL verificadas: alimentos 2 y bebidas 1
+ok 148 - clasificaciones SQL verificadas: alimentos 2 y bebidas 1
+  ---
+  duration_ms: 2.411599
+  type: 'test'
+  ...
+# Subtest: un menú nuevo no registra un producto de prueba para obtener compuestos
+ok 149 - un menú nuevo no registra un producto de prueba para obtener compuestos
+  ---
+  duration_ms: 7.908771
+  type: 'test'
+  ...
+# Subtest: el catálogo SQL oficial confirma la clasificación en esta instalación, no en otras sin comprobar
+ok 150 - el catálogo SQL oficial confirma la clasificación en esta instalación, no en otras sin comprobar
+  ---
+  duration_ms: 0.849463
+  type: 'test'
+  ...
+# Subtest: empresa única conserva ID real y no inventa 0000-001
+ok 151 - empresa única conserva ID real y no inventa 0000-001
+  ---
+  duration_ms: 7.474772
+  type: 'test'
+  ...
+# Subtest: referencia automática prioriza mismo grupo y la configuración comprobable frecuente
+ok 152 - referencia automática prioriza mismo grupo y la configuración comprobable frecuente
+  ---
+  duration_ms: 27.899362
+  type: 'test'
+  ...
+# Subtest: configuración alternativa exige unidad y modo reales, tasa confirmada 0 8 16
+ok 153 - configuración alternativa exige unidad y modo reales, tasa confirmada 0 8 16
+  ---
+  duration_ms: 1.073379
+  type: 'test'
+  ...
+# Subtest: sin modos registrados se ofrece solo el modo 2 usado anteriormente por el proyecto
+ok 154 - sin modos registrados se ofrece solo el modo 2 usado anteriormente por el proyecto
+  ---
+  duration_ms: 0.926317
+  type: 'test'
+  ...
+# Subtest: un proyecto valido conserva propuestas y evidencia sin mutar el original
+ok 155 - un proyecto valido conserva propuestas y evidencia sin mutar el original
+  ---
+  duration_ms: 12.771432
+  type: 'test'
+  ...
+# Subtest: categorias nulas se rechazan antes de reemplazar el proyecto activo
+ok 156 - categorias nulas se rechazan antes de reemplazar el proyecto activo
+  ---
+  duration_ms: 1.210846
+  type: 'test'
+  ...
+# Subtest: las referencias de foto, evidencia y grupos deben existir
+ok 157 - las referencias de foto, evidencia y grupos deben existir
+  ---
+  duration_ms: 3.490996
+  type: 'test'
+  ...
+# Subtest: valores y claves peligrosas no llegan al editor
+ok 158 - valores y claves peligrosas no llegan al editor
+  ---
+  duration_ms: 1.546821
+  type: 'test'
+  ...
+# Subtest: una revision incompleta vuelve a pendiente y conserva todos los datos
+ok 159 - una revision incompleta vuelve a pendiente y conserva todos los datos
+  ---
+  duration_ms: 1.497084
+  type: 'test'
+  ...
+# Subtest: recuperar una lectura interrumpida no la muestra como si siguiera ejecutandose
+ok 160 - recuperar una lectura interrumpida no la muestra como si siguiera ejecutandose
+  ---
+  duration_ms: 0.948049
+  type: 'test'
+  ...
+# Subtest: migra clasificaciones preparadas antiguas sin cambiar grupos SQL
+ok 161 - migra clasificaciones preparadas antiguas sin cambiar grupos SQL
+  ---
+  duration_ms: 3.807585
+  type: 'test'
+  ...
+# Subtest: 60 productos Punjabi reutilizan diez niveles sin repetir NIVEL 1; tamaño precede al picor
+ok 162 - 60 productos Punjabi reutilizan diez niveles sin repetir NIVEL 1; tamaño precede al picor
+  ---
+  duration_ms: 18.293737
+  type: 'test'
+  ...
+# Subtest: regresion: la revisión resuelve NIVEL 1 con categoría nueva y opción compartida
+ok 163 - regresion: la revisión resuelve NIVEL 1 con categoría nueva y opción compartida
+  ---
+  duration_ms: 7.69069
+  type: 'test'
+  ...
+# node:internal/modules/cjs/loader:1404
+#   throw err;
+#   ^
+# Error: Cannot find module 'express'
+# Require stack:
+# - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-seguridad.test.js
+#     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+#     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+#     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+#     at Function._load (node:internal/modules/cjs/loader:1211:37)
+#     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+#     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+#     at Module.require (node:internal/modules/cjs/loader:1487:12)
+#     at require (node:internal/modules/helpers:135:16)
+#     at Object.<anonymous> (/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-seguridad.test.js:3:15)
+#     at Module._compile (node:internal/modules/cjs/loader:1730:14) {
+#   code: 'MODULE_NOT_FOUND',
+#   requireStack: [
+#     '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-seguridad.test.js'
+#   ]
+# }
+# Node.js v22.16.0
+# Subtest: tests/menu-seguridad.test.js
+not ok 25 - tests/menu-seguridad.test.js
+  ---
+  duration_ms: 78.168667
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/menu-seguridad.test.js:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: regresión del usuario: tres entradas Gemini se convierten en UN hot dog compuesto
+ok 165 - regresión del usuario: tres entradas Gemini se convierten en UN hot dog compuesto
+  ---
+  duration_ms: 12.672124
+  type: 'test'
+  ...
+# Subtest: un borrador anterior se puede reparar sin tocar SQL ni tocar otros platos
+ok 166 - un borrador anterior se puede reparar sin tocar SQL ni tocar otros platos
+  ---
+  duration_ms: 0.6694
+  type: 'test'
+  ...
+# Subtest: sin diferencia de precios verificable no se completa un valor por suposición
+ok 167 - sin diferencia de precios verificable no se completa un valor por suposición
+  ---
+  duration_ms: 1.479492
+  type: 'test'
+  ...
+# Subtest: dos opciones semánticamente repetidas no se importan accidentalmente como independientes
+ok 168 - dos opciones semánticamente repetidas no se importan accidentalmente como independientes
+  ---
+  duration_ms: 0.802657
+  type: 'test'
+  ...
+# Subtest: variantes de otros menús no se convierten en papas
+ok 169 - variantes de otros menús no se convierten en papas
+  ---
+  duration_ms: 0.3228
+  type: 'test'
+  ...
+# Subtest: precios numéricos de otra categoría NO se llaman papas por defecto
+ok 170 - precios numéricos de otra categoría NO se llaman papas por defecto
+  ---
+  duration_ms: 1.93849
+  type: 'test'
+  ...
+# Subtest: importe detectado fuera de la evidencia bloquea el compuesto en vez de inventar recargo
+ok 171 - importe detectado fuera de la evidencia bloquea el compuesto en vez de inventar recargo
+  ---
+  duration_ms: 0.590636
+  type: 'test'
+  ...
+# Subtest: 3 importes visibles producen 1 producto compuesto, con recargos propios
+ok 172 - 3 importes visibles producen 1 producto compuesto, con recargos propios
+  ---
+  duration_ms: 20.269535
+  type: 'test'
+  ...
+# Subtest: cada platillo respeta sus propios tres precios, sin incremento global
+ok 173 - cada platillo respeta sus propios tres precios, sin incremento global
+  ---
+  duration_ms: 2.515517
+  type: 'test'
+  ...
+# Subtest: alternativas 2 o 4 con precio literal propio, sin inventar
+ok 174 - alternativas 2 o 4 con precio literal propio, sin inventar
+  ---
+  duration_ms: 4.697629
+  type: 'test'
+  ...
+# Subtest: cuando falta importe no se aplica aumento estándar ni se inventa
+ok 175 - cuando falta importe no se aplica aumento estándar ni se inventa
+  ---
+  duration_ms: 1.291111
+  type: 'test'
+  ...
+# Subtest: sin tres encabezados, tres números sueltos no crean presentaciones
+ok 176 - sin tres encabezados, tres números sueltos no crean presentaciones
+  ---
+  duration_ms: 0.753047
+  type: 'test'
+  ...
+# Subtest: corrección visual agrega un producto desde una categoría errónea sin borrar otros productos
+ok 177 - corrección visual agrega un producto desde una categoría errónea sin borrar otros productos
+  ---
+  duration_ms: 15.826926
+  type: 'test'
+  ...
+# Subtest: categoria creada desde un producto conserva propuesta anterior como excluida
+ok 178 - categoria creada desde un producto conserva propuesta anterior como excluida
+  ---
+  duration_ms: 2.317581
+  type: 'test'
+  ...
+# Subtest: categoría ya presente en SQL no se duplica como borrador
+ok 179 - categoría ya presente en SQL no se duplica como borrador
+  ---
+  duration_ms: 1.344775
+  type: 'test'
+  ...
+# Subtest: vincular precio cambia sólo producto indicado y respeta SQL importado
+ok 180 - vincular precio cambia sólo producto indicado y respeta SQL importado
+  ---
+  duration_ms: 2.66838
+  type: 'test'
+  ...
+# Subtest: precios mezclados o texto ambiguo se rechazan
+ok 181 - precios mezclados o texto ambiguo se rechazan
+  ---
+  duration_ms: 1.386377
+  type: 'test'
+  ...
+# Subtest: marcado manual normalizado y corrección sobreviven JSON de proyecto
+ok 182 - marcado manual normalizado y corrección sobreviven JSON de proyecto
+  ---
+  duration_ms: 2.403213
+  type: 'test'
+  ...
+# Subtest: rectángulos inválidos no alteran proyecto
+ok 183 - rectángulos inválidos no alteran proyecto
+  ---
+  duration_ms: 0.828558
+  type: 'test'
+  ...
+# Subtest: corrección de categoría no elimina productos importados por evidencia compartida
+ok 184 - corrección de categoría no elimina productos importados por evidencia compartida
+  ---
+  duration_ms: 0.400536
+  type: 'test'
+  ...
+# Subtest: texto de usuario para Gemini tiene límites y referencias existentes
+ok 185 - texto de usuario para Gemini tiene límites y referencias existentes
+  ---
+  duration_ms: 1.330356
+  type: 'test'
+  ...
+# Subtest: respuesta Gemini sólo acepta IDs y tipos válidos, jamás código arbitrario
+ok 186 - respuesta Gemini sólo acepta IDs y tipos válidos, jamás código arbitrario
+  ---
+  duration_ms: 1.21583
+  type: 'test'
+  ...
+# Subtest: API foto rechaza id malicioso, imágenes inválidas o mal declaradas
+ok 187 - API foto rechaza id malicioso, imágenes inválidas o mal declaradas
+  ---
+  duration_ms: 2.059227
+  type: 'test'
+  ...
+# Subtest: subir y recuperar imagen exige rol de dueño y CSRF, sin tocar SQL
+ok 188 - subir y recuperar imagen exige rol de dueño y CSRF, sin tocar SQL
+  ---
+  duration_ms: 6.519019
+  type: 'test'
+  ...
+# Subtest: descripcion se vincula sólo al producto seleccionado
+ok 189 - descripcion se vincula sólo al producto seleccionado
+  ---
+  duration_ms: 0.77866
+  type: 'test'
+  ...
+# Subtest: categoría Bebidas marcada visualmente se crea con clasificación de bebidas
+ok 190 - categoría Bebidas marcada visualmente se crea con clasificación de bebidas
+  ---
+  duration_ms: 0.616075
+  type: 'test'
+  ...
+# Subtest: compartir proyecto requiere dueño y validación CSRF
+ok 191 - compartir proyecto requiere dueño y validación CSRF
+  ---
+  duration_ms: 3.657771
+  type: 'test'
+  ...
+# Subtest: compartir, recuperar, detectar conflictos y conservar respaldo sin tocar SQL
+ok 192 - compartir, recuperar, detectar conflictos y conservar respaldo sin tocar SQL
+  ---
+  duration_ms: 9.540852
+  type: 'test'
+  ...
+# Subtest: un proyecto inválido no reemplaza el guardado previo
+ok 193 - un proyecto inválido no reemplaza el guardado previo
+  ---
+  duration_ms: 0.636031
+  type: 'test'
+  ...
+# Subtest: la cuenta de dueño protege las pantallas remotas y no deja usuario local tras activar cuentas
+ok 194 - la cuenta de dueño protege las pantallas remotas y no deja usuario local tras activar cuentas
+  ---
+  duration_ms: 141.769429
+  type: 'test'
+  ...
+# Subtest: OCR serializa fotos y reutiliza el proceso; ignora logs fuera del protocolo
+ok 195 - OCR serializa fotos y reutiliza el proceso; ignora logs fuera del protocolo
+  ---
+  duration_ms: 15.879545
+  type: 'test'
+  ...
+# Subtest: respuesta inválida rechaza sin dejar una promesa pendiente y permite reiniciar
+ok 196 - respuesta inválida rechaza sin dejar una promesa pendiente y permite reiniciar
+  ---
+  duration_ms: 2.790332
+  type: 'test'
+  ...
+# Subtest: cero líneas nunca es éxito y una foto posterior puede procesarse
+ok 197 - cero líneas nunca es éxito y una foto posterior puede procesarse
+  ---
+  duration_ms: 1.799068
+  type: 'test'
+  ...
+# Subtest: timeout mata el proceso; cerrar no vuelve a lanzar trabajos pendientes
+ok 198 - timeout mata el proceso; cerrar no vuelve a lanzar trabajos pendientes
+  ---
+  duration_ms: 16.88994
+  type: 'test'
+  ...
+# Subtest: la confirmación fiscal no depende de una casilla escondida
+ok 199 - la confirmación fiscal no depende de una casilla escondida
+  ---
+  duration_ms: 6.397211
+  type: 'test'
+  ...
+# Subtest: no se habilita guardar si no se han seleccionado unidad e impuestos
+ok 200 - no se habilita guardar si no se han seleccionado unidad e impuestos
+  ---
+  duration_ms: 1.309884
+  type: 'test'
+  ...
+# Subtest: la confirmación final del lote se conserva después de preparar
+ok 201 - la confirmación final del lote se conserva después de preparar
+  ---
+  duration_ms: 0.232121
+  type: 'test'
+  ...
+# Subtest: dates: leap years, inverted ranges and range cap
+ok 202 - dates: leap years, inverted ranges and range cap
+  ---
+  duration_ms: 10.812573
+  type: 'test'
+  ...
+# Subtest: all report queries use bound global filters and SQL pagination
+ok 203 - all report queries use bound global filters and SQL pagination
+  ---
+  duration_ms: 8.159163
+  type: 'test'
+  ...
+# Subtest: detail mapping collapses repeated view references and excludes ambiguous references
+ok 204 - detail mapping collapses repeated view references and excludes ambiguous references
+  ---
+  duration_ms: 1.204608
+  type: 'test'
+  ...
+# Subtest: open accounts retain old dates; paid reports exclude unpaid and canceled accounts
+ok 205 - open accounts retain old dates; paid reports exclude unpaid and canceled accounts
+  ---
+  duration_ms: 4.145067
+  type: 'test'
+  ...
+# Subtest: service labels come from the catalog; unknown codes stay explicit
+ok 206 - service labels come from the catalog; unknown codes stay explicit
+  ---
+  duration_ms: 1.259293
+  type: 'test'
+  ...
+# Subtest: HTTP assets load; parallel requests share a single SQL connection
+not ok 207 - HTTP assets load; parallel requests share a single SQL connection
+  ---
+  duration_ms: 17.96845
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+# Subtest: real XLSX preserves numeric amounts, safe string values and filters
+not ok 208 - real XLSX preserves numeric amounts, safe string values and filters
+  ---
+  duration_ms: 6.403383
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+# Subtest: export rejects oversized results instead of truncating
+not ok 209 - export rejects oversized results instead of truncating
+  ---
+  duration_ms: 7.497207
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:25:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+# Subtest: UI routes work with only bundled JS: no public folder or configuration HTML
+not ok 210 - UI routes work with only bundled JS: no public folder or configuration HTML
+  ---
+  duration_ms: 30.575384
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:27:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+# Subtest: photo regression: account detail uses distinct case-insensitive aliases for mapping and waiter
+not ok 211 - photo regression: account detail uses distinct case-insensitive aliases for mapping and waiter
+  ---
+  duration_ms: 7.859037
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+# Subtest: photo regression: all cuts include closed historical turns; a selected turn ignores calendar range
+ok 212 - photo regression: all cuts include closed historical turns; a selected turn ignores calendar range
+  ---
+  duration_ms: 1.259579
+  type: 'test'
+  ...
+# Subtest: photo regression: live accounts discard a past turn and historical service filter
+not ok 213 - photo regression: live accounts discard a past turn and historical service filter
+  ---
+  duration_ms: 6.0809
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:31:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+# Subtest: photo regression: turn detail uses the full selected shift without inherited filters
+not ok 214 - photo regression: turn detail uses the full selected shift without inherited filters
+  ---
+  duration_ms: 3.240655
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+# Subtest: service lookup normalizes padded and numeric catalog codes
+ok 215 - service lookup normalizes padded and numeric catalog codes
+  ---
+  duration_ms: 0.677873
+  type: 'test'
+  ...
+# Subtest: launcher opens the same version, warns for an older version, and starts on a free port
+ok 216 - launcher opens the same version, warns for an older version, and starts on a free port
+  ---
+  duration_ms: 16.990251
+  type: 'test'
+  ...
+# Subtest: 9.1 service defaults and explicit configuration preserve the three requested names
+ok 217 - 9.1 service defaults and explicit configuration preserve the three requested names
+  ---
+  duration_ms: 0.317396
+  type: 'test'
+  ...
+# Subtest: 9.1 working and historical sources retain separate identities and transfer deduplication
+ok 218 - 9.1 working and historical sources retain separate identities and transfer deduplication
+  ---
+  duration_ms: 1.424701
+  type: 'test'
+  ...
+# Subtest: 9.1 cut selection uses internal ID and ambiguous links do not multiply accounts
+ok 219 - 9.1 cut selection uses internal ID and ambiguous links do not multiply accounts
+  ---
+  duration_ms: 1.50592
+  type: 'test'
+  ...
+# Subtest: 9.1 refreshed report queries are not served from the former 15-second cache
+not ok 220 - 9.1 refreshed report queries are not served from the former 15-second cache
+  ---
+  duration_ms: 5.594328
+  type: 'test'
+  location: '/mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module 'express'
+    Require stack:
+    - /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/app.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    Function._load (node:internal/modules/cjs/loader:1211:37)
+    TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    Module.require (node:internal/modules/cjs/loader:1487:12)
+    require (node:internal/modules/helpers:135:16)
+    /mnt/data/Restaurante_9_2_33_KIT/Restaurante_9_2_33_ORIGINAL/tests/reports.test.js:12:256
+    evalmachine.<anonymous>:12:17
+  ...
+1..220
+# tests 220
+# suites 0
+# pass 209
+# fail 11
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19854.27924

@@ -1,0 +1,23 @@
+RESTAURANTE 9.2.10 - GEMINI: ERROR DE CARACTERES
+
+BASE: versión 9.2.9 compartida por el usuario. Se conservan los ajustes para iPhone, la cola de fotografías y las importaciones SQL existentes.
+
+CORRECCIONES
+- Se detectan claves API con comillas, caracteres invisibles, saltos de línea, espacios internos, símbolos extraños o longitud inválida ANTES de enviarlas en un encabezado HTTP.
+- El configurador de Windows valida el formato ANTES de guardar y distingue "clave guardada" de "aceptada por Google".
+- La ruta /api/menu-ia/gemini-estado puede indicar que la clave está mal configurada sin enviar secretos al navegador.
+- Se corrigen los textos truncados en Ver error y la superposición del botón Reintentar.
+- Progreso de fotos contabiliza análisis exitosos, no peticiones fallidas.
+- Se corrige el uso accidental de la variable body sin definir en la ruta de interpretación desde texto OCR.
+
+PARA UTILIZAR
+1. Descarga un respaldo JSON si tienes productos pendientes de importar. No repitas importaciones ya realizadas.
+2. Cierra Restaurante. Extrae TODO este ZIP y usa ABRIR_RESTAURANTE.cmd en la nueva carpeta si conservas una instalación separada; o usa ACTUALIZAR_INSTALACION.cmd para actualizar una carpeta existente. No es un parche de archivos sueltos.
+3. Si el error indica formato inválido, en la computadora abre CONFIGURAR_GEMINI_GRATIS.cmd y pega únicamente la clave tomada de Google AI Studio, sin comillas ni espacios. Reinicia Restaurante.
+4. Prueba UNA foto con Gemini. Si aparece 401 o 403, la clave puede tener formato correcto pero Google rechazarla, o bien la API/proyecto no está disponible. Si aparece 429, espera o cambia temporalmente a OCR local.
+5. Si usas Restaurante.exe compilado, recompila la nueva versión antes de actualizar el ejecutable.
+
+LIMITACIONES
+- Pruebas de API mediante dobles/simulaciones. No se probó el servicio real de Google con la clave del usuario, ni SQL Server/Cloudflare/iPhone del negocio.
+- La versión gratuita depende de la cuota y de que el proyecto no tenga facturación habilitada. La aplicación no habilita pagos.
+- Los trabajos de la cola siguen en memoria: al reiniciar Node, las fotografías aún en proceso deben volver a adjuntarse.

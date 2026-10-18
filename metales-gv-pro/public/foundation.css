@@ -1,0 +1,27 @@
+/* Componentes reutilizados de Restaurante 9.2.33 public/style.css. Original intacto en originales/. */
+.filterPanel{border:1px solid var(--line);border-radius:14px;background:white;padding:18px 20px 0;box-shadow:var(--shadow);margin-bottom:22px}
+.filterTop{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:16px}
+.periods{display:flex;gap:5px;flex-wrap:wrap}
+.periods button{border:0;background:#f1f4f8;color:#617487;border-radius:7px;min-height:34px;padding:7px 13px;font-size:12px;font-weight:600}
+.periods button.active{background:var(--ink);color:white}
+.filterBottom{display:flex;justify-content:space-between;gap:14px;border-top:1px solid #eef1f5;margin-top:17px;padding:12px 0;font-size:11px;color:var(--muted)}
+.reportIntro{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:19px 21px;background:white;border:1px solid var(--line);border-radius:12px;margin-bottom:16px}
+.tablewrap{overflow:auto;max-height:650px}
+.scope{color:#6c7e8e;font-size:11px;line-height:1.65;border-left:3px solid #d6e0e9;padding:0 0 0 12px;margin:17px 0}
+.empty strong{display:block;color:var(--ink);font-size:16px;margin-bottom:8px}
+.facts{display:flex;gap:10px 24px;flex-wrap:wrap;font-size:12px;line-height:1.8;margin-bottom:20px}
+.filterPanel{padding:13px 13px 0;border-radius:11px}
+.filterTop{align-items:flex-start;gap:3px;flex-wrap:wrap;margin-bottom:12px}
+.periods{gap:4px}
+.periods button{font-size:10px;padding:6px 9px;min-height:31px}
+.filterBottom{font-size:10px;gap:8px}
+.reportIntro{flex-direction:column;align-items:stretch;padding:16px}
+.scope{font-size:10px}
+.filterPanel{padding:15px 20px 0}
+.filterTop{margin-bottom:0}
+.filterBottom{align-items:center}
+.scope{margin-top:20px}
+.reportIntro{border-left:5px solid var(--accent)}
+.filterPanel{padding:13px 13px 0}
+.filterTop{gap:8px}
+.filterBottom{align-items:flex-start}

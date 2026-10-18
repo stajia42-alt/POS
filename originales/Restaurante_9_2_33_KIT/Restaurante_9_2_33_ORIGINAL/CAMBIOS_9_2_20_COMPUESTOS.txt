@@ -1,0 +1,17 @@
+Restaurante 9.2.20 — Productos compuestos (evolución de 9.2.19)
+
+* Reutiliza el guardado transaccional, bloqueo de lotes, diario de operaciones e idempotencia del proyecto original.
+* Los menús con columnas de presentaciones exclusivas verificadas se pueden convertir en un producto principal y un grupo de modificadores, con precio base y recargos aritméticos derivados de las cifras originales.
+* Una opción no se considera verificada por su precio presente en otra foto o en otro producto de la misma página.
+* La estructura SQL se verifica antes de la vista previa y otra vez al guardar, con un producto compuesto real de referencia para captura obligatoria.
+* Las operaciones de SQL crean/relacionan dbo.gruposmodificadores, dbo.gruposmodificadoresproductos y dbo.modificadores sin cambiar el esquema.
+* Para las opciones se crean productos simples auxiliares solamente cuando no existe uno equivalente en el catálogo adecuado.
+* Conserva unidad, empresa, precio base e impuestos según el motor de importación 9.2.19.
+* La misma transacción verifica los nombres, detalles, banderas de secuencia y recargos; un fallo provoca rollback.
+* Producto con base $0 y grupos de salsa/proteína admitido.
+* Las categorías de modificadores se adaptan a la clasificación SQL de los productos, sin imponer un grupo universal de alimentos para bebidas.
+* Las opciones sin evidencia, grupos con selección opcional/múltiple, componentes de combos no validados, o instalaciones sin ejemplo obligatorio real requieren revisión.
+* Ningún producto existente se elimina ni se actualiza automáticamente.
+
+PRUEBAS: sintaxis de JS; pruebas de interpretación, variantes y módulo nuevo; resto de pruebas sin dependencias. No se probó contra SQL Server 2014 real, Safari ni Cloudflare en este entorno.
+Dependencias npm no instaladas en el contenedor: npm ci sin red falló por falta de caché. En Windows con Internet y Node.js 24, ABRIR_RESTAURANTE.cmd prepara las dependencias si faltan.

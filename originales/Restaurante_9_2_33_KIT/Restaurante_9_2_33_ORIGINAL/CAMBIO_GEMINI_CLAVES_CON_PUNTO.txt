@@ -1,0 +1,1 @@
+Correccion: el validador acepta puntos en claves Google API. No activa facturacion. La autenticidad solo se comprueba mediante una peticion a Google. Reiniciar Restaurante despues de configurar la clave.

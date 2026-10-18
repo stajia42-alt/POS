@@ -1,0 +1,50 @@
+AVILES TECNOLOGIAS - RESTAURANTE 9.2.33
+CREADOR DE INSTALADOR PARA WINDOWS 10/11 64 BITS
+
+ESTA ES LA APLICACION RESTAURANTE 9.2.33 QUE CONFIRMASTE.
+No se alteraron los archivos de la aplicacion dentro de Restaurante_9_2_33_ORIGINAL.
+El instalador NO incluye la otra aplicacion 7.11.0 ni su interfaz.
+
+CREAR EL INSTALADOR:
+1. Extraer este ZIP completo (NO ejecutar desde WinRAR/7-Zip sin extraer).
+2. En la PC donde se construira el instalador, instalar Node.js 24 x64 y npm.
+3. Internet disponible para npm ci; el equipo del CLIENTE no necesita npm ni Node aparte.
+4. Ejecutar CREAR_INSTALADOR.cmd (NO necesita Visual Studio).
+5. Inno Setup 6/7 se usa para compilar el instalador; el creador lo busca e intenta
+   instalar desde winget si hace falta. Si no funciona, https://jrsoftware.org/isdl.php
+6. Resultado: output\Setup_Restaurante_9.2.33.exe
+7. Si falla, abrir REGISTRO_COMPILACION.txt y enviar ese registro (ocultar datos personales).
+
+REGLAS PARA INSTALAR EN UN CLIENTE:
+- NO instalar encima de 7.11.0. Esa es otra aplicacion.
+- El puerto 3000 debe estar libre. Si hay otra app, el instalador avisara SIN MATARLA.
+- El instalador crea una tarea programada SYSTEM que arranca al iniciar Windows,
+  incluso antes de iniciar sesion. Abre la interfaz local en el navegador al entrar a Windows.
+- Se instala en Program Files\Aviles Restaurante 9.2.33.
+- Configuraciones y datos quedan en ProgramData\AvilesRestaurante933, separados de 7.11.0.
+- Desinstalar conserva esos datos y NO elimina un tunel de Cloudflare existente.
+- La conexion SQL Server 2014 / Soft Restaurant se configura dentro de Restaurante,
+  porque credenciales e instancias son distintas para cada cliente.
+- Cloudflare NO es requisito para arrancar. El acceso remoto necesita un token valido
+  y hostname/URL configurado en Cloudflare. En Inicio -> Aviles Restaurante 9.2.33
+  -> Configurar Cloudflare, ejecuta el asistente como administrador DESPUES de
+  activar una cuenta de dueno en Restaurante. No cambia tuneles existentes.
+- NO se prometen dominios ni tokens generados automaticamente.
+
+IMPORTANTE:
+Esta entrega es un PROYECTO PARA GENERAR EL INSTALADOR, no el EXE final.
+Aqui se verificaron hashes del proyecto original, sintaxis JavaScript y pruebas
+seleccionadas, PERO NO se ha compilado el .exe ni ejecutado el instalador en Windows.
+No lo instales en produccion sin una instalacion de prueba completa y sin respaldo.
+
+OBSERVACIONES DEL ZIP ORIGINAL:
+- package.json marca version 9.2.33, pero version.js reporta 9.2.31.
+  Por orden del usuario NO se modifico version.js ni la interfaz.
+- COMPILAR_RESTAURANTE.cmd de origen llama ABRIR_COMPILADA.cmd, ausente en el ZIP.
+  Por eso se implemento el metodo de empaquetado independiente sin pkg.
+- MANIFIESTO_APLICACION.json de origen no concuerda con dos archivos modificados
+  de esa entrega; el nuevo INTEGRIDAD_ORIGINAL.json registra TODOS los archivos
+  tal cual venian en el ZIP que confirmaste, sin cambiar codigo.
+
+Si los enlaces ZIP fallan al descargar desde ChatGPT, se incluye una alternativa
+con el mismo contenido codificado en texto para reconstruirlo por PowerShell.

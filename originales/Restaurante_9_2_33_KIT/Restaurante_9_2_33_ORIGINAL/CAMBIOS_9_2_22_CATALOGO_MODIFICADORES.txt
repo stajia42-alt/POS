@@ -1,0 +1,7 @@
+Restaurante 9.2.22 - correccion puntual del bloqueo de importacion
+
+El nombre del catalogo auxiliar de modificadores se generaba con el nombre de la categoria OCR y podia exceder los 30 caracteres que admite dbo.grupos.descripcion.
+Ahora utiliza nombres cortos por clasificacion: MODIFICADORES ALIMENTOS, MODIFICADORES BEBIDAS, MODIFICADORES OTROS. Se reutiliza un grupo compatible existente. No borra ni modifica grupos del negocio.
+
+Validacion: pruebas de modulo incluidas, sin escrituras SQL reales.
+Recomendacion: probar solo un hot dog en la base de pruebas antes de importar todo el menu.

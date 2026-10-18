@@ -1,0 +1,11 @@
+Restaurante 9.2.25
+
+1. Se incorpora menu_perfil_compuesto.js: contiene valores de selección obligatoria verificados usando los dos compuestos creados manualmente, sin guardar nombres/IDs de productos y sólo si el esquema SQL coincide.
+2. menu_operaciones.js usa un registro de producto compuesto existente si está disponible; si está vacío, valida el perfil de esquema y utiliza la configuración interna, sin insertar un producto de prueba.
+3. Clasificación REAL en dbo.grupos: Alimentos=2, Bebidas=1, Otros=3 según catalogación verificada. Se comprueba el catálogo de SQL en cada importación que necesita grupos nuevos.
+4. La interfaz de grupos y los borradores previos respetan la clasificación corregida; los códigos de borradores previos se migran al abrir, sin modificar ningún registro SQL.
+5. Los catálogos auxiliares se buscan por nombre y clasificación, priorizando nombres precisos y permitiendo MODIFICADORES genérico compatible. Nunca se aprovecha un nombre BEBIDAS para productos de alimentos.
+6. No se cambia la cola OCR/Gemini, las transacciones SQL, los permisos ni el archivo de arranque.
+
+PRUEBAS DE CAMPO PENDIENTES
+Probar primero en una instalación de pruebas sin productos compuestos de ejemplo; confirmar unidad/impuestos reales y un producto nuevo con modificadores obligatorios.

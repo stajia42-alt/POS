@@ -1,0 +1,16 @@
+RESTAURANTE 9.2.24 — CORRECCIÓN INCREMENTAL DEL GUARDADO DE COMPUESTOS
+
+ERROR REPRODUCIDO: "Campo no comprobado: gruposmodificadores.idgrupo".
+CAUSA: la tabla real dbo.gruposmodificadores usa idgruposmodificadores, NO idgrupo. El plan interno sí puede llamarlo idgrupo, pero se debe traducir al construir el INSERT.
+
+CORRECCIONES:
+1. Mapeo explícito y validado a dbo.gruposmodificadores(idgruposmodificadores,descripcion).
+2. Comprobación de todos los compuestos, grupos, opciones, claves, recargos y selección exactamente 1, antes de iniciar cualquier escritura del lote.
+3. Se conserva la recuperación de operaciones SQL, los INSERT secuenciales, la reutilización de modificadores y los grupos independientes de 9.2.23.
+4. Se mantienen intactos los proyectos guardados, el grupo PRUEBA, los registros existentes y las tablas de Soft Restaurant.
+
+PRUEBA REAL PENDIENTE: el servidor SQL Server 2014 del negocio no está accesible desde este entorno. Una simulación NO confirma una inserción real.
+
+USO: Cierra el servidor Restaurante antiguo. Extrae el ZIP completo en una carpeta nueva, ejecuta ABRIR_RESTAURANTE.cmd. Verifica que indique versión 9.2.24. Conserva tu producto PRUEBA. Antes de repetir lotes con estado sin_confirmar/resultado_incierto, comprueba en Soft Restaurant que esos artículos no fueron creados. Empieza con un solo nuevo hot dog, valida que tenga una única tarjeta y tres opciones obligatorias, y comprueba sus precios dentro del punto de venta. No borres la base ni los datos del negocio.
+
+PRUEBAS: node --test tests/menu-compuestos-924.test.js tests/menu-compuestos-9220.test.js tests/menu-operaciones-923.test.js; node --test tests/*.test.js; python -m unittest discover -s tests -p 'test_*.py'.

@@ -1,0 +1,2 @@
+Restaurante 9.2.28
+Primer catálogo sin referencia fiscal: ACTIVIDAD y Exento (0%) quedan elegidos automáticamente. Se pueden cambiar en Opciones avanzadas. No se exige casilla extra; se conserva la validación SQL y confirmación final de importación. Si ACTIVIDAD no existe en el SQL del cliente, el programa no la inventa y requiere configuración compatible.

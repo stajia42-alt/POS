@@ -1,0 +1,81 @@
+{
+  "name": "metales-gv-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "POS independiente para metaleras y recicladoras con SQLite local",
+  "author": "METales-GV",
+  "main": "src/desktop.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "desktop": "electron .",
+    "test": "node --test tests/*.test.js",
+    "test:ui": "playwright test",
+    "check": "node scripts/check.js",
+    "build:win": "electron-builder --win nsis --x64",
+    "build:dir": "electron-builder --dir",
+    "test:desktop": "node scripts/desktop-smoke.js",
+    "verify:package": "node scripts/verify-package.js"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "sql.js": "1.15.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "electron": "44.9.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.metalesgv.pro",
+    "productName": "METales-GV Pro",
+    "artifactName": "METales-GV-Pro-Setup-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "public/**/*",
+      "package.json",
+      "!node_modules/sql.js/dist/sql-asm*",
+      "!node_modules/sql.js/dist/*debug*",
+      "!node_modules/sql.js/dist/sql-wasm-browser*",
+      "!node_modules/sql.js/dist/sql-wasm-inline*",
+      "!node_modules/sql.js/dist/worker*",
+      "!node_modules/sql.js/dist/*.zip"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "METales-GV Pro",
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": [
+        "es_ES"
+      ],
+      "script": "installer/installer.nsi",
+      "installerIcon": "build/brand.ico",
+      "uninstallerIcon": "build/brand.ico"
+    },
+    "extraResources": [
+      {
+        "from": "build/brand.ico",
+        "to": "brand.ico"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stajia42-alt/POS.git"
+  }
+}

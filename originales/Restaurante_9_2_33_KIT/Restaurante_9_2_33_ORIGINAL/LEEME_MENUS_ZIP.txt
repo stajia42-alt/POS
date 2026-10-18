@@ -1,0 +1,33 @@
+RESTAURANTE 9.2.30 — MENÚS ZIP PORTABLES
+
+Esta versión es GENERAL. No incluye menús ni botones de ningún cliente.
+
+PARA CARGAR UN MENÚ QUE TE HAYAN PREPARADO:
+1. Abre ABRIR_RESTAURANTE.cmd y entra a Estudio de menú.
+2. Pulsa "Importar menú ZIP" y selecciona el paquete de ese restaurante.
+3. La app abre los productos, categorías, precios y modificadores EN BORRADOR.
+4. Comprueba el catálogo SQL del cliente: asigna claves libres y detecta duplicados.
+5. Revisa los productos y, si corresponde, usa "Crear incluidos en Soft Restaurant".
+
+PARA HACER UN MENÚ PORTABLE DESDE RESTAURANTE:
+- Prepara y revisa el menú y pulsa "Guardar menú ZIP".
+- El ZIP resultante incluye manifest.json y menu.json; no incluye fotografías
+  originales, usuarios, contraseñas ni datos de conexión SQL.
+- No es un respaldo de base de datos ni un ZIP de exportación XML de Soft Restaurant.
+- Para importar un respaldo XML de Soft Restaurant primero se debe convertir a este
+  formato de menú portable, verificando los productos, precios y modificadores.
+
+SEGURIDAD
+- Al cargar un ZIP se valida estructura, tamaño, CRC y campos del proyecto.
+- Ningún botón de ZIP escribe por sí mismo en SQL.
+- Si ya existe un borrador, se solicita permiso y se descarga una copia JSON antes
+  de abrir otro menú.
+- Al traer un proyecto desde otro negocio se reasignan las claves para esta SQL.
+- Los productos existentes NO se sobrescriben ni se convierten automáticamente
+  en compuestos; deberán revisarse por coincidencias.
+- Conexión SQL, dueño de la cuenta y modificaciones SQL conservan las barreras actuales.
+
+PRUEBAS
+- El importador/exportador de paquetes tiene pruebas automatizadas aisladas.
+- La importación final y la venta en el Soft Restaurant real del cliente no se pueden
+  comprobar en este entorno de trabajo.

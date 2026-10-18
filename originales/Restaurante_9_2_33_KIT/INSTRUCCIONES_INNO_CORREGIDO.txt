@@ -1,0 +1,16 @@
+RESTAURANTE 9.2.33 — CORRECCION DE DETECCION DE INNO SETUP
+
+1. Extrae TODO el ZIP a una carpeta normal (por ejemplo, Escritorio).
+2. Verifica que Inno Setup este INSTALADO, no solamente descargado.
+   En Inicio busca "Inno Setup Compiler". Su ejecutable de compilacion se llama ISCC.exe.
+3. Ejecuta CREAR_INSTALADOR.cmd.
+4. El creador buscara ISCC.exe en las carpetas normales, en instalaciones por usuario y en el registro de Windows.
+5. Si no lo detecta, pega la ruta de ISCC.exe cuando la solicite y presiona Enter.
+   Ejemplo: C:\Program Files (x86)\Inno Setup 6\ISCC.exe
+6. Si la compilacion funciona, aparecera output\Setup_Restaurante_9.2.33.exe.
+
+Si aparece otro error, comparte REGISTRO_COMPILACION.txt SIN credenciales.
+
+IMPORTANTE: Este ZIP incluye el CREADOR del instalador, NO el instalador EXE ya generado.
+No se modifico la aplicacion original ni su interfaz; solo la deteccion de Inno Setup en installer\build.ps1.
+La compilacion y la instalacion final deben comprobarse en Windows antes de entregar a clientes.

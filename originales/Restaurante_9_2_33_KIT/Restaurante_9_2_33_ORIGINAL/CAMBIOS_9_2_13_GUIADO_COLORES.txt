@@ -1,0 +1,22 @@
+RESTAURANTE 9.2.13 — ANÁLISIS GUIADO POR COLORES
+
+IMPLEMENTADO
+- Selector Automático / Guiado por colores, conservando OCR y Gemini anteriores.
+- Paleta configurable y restablecible: rojo categoría, amarillo producto, azul descripción, verde precio, gris ignorar.
+- Detección geométrica real de recuadros con OpenCV en Python local; no depende de que Gemini adivine los colores.
+- Eliminación de duplicados de borde interior/exterior y rechazo de manchas sólidas.
+- Montaje local con regiones numeradas, procesado en una llamada al modelo gratuito compatible.
+- Validación estricta de IDs de Gemini; nunca transforma ejemplos inventados en productos.
+- Asociación de precios por posición; ambiguos permanecen sin precio y requieren revisión.
+- Grupos únicamente desde recuadros rojos, sin inventar categorías por texto.
+- Coordenadas y clasificaciones conservadas para editor visual de 9.2.12.
+- Fotos y borradores siguen en almacenamiento de proyecto anterior; compatible con importación SQL existente.
+- Respaldo local con PaddleOCR cuando la cuota o el modelo Gemini no están disponibles.
+- Instalador OCR comprueba OpenCV, y compilación Windows copia el script detector.
+
+PRUEBAS: tests/menu-colores-9213.test.js incluye detector real con imágenes sintetizadas,
+colores, texto estructurado, guardado de proyectos y una ruta HTTP simulada.
+Sin llamada real con clave Google o escritura real SQL. Compruébalas en tu instalación.
+
+RECUERDA: las fotografías marcadas deben tener bordes sólidos visibles sin tapar letras;
+usa modo automático para fotos sin marcas. La selección de colores NO modifica botones de Soft Restaurant.

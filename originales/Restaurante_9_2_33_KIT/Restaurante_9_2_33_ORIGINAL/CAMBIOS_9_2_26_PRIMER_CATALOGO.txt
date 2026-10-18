@@ -1,0 +1,10 @@
+RESTAURANTE 9.2.26 - PRIMER CATÁLOGO SIN PRODUCTOS DE PRUEBA
+
+1. Identifica la situación de inicio en SQL: catálogo realmente vacío, catálogo existente, catálogo con productos sin referencia fiscal válida, empresa no comprobada o unidad ausente.
+2. En un catálogo vacío, permite preparar el primer grupo y productos compuestos con el perfil de modificadores 9.2.25, sin un artículo modelo ficticio.
+3. La primera importación exige confirmar unidad, impuesto y modo inicial de precio cuando no existen datos fiscales de otros productos; no supone ni empaqueta datos de otros clientes.
+4. El cálculo de los importes, el nombre de catálogos de modificadores y la inserción transaccional no se reescribieron.
+5. El ZIP general para clientes no incluye los dos proyectos JSON de menú que antes se entregaban con el proyecto original.
+6. Incluye pruebas reproducibles usando catálogo vacío y el esquema SQL anonimizado de referencia, más pruebas de bloqueos de seguridad.
+
+No incluye EXE ni instalador autoactualizable. La conexión SQL debe configurarse por cada instalación.

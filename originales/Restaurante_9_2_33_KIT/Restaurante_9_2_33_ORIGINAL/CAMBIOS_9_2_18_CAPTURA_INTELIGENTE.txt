@@ -1,0 +1,33 @@
+RESTAURANTE 9.2.18 — CAPTURA INTELIGENTE SIN RECUADROS
+
+CAMBIO PRINCIPAL
+• No dibujes cuadros para analizar el menú: sube tus fotografías y pulsa «Analizar menú completo».
+• Gemini devuelve la transcripción completa y propuestas estructuradas de grupo, producto, precio,
+  descripción, modificadores y componentes en UNA solicitud por foto, cuando está disponible.
+• En «Texto leído», consulta/corrige la transcripción y reorganiza SIN volver a subir fotos ni
+  utilizar Gemini. Esta reorganización utiliza reglas locales y puede requerir revisión adicional.
+• En «Revisar productos», escribe instrucciones para corregir errores de interpretación.
+  Gemini PROPONE cambios y sólo se aplican después de tu confirmación.
+• Productos cuyo nombre o precio no puede justificarse en las líneas aportadas por Gemini
+  quedan pendientes de verificación en la fotografía, no listos para registrar automáticamente.
+• Productos con modificadores y componentes siguen pendientes de conocer la configuración SQL
+  real para importar sus opciones; la lectura no crea opciones ni recetas en la base.
+• La corrección visual y el método OCR anterior siguen disponibles como herramientas avanzadas.
+
+INSTALACIÓN
+1. Cierra Restaurante y realiza un respaldo de la carpeta y el archivo JSON del proyecto.
+2. Extrae ESTE ZIP completo en una carpeta nueva (no mezcles archivos de versiones).
+3. Ejecuta ABRIR_RESTAURANTE.cmd. Desde iPhone abre la URL de acceso autorizada habitual.
+4. En Capturar menú, elige fotografías JPG/PNG/WebP, luego «Analizar menú completo».
+5. Revisa los productos dudosos; en «Texto leído» puedes revisar lo transcrito.
+6. Confirma expresamente qué productos se enviarán a Soft Restaurant 11.
+
+LIMITACIONES
+• El ZIP contiene el código y scripts; no incluye un EXE compilado.
+• Gemini gratuito está sujeto a la disponibilidad de modelos, la cuota de Google y la configuración
+  del proyecto de Google. Restaurante no puede asegurar que haya cuota ni que no exista facturación:
+  para evitar cargos mantén la facturación desactivada desde Google AI Studio.
+• Si Gemini no funciona, se intenta PaddleOCR local. Este OCR requiere instalar su entorno.
+• Reorganizar sólo el texto no tiene el contexto visual de las columnas, por lo que puede necesitar
+  correcciones. Nunca se realiza ninguna escritura SQL sin confirmación explícita.
+• No se ha verificado la integración SQL real, Google real ni Safari físico en este entorno.

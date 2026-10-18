@@ -1,0 +1,13 @@
+Restaurante 9.2.11 - Correccion de disponibilidad de Gemini
+
+- Modelo 2.5 ya no esta fijado en el codigo de captura.
+- Consulta todos los modelos que ofrece la cuenta (paginacion incluida).
+- Lista explicita de modelos compatibles documentados con nivel gratuito; no se envian solicitudes a otros modelos.
+- Se intenta el siguiente modelo de la lista solamente si Google indica HTTP 404.
+- En cuota agotada HTTP 429, se usa PaddleOCR local, no mas solicitudes a modelos alternos.
+- Respaldo OCR local en errores de disponibilidad/transporte.
+- Diagnostico de modelos visibles en /api/menu-ia/gemini-estado sin revelar clave.
+- Se muestra un estado claro en la pantalla de captura del menu.
+- Sin modificaciones a la conexion SQL, catalogos, productos, importacion ni Cloudflare.
+- Limitacion: no permite detectar si la facturacion del proyecto esta activada; mantenerla desactivada es indispensable para evitar costos.
+- Pruebas unitarias locales; sin clave ni entorno de Google real.

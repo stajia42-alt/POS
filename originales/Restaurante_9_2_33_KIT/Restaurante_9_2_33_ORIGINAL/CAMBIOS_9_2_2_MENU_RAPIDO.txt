@@ -1,0 +1,44 @@
+RESTAURANTE 9.2.2 - MENU RAPIDO
+
+CAMBIOS
+- Las claves se proponen de manera automatica tambien para grupos preparados
+  que todavia no existen en SQL (numeros de seis digitos, sin repetir).
+- Al conectar con SQL, vuelve a revisar ocupacion de claves. Se generan nuevas
+  para propuestas automaticas ocupadas; las claves manuales no se cambian.
+- Nuevo boton "Generar claves" y boton "Generar" en la edicion de cada producto.
+- Se elimina el campo "Presentacion". Cantidades antiguas, por ejemplo "4 pz",
+  se incorporan al final del nombre para proyectos antiguos y capturas nuevas.
+- Revision simplificada: nombre, precio, grupo y clave se ven juntos.
+- Incluir/descartar individualmente, Incluir todos y Descartar todos.
+- La importacion incluye solo los productos incluidos, independientemente de la
+  seleccion usada para acciones masivas de categorias.
+- Edicion avanzada y asignacion masiva siguen disponibles pero escondidas en
+  secciones desplegables. Las categorias existentes siguen siendo editables.
+- Los grupos detectados se preparan automaticamente si aun no existen en SQL.
+- Las lineas OCR complementarias quedan en un panel desplegable; un precio sin
+  producto sigue avisandose si no se encuentra entre las propuestas finales.
+- Si solo hay una referencia fiscal valida de producto, se selecciona en el
+  resumen. Siempre se exige confirmacion antes de la importacion.
+- Los productos ya importados permanecen registrados y no se reimportan.
+- Recupera el proyecto anterior sin perder datos ni preferencias de exclusion.
+
+COMPROBACIONES REALIZADAS EN AMBIENTE AISLADO
+- Navegador Chromium: muestra los 10 productos del JSON recibido.
+- Se mantuvo la clave escrita manualmente "4455" y se asignaron 9 nuevas claves
+  numericas sin repeticiones ni conflicto con una clave SQL de prueba.
+- Los 10 conservan precios y el grupo preparado; cantidades pasan al nombre.
+- Incluir/descartar, clave manual, clave automatica, panel de importacion,
+  resoluciones de 1366, 768, 390 y 320 px y nueva captura de 2 fotos: correcto.
+- Vista previa de SQL con respuesta de rechazo: no escribio nada y mostro error.
+- Verificacion sintactica Node para interfaz y preparacion de assets: correcto.
+- Parte de las pruebas unitarias de Node requiere paquetes express/mssql que no
+  pueden descargarse en este entorno. No equivale a una prueba SQL en el negocio.
+
+LIMITACIONES QUE SE MANTIENEN
+- El OCR puede confundir nombres, precios o lineas; la vista advierte casos
+  irresueltos. No puede garantizar reconocimiento perfecto de todas las fotos.
+- La importacion de variantes/modificadores sigue bloqueada si el contrato SQL
+  no esta validado, para evitar crear productos incompletos.
+- La importacion SQL real requiere la instalacion Soft Restaurant 11, esquema
+  compatible, permisos y producto de referencia. No se probó en una BD real.
+- Nunca sobrescribe productos existentes ni importa sin confirmacion SQL.

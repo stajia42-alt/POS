@@ -1,0 +1,11 @@
+Restaurante 9.2.23 — corrección de la importación compuesta
+
+1. Se elimina el Promise.all ejecutado sobre la misma transacción SQL. Las consultas del catálogo de grupos modificadores y de referencia obligatoria se realizan en serie para evitar EREQINPROG.
+2. Se reutilizan productos auxiliares existentes por coincidencia inequívoca de nombre y clasificación, incluso si pertenecen a otro grupo normal. Nunca se eliminan o cambian esos productos.
+3. Si hay varias coincidencias posibles, se bloquea el lote para no elegir un modificador incorrecto.
+4. Si SQL no confirma el rollback, el estado queda resultado_incierto y nunca se reintenta automáticamente. El registro indica etapa y código seguro.
+5. Los datos originales de conexión, proyectos y menús no se sobrescriben.
+
+PRUEBA RECOMENDADA: Comprueba primero en Soft Restaurant si hay datos del intento previo. Conserva el producto PRUEBA. Intenta importar un único nuevo compuesto y revisa en Soft Restaurant las 3 opciones; no repitas lotes antiguos con resultado incierto.
+
+LIMITACIONES: La comprobación contra SQL Server 2014 real debe hacerse en la instalación del usuario. Las pruebas automatizadas se realizan con simulaciones.

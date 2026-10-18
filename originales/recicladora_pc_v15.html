@@ -1,0 +1,2450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Recicladora V14.1</title>
+
+<style>
+:root{
+ --green:#176b3a;
+ --green2:#21864b;
+ --dark:#17202a;
+ --bg:#f3f6f5;
+ --card:#fff;
+ --muted:#68757d;
+ --border:#dce3df;
+ --red:#c62828;
+ --orange:#e58b00;
+ --blue:#2468c7;
+ --purple:#7257b8;
+ --shadow:0 5px 22px #0000000d;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--dark);
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+header{
+ background:linear-gradient(135deg,var(--green),var(--green2));
+ color:#fff;
+ padding:calc(14px + env(safe-area-inset-top)) 14px 14px;
+ position:sticky;
+ top:0;
+ z-index:30;
+ box-shadow:0 3px 15px #0002;
+}
+.header{
+ max-width:1150px;
+ margin:auto;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+.header h1{
+ margin:0;
+ font-size:20px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+.header p{margin:3px 0 0;font-size:11px;opacity:.82}
+.header-right{text-align:right}
+.user{
+ display:inline-block;
+ background:#ffffff20;
+ border:1px solid #ffffff35;
+ padding:6px 9px;
+ border-radius:10px;
+ font-size:11px;
+}
+.shift-badge{
+ display:block;
+ margin-top:5px;
+ background:#ffffff22;
+ padding:5px 8px;
+ border-radius:9px;
+ font-size:10px;
+}
+
+nav{
+ position:sticky;
+ top:73px;
+ z-index:25;
+ background:#fff;
+ border-bottom:1px solid var(--border);
+ display:flex;
+ gap:6px;
+ overflow-x:auto;
+ padding:7px;
+ scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none}
+nav button{
+ border:0;
+ background:#edf1ef;
+ padding:9px 12px;
+ border-radius:10px;
+ white-space:nowrap;
+ font-size:12px;
+ font-weight:700;
+}
+nav button.active{background:var(--green);color:#fff}
+
+main{
+ max-width:1150px;
+ margin:auto;
+ padding:12px;
+ padding-bottom:60px;
+}
+.card{
+ background:var(--card);
+ border-radius:17px;
+ padding:15px;
+ margin-bottom:12px;
+ box-shadow:var(--shadow);
+}
+.card h2{font-size:18px;margin:0 0 12px}
+.card h3{margin:0 0 10px}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:9px;
+}
+@media(min-width:750px){.grid{grid-template-columns:repeat(4,1fr)}}
+
+.stat{
+ background:#f1f6f3;
+ border-radius:14px;
+ padding:13px;
+}
+.stat span{display:block;color:var(--muted);font-size:11px}
+.stat b{display:block;font-size:18px;margin-top:4px}
+
+.quick-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:9px;
+}
+@media(min-width:650px){.quick-grid{grid-template-columns:repeat(4,1fr)}}
+
+.quick{
+ border:0;
+ border-radius:16px;
+ padding:15px 9px;
+ background:#edf2ef;
+ color:var(--dark);
+ font-weight:800;
+ min-height:92px;
+}
+.quick .icon{display:block;font-size:28px;margin-bottom:5px}
+.quick.green{background:#e2f1e7;color:var(--green)}
+.quick.blue{background:#e6effb;color:var(--blue)}
+.quick.orange{background:#fff0d6;color:#8a5a00}
+.quick.red{background:#fde8e8;color:var(--red)}
+.quick.purple{background:#eee9fa;color:var(--purple)}
+
+label{
+ display:block;
+ font-size:12px;
+ font-weight:800;
+ margin:10px 0 5px;
+}
+input,select,textarea{
+ width:100%;
+ padding:12px;
+ border:1px solid var(--border);
+ border-radius:11px;
+ background:#fff;
+ outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--green)}
+textarea{min-height:80px}
+
+.btn{
+ border:0;
+ border-radius:11px;
+ padding:12px 14px;
+ margin-top:9px;
+ background:var(--green);
+ color:#fff;
+ font-weight:800;
+}
+.btn.full{width:100%}
+.btn.secondary{background:#e9eeec;color:var(--dark)}
+.btn.danger{background:var(--red)}
+.btn.blue{background:var(--blue)}
+.btn.orange{background:var(--orange)}
+.btn.purple{background:var(--purple)}
+
+.actions{display:flex;flex-wrap:wrap;gap:7px}
+.actions .btn{margin-top:5px}
+
+.notice{
+ padding:11px;
+ border-radius:11px;
+ background:#fff5dc;
+ color:#735500;
+ font-size:12px;
+ margin:9px 0;
+}
+.success{
+ padding:11px;
+ border-radius:11px;
+ background:#e5f4e9;
+ color:#176b3a;
+ font-size:12px;
+}
+.small{font-size:11px;color:var(--muted)}
+.money{font-weight:900}
+
+.row{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ padding:11px 0;
+ border-bottom:1px solid #edf0ef;
+}
+.row:last-child{border-bottom:0}
+
+.badge{
+ display:inline-block;
+ padding:5px 8px;
+ border-radius:8px;
+ background:#e8f3ec;
+ color:var(--green);
+ font-size:10px;
+ font-weight:800;
+}
+.badge.low{background:#fff0d5;color:#8a5a00}
+.badge.red{background:#fde7e7;color:var(--red)}
+.badge.blue{background:#e7effb;color:var(--blue)}
+
+.empty{
+ text-align:center;
+ padding:22px 10px;
+ color:var(--muted);
+ font-size:13px;
+}
+
+.total-box{
+ background:linear-gradient(135deg,#17202a,#263441);
+ color:#fff;
+ border-radius:16px;
+ padding:16px;
+ margin-top:11px;
+}
+.total-box small{opacity:.65;font-size:10px}
+.total-box strong{display:block;font-size:28px;margin-top:3px}
+
+.material-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:8px;
+ margin-top:9px;
+}
+@media(min-width:650px){.material-grid{grid-template-columns:repeat(4,1fr)}}
+
+.material-btn{
+ border:2px solid transparent;
+ background:#f1f4f3;
+ border-radius:14px;
+ padding:11px 7px;
+ min-height:84px;
+ text-align:center;
+}
+.material-btn.selected{
+ border-color:var(--green);
+ background:#e3f1e8;
+}
+.material-icon{display:block;font-size:25px;margin-bottom:3px}
+.material-name{display:block;font-weight:800;font-size:12px}
+.material-price{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+
+.category-bar{
+ display:flex;
+ gap:6px;
+ overflow:auto;
+ margin-bottom:8px;
+}
+.category{
+ border:0;
+ padding:8px 11px;
+ border-radius:9px;
+ background:#edf0ef;
+ white-space:nowrap;
+ font-size:11px;
+ font-weight:700;
+}
+.category.active{background:var(--green);color:#fff}
+
+.cart{
+ border:2px solid #e4e9e6;
+ border-radius:14px;
+ overflow:hidden;
+}
+.cart-item{
+ padding:12px;
+ border-bottom:1px solid #e8ecea;
+}
+.cart-item:last-child{border-bottom:0}
+.cart-top{
+ display:flex;
+ justify-content:space-between;
+ gap:8px;
+}
+.cart-name{font-weight:900}
+.cart-controls{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ margin-top:8px;
+}
+.kg-input{
+ width:100px;
+ padding:8px;
+}
+.icon-btn{
+ border:0;
+ border-radius:9px;
+ padding:8px 10px;
+ background:#edf1ef;
+}
+.icon-btn.danger{background:#fde8e8;color:var(--red)}
+
+.sticky-total{
+ position:sticky;
+ bottom:8px;
+ z-index:10;
+ margin-top:10px;
+ background:#fff;
+ border:1px solid var(--border);
+ border-radius:16px;
+ padding:11px;
+ box-shadow:0 6px 25px #0002;
+}
+
+.payment-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:8px;
+}
+.payment-btn{
+ border:2px solid #e2e7e4;
+ border-radius:13px;
+ background:#fff;
+ padding:13px 8px;
+ font-weight:800;
+}
+.payment-btn.active{
+ border-color:var(--green);
+ background:#e3f1e8;
+ color:var(--green);
+}
+
+.modal{
+ position:fixed;
+ inset:0;
+ z-index:100;
+ background:#0008;
+ display:flex;
+ align-items:flex-end;
+ justify-content:center;
+}
+.modal-box{
+ width:100%;
+ max-width:650px;
+ max-height:92vh;
+ overflow:auto;
+ background:#fff;
+ border-radius:22px 22px 0 0;
+ padding:19px;
+}
+.modal-actions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-top:10px;
+}
+.modal-actions button{margin:0}
+
+.login{
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ background:linear-gradient(135deg,#eaf3ed,#f5f7f6);
+}
+.login-card{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ padding:25px;
+ border-radius:24px;
+ box-shadow:0 15px 45px #00000014;
+ text-align:center;
+}
+.logo{
+ width:72px;
+ height:72px;
+ margin:auto auto 12px;
+ border-radius:20px;
+ background:var(--green);
+ color:#fff;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ font-size:36px;
+ overflow:hidden;
+}
+.logo img{width:100%;height:100%;object-fit:contain}
+
+.shift-card{
+ border:2px solid #e1e9e4;
+ background:#f8faf9;
+ border-radius:16px;
+ padding:14px;
+ margin-bottom:10px;
+}
+.shift-open{
+ border-color:#5baa76;
+ background:#eaf6ee;
+}
+
+.table-wrap{overflow:auto}
+table{width:100%;min-width:700px;border-collapse:collapse}
+th,td{
+ text-align:left;
+ padding:9px;
+ border-bottom:1px solid #eee;
+ font-size:12px;
+}
+th{background:#f6f8f7}
+
+.ticket{
+ width:80mm;
+ max-width:100%;
+ margin:auto;
+ background:#fff;
+ color:#111;
+ padding:5mm 4mm 6mm;
+ font-family:Arial,Helvetica,sans-serif;
+ font-size:11px;
+ line-height:1.35;
+ box-sizing:border-box;
+ border-radius:3px;
+}
+.ticket-head{text-align:center;padding-bottom:8px}
+.ticket-brand{font-size:20px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+.ticket-subtitle{font-size:13px;font-weight:800;margin-top:5px}
+.ticket-meta{font-size:10px;color:#555;margin-top:2px}
+.ticket-rule{border-top:1px dashed #222;margin:8px 0}
+.ticket-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin:4px 0}
+.ticket-label{font-size:10px;font-weight:800;text-transform:uppercase;color:#555;margin:5px 0}
+.ticket-item-name{font-weight:800;font-size:12px}
+.ticket-item-detail{font-size:10px;color:#555}
+.ticket-total-box{border:2px solid #111;padding:8px 7px;margin:9px 0;border-radius:5px}
+.ticket-total{font-size:17px;font-weight:900}
+.ticket-payment{background:#f1f3f2;padding:6px;border-radius:4px}
+.ticket-footer{text-align:center;font-size:10px;color:#444;margin-top:8px}
+.ticket-barcode{font-family:"Libre Barcode 39",monospace;font-size:34px;letter-spacing:2px;text-align:center;margin-top:7px}
+.logo-ticket{max-width:55mm;max-height:22mm;object-fit:contain;margin-bottom:4px}
+.ticket-kpis{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:7px 0}
+.ticket-kpi{border:1px solid #bbb;border-radius:4px;padding:5px}
+.ticket-kpi b{display:block;font-size:12px}
+@media print{
+ body *{visibility:hidden!important}
+ #printArea,#printArea *{visibility:visible!important}
+ #printArea{position:absolute;left:0;top:0;width:80mm}
+ @page{size:80mm auto;margin:0}
+}
+
+/* V15 PC DESKTOP */
+:root{--pc-sidebar:220px}
+body{font-size:14px}
+header{position:fixed;left:var(--pc-sidebar);right:0;top:0;padding:14px 22px;height:76px}
+.header{max-width:none}
+nav{position:fixed;left:0;top:0;bottom:0;width:var(--pc-sidebar);height:100vh;display:flex;flex-direction:column;align-items:stretch;overflow-y:auto;overflow-x:hidden;padding:86px 10px 14px;gap:7px;border-right:1px solid var(--border);border-bottom:0;box-shadow:2px 0 14px #00000008;z-index:50}
+nav button{text-align:left;padding:12px 14px;font-size:13px;border-radius:11px}
+main{max-width:none;margin:0;padding:96px 22px 40px;margin-left:var(--pc-sidebar)}
+.card{border-radius:14px;padding:18px;margin-bottom:15px}
+.grid{grid-template-columns:repeat(4,1fr)}
+.quick-grid{grid-template-columns:repeat(4,1fr)}
+.material-grid{grid-template-columns:repeat(5,1fr);max-height:370px;overflow:auto;padding-right:4px}
+.material-btn{min-height:92px}
+input,select,textarea{font-size:14px}
+.kg-input{width:130px}
+.modal{align-items:center}
+.modal-box{max-width:720px;border-radius:18px;max-height:88vh}
+.ticket{width:80mm}
+.pc-workspace{display:grid;grid-template-columns:minmax(360px,1fr) minmax(420px,1.2fr);gap:15px;align-items:start}
+.pc-kilos{font-size:34px!important;font-weight:900;text-align:center;padding:18px!important;height:70px}
+.pc-action{font-size:16px;min-height:52px}
+.pc-sticky{position:sticky;top:92px}
+.printer-status{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--border);border-radius:12px;background:#f8faf9}
+@media(max-width:1150px){:root{--pc-sidebar:190px}.material-grid{grid-template-columns:repeat(4,1fr)}main{padding-left:16px;padding-right:16px}}
+@media(max-width:900px){:root{--pc-sidebar:0px}header{left:0}.header{padding:0 8px}nav{position:sticky;left:0;top:76px;width:100%;height:auto;flex-direction:row;overflow-x:auto;padding:7px;z-index:45;border-right:0;border-bottom:1px solid var(--border)}nav button{white-space:nowrap}main{margin-left:0;padding-top:12px}.pc-workspace{grid-template-columns:1fr}.pc-sticky{position:static}}
+
+/* CAPACITACION INTERACTIVA */
+.training-wrap{max-width:1120px;margin:0 auto}
+.training-welcome{background:linear-gradient(135deg,#fff,#edf9f1);border:1px solid #dcefe2}
+.training-label{font-size:12px;font-weight:900;letter-spacing:.8px;color:#168344;margin-bottom:8px}
+.training-welcome h1{margin:0 0 8px;font-size:30px}.training-welcome p{margin:0;color:#59625e}
+.training-overall,.training-bar{height:9px;background:#e7ece9;border-radius:99px;overflow:hidden;margin:18px 0 7px}
+.training-overall span,.training-bar span{display:block;height:100%;background:#20a458;border-radius:99px;transition:width .3s}
+.training-overall-text{font-size:12px;color:#68716d}
+.training-module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:12px 0}
+.training-module{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid #dfe5e2;background:#fff;border-radius:14px;padding:11px;cursor:pointer}
+.training-module.selected{border-color:#20a458;box-shadow:0 0 0 2px rgba(32,164,88,.12)}
+.training-module.completed{background:#f2fbf5}.tm-icon{font-size:25px}
+.training-module b{display:block}.training-module small{display:block;color:#737b77;margin-top:3px}
+.training-module.completed small{color:#168344;font-weight:700}
+.training-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.training-kicker{font-size:11px;font-weight:900;color:#168344;letter-spacing:.7px}
+.training-head h2{margin:4px 0}.training-head p{margin:0;color:#68716d}
+.training-step-count{font-weight:900;font-size:18px;background:#f1f5f3;border-radius:12px;padding:9px 12px}
+.training-instruction{display:flex;gap:18px;padding:24px;background:#f8faf9;border:1px solid #e2e8e4;border-radius:18px}
+.training-big-number{min-width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#20a458;color:#fff;font-size:23px;font-weight:900}
+.training-action{font-size:11px;font-weight:900;color:#168344;letter-spacing:.6px}
+.training-copy h3{font-size:24px;margin:4px 0 9px}.training-copy p{font-size:16px;line-height:1.6;margin:0}
+.training-tip{margin-top:15px;padding:12px 14px;background:#fff;border-left:4px solid #20a458;border-radius:8px;line-height:1.5}
+.training-practice-box{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:14px;border:1px dashed #cbd7d0;border-radius:13px}
+.training-practice-box small{display:block;color:#737b77;margin-top:3px}
+.training-nav{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.training-checklist{margin-top:12px}.training-checklist h3{margin-top:0}
+.check-row{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px}
+.check-row>span{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#e8eeea;font-weight:800}
+.check-row.current{background:#f0faf3}.check-row.current>span,.check-row.past>span{background:#20a458;color:#fff}
+.check-row small{display:block;color:#747d78;margin-top:2px}
+.training-quiz{text-align:center}.quiz-question{font-size:19px;font-weight:700;line-height:1.5;margin:18px 0}
+.training-answer{margin:15px 0;padding:15px;text-align:left;background:#effaf3;border:1px solid #ccebd6;border-radius:12px;line-height:1.6}
+@media(max-width:650px){.training-welcome h1{font-size:24px}.training-module-grid{grid-template-columns:1fr 1fr}.training-instruction{padding:18px;gap:12px}.training-copy h3{font-size:20px}.training-practice-box,.training-head{flex-direction:column}.training-practice-box .btn,.training-nav button{width:100%}.training-nav{flex-direction:column-reverse}}
+
+
+.first-login-tutorial{text-align:center;max-width:520px;margin:auto;padding:8px}
+.first-login-icon{font-size:54px;margin-bottom:8px}
+.first-login-tutorial h2{margin:4px 0 10px;font-size:25px}
+.first-login-tutorial p{line-height:1.6;color:#626b67}
+.first-login-options{display:grid;gap:10px;margin-top:20px}
+.first-login-options button{width:100%}
+
+</style>
+</head>
+
+<body>
+
+<section id="loginScreen" class="login">
+ <div class="login-card">
+  <div class="logo" id="loginLogo">♻️</div>
+  <h1 id="loginBusiness">Mi Recicladora</h1>
+  <p class="small">Sistema POS V14.1</p>
+  <div id="loginUsers"></div>
+  <label>PIN</label>
+  <input id="loginPin" type="password" inputmode="numeric" maxlength="8" placeholder="PIN">
+  <button class="btn full" onclick="login()">Entrar</button>
+  <button class="btn secondary full" onclick="quickSetup()">Configurar sistema</button>
+ </div>
+</section>
+
+<section id="appScreen" class="hidden">
+
+<header>
+ <div class="header">
+  <div>
+   <h1 id="headerBusiness">Mi Recicladora</h1>
+   <p id="headerSubtitle">Sistema POS</p>
+  </div>
+  <div class="header-right">
+   <div class="user" id="headerUser"></div>
+   <div class="shift-badge" id="headerShift"></div>
+  </div>
+ </div>
+</header>
+
+<nav id="nav"></nav>
+<main id="app"></main>
+</section>
+
+<div id="modal" class="modal hidden" onclick="closeModal(event)">
+ <div id="modalContent" class="modal-box" onclick="event.stopPropagation()"></div>
+</div>
+
+<div id="printArea"></div>
+
+<script>
+const KEY="RECICLADORA_V14";
+
+const DEFAULT_DB={
+ business:{
+  name:"Mi Recicladora",
+  address:"",
+  phone:"",
+  taxId:"",
+  message:"Gracias por su preferencia.",
+  logo:"",
+  paper:"80mm",
+  printerName:"",
+  autoPrint:false,
+  autoCut:true,
+  printMode:"raw"
+ },
+ users:[
+  {id:"owner",name:"Administrador",pin:"1234",role:"Administrador"}
+ ],
+ materials:[],
+ purchases:[],
+ sales:[],
+ expenses:[],
+ adjustments:[],
+ inventoryMoves:[],
+ cashCuts:[],
+ cashMoves:[],
+ shifts:[],
+ settings:{nextTicket:1,nextPurchaseTicket:1},
+ currentShift:null
+};
+
+function clone(x){return JSON.parse(JSON.stringify(x))}
+
+function loadDB(){
+ try{
+  const s=localStorage.getItem(KEY);
+  if(!s)return clone(DEFAULT_DB);
+  const d=JSON.parse(s);
+  return {
+   ...clone(DEFAULT_DB),
+   ...d,
+   business:{...clone(DEFAULT_DB.business),...(d.business||{})},
+   settings:{...clone(DEFAULT_DB.settings),...(d.settings||{})},
+   users:d.users||[],
+   materials:d.materials||[],
+   purchases:d.purchases||[],
+   sales:d.sales||[],
+   expenses:d.expenses||[],
+   adjustments:d.adjustments||[],
+   inventoryMoves:d.inventoryMoves||[],
+   cashCuts:d.cashCuts||[],
+   cashMoves:d.cashMoves||[],
+   shifts:d.shifts||[],
+   currentShift:d.currentShift||null
+  };
+ }catch(e){return clone(DEFAULT_DB)}
+}
+
+let db=loadDB();
+let currentUser=null;
+let page="inicio";
+let selectedMaterial=null;
+let operationCategory="Todos";
+let buyCart=[];
+let buyPayment="Efectivo";
+
+const pages={
+ inicio:"Inicio",
+ compras:"Comprar",
+ ventas:"Vender",
+ inventario:"Inventario",
+ caja:"Caja",
+ gastos:"Gastos",
+ reportes:"Reportes",
+ materiales:"Materiales",
+ negocio:"Mi negocio",
+ impresora:"Impresora",
+ usuarios:"Usuarios",
+ respaldo:"Respaldo",
+ tutorial:"Tutorial"
+};
+
+const categories={
+ Metal:["Fierro","Cobre","Cobre brillante","Cobre mixto","Bronce","Aluminio","Lata de aluminio","Chatarra"],
+ Plastico:["PET","PET cristal","PET verde","Plástico"],
+ Papel:["Cartón","Cartón de primera","Cartón de segunda","Archivo","Papel","Periódico"],
+ Otros:[]
+};
+
+const icons={
+ Fierro:"🔩",Cobre:"🟠","Cobre brillante":"✨","Cobre mixto":"🟤",Bronce:"🟫",
+ Aluminio:"🥫","Lata de aluminio":"🥫",Chatarra:"⚙️",PET:"🥤",
+ "PET cristal":"💧","PET verde":"🟢","Plástico":"♻️",Cartón:"📦",
+ "Cartón de primera":"📦","Cartón de segunda":"📦",Archivo:"📄",
+ Papel:"📄",Periódico:"📰"
+};
+
+const common=[
+ "Cartón","Cartón de primera","Cartón de segunda","PET","PET cristal","PET verde",
+ "Aluminio","Lata de aluminio","Fierro","Cobre","Cobre brillante","Cobre mixto",
+ "Bronce","Archivo","Papel","Periódico","Plástico","Chatarra"
+];
+
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function uid(){
+ if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
+ return Date.now()+"_"+Math.random();
+}
+function money(n){
+ return new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(Number(n)||0);
+}
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function dateTime(d){return new Date(d).toLocaleString("es-MX")}
+function dateOnly(d){return new Date(d).toLocaleDateString("es-MX")}
+function todayStart(){
+ const d=new Date();d.setHours(0,0,0,0);return d;
+}
+function todayEnd(){
+ const d=new Date();d.setHours(23,59,59,999);return d;
+}
+
+function getCategory(name){
+ for(const c of Object.keys(categories)){
+  if(categories[c].some(x=>x.toLowerCase()===name.toLowerCase()))return c;
+ }
+ return "Otros";
+}
+
+function inventory(){
+ const r={};
+ db.materials.forEach(m=>r[m.id]=Number(m.initial)||0);
+ db.purchases.forEach(x=>{
+  (x.items||[{mid:x.mid,kg:x.kg}]).forEach(i=>{
+   r[i.mid]=(r[i.mid]||0)+Number(i.kg||0);
+  });
+ });
+ db.sales.forEach(x=>r[x.mid]=(r[x.mid]||0)-Number(x.kg||0));
+ db.adjustments.forEach(x=>r[x.mid]=(r[x.mid]||0)+Number(x.delta||0));
+ return r;
+}
+
+function currentShift(){
+ return db.currentShift;
+}
+
+function requireShift(){
+ if(!db.currentShift){
+  alert("Debes abrir un turno antes de realizar esta operación.");
+  page="caja";
+  render();
+  return false;
+ }
+ return true;
+}
+
+function shiftId(){return db.currentShift?.id||""}
+
+function shiftFilter(arr){
+ const s=db.currentShift;
+ if(!s)return [];
+ return arr.filter(x=>x.shiftId===s.id);
+}
+
+function render(){
+ renderNav();
+ renderHeader();
+
+ if(page==="inicio")renderInicio();
+showFirstLoginTutorialChoice();
+ if(page==="compras")renderCompra();
+ if(page==="ventas")renderVenta();
+ if(page==="inventario")renderInventario();
+ if(page==="caja")renderCaja();
+ if(page==="gastos")renderGastos();
+ if(page==="reportes")renderReportes();
+ if(page==="materiales")renderMateriales();
+ if(page==="negocio")renderNegocio();
+ if(page==="impresora")renderImpresora();
+ if(page==="usuarios")renderUsuarios();
+ if(page==="respaldo")renderRespaldo();
+  if(page==="tutorial")renderTutorial();
+}
+
+function go(p){
+ page=p;
+ selectedMaterial=null;
+ render();
+}
+
+function renderNav(){
+ document.getElementById("nav").innerHTML=
+ Object.entries(pages).map(([k,v])=>
+ `<button class="${page===k?"active":""}" onclick="go('${k}')">${v}</button>`
+ ).join("")+
+ `<button onclick="logout()">Salir</button>`;
+}
+
+function renderHeader(){
+ document.getElementById("headerBusiness").textContent=db.business.name||"Mi Recicladora";
+ document.getElementById("headerSubtitle").textContent=db.business.phone||"Sistema POS";
+ document.getElementById("headerUser").textContent=currentUser?.name||"";
+ document.getElementById("headerShift").textContent=
+ db.currentShift
+ ? "🟢 Turno abierto · "+dateTime(db.currentShift.openedAt)
+ : "🔴 Turno cerrado";
+}
+
+/* LOGIN */
+
+function loadLogin(){
+ document.getElementById("loginBusiness").textContent=db.business.name||"Mi Recicladora";
+ const logo=document.getElementById("loginLogo");
+ logo.innerHTML=db.business.logo?`<img src="${db.business.logo}">`:"♻️";
+ document.getElementById("loginUsers").innerHTML=`
+ <label>Usuario</label>
+ <select id="loginUser">
+ ${db.users.map(u=>`<option value="${u.id}">${esc(u.name)}</option>`).join("")}
+ </select>`;
+}
+
+function login(){
+ const id=document.getElementById("loginUser")?.value;
+ const pin=document.getElementById("loginPin").value;
+ const u=db.users.find(x=>x.id===id);
+ if(!u)return alert("Selecciona un usuario.");
+ if(u.pin!==pin)return alert("PIN incorrecto.");
+ currentUser=u;
+ document.getElementById("loginScreen").classList.add("hidden");
+ document.getElementById("appScreen").classList.remove("hidden");
+ render();
+ if(!db.currentShift)openShift();
+}
+
+function logout(){
+ currentUser=null;
+ document.getElementById("appScreen").classList.add("hidden");
+ document.getElementById("loginScreen").classList.remove("hidden");
+ document.getElementById("loginPin").value="";
+ loadLogin();
+}
+
+function quickSetup(){
+ currentUser=db.users[0];
+ document.getElementById("loginScreen").classList.add("hidden");
+ document.getElementById("appScreen").classList.remove("hidden");
+ page="negocio";
+ render();
+}
+
+/* INICIO */
+
+function renderInicio(){
+ const I=inventory();
+ const buys=shiftFilter(db.purchases);
+ const sales=shiftFilter(db.sales);
+ const expenses=shiftFilter(db.expenses);
+
+ const buyTotal=buys.reduce((a,x)=>a+x.total,0);
+ const saleTotal=sales.reduce((a,x)=>a+x.total,0);
+ const expenseTotal=expenses.reduce((a,x)=>a+x.amount,0);
+ const cash=sales.filter(x=>x.payment==="Efectivo").reduce((a,x)=>a+x.total,0);
+ const dollars=sales.filter(x=>x.payment==="Dólares").reduce((a,x)=>a+x.dollarsReceived,0);
+ const stock=Object.values(I).reduce((a,b)=>a+b,0);
+
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  <div class="shift-card ${db.currentShift?"shift-open":""}">
+   <b>${db.currentShift?"🟢 Turno abierto":"🔴 Turno cerrado"}</b>
+   ${db.currentShift?`
+    <div class="small" style="margin-top:5px">
+     ${esc(db.currentShift.userName)} · ${dateTime(db.currentShift.openedAt)}
+     <br>Fondo: ${money(db.currentShift.openingCash)}
+     · Dólares: $${Number(db.currentShift.openingDollars).toFixed(2)}
+     · TC: ${money(db.currentShift.exchangeRate)}
+    </div>
+   `:`<div class="small">Abre un turno para comenzar a operar.</div>`}
+  </div>
+ </div>
+
+ <div class="grid">
+  <div class="stat"><span>💰 Ventas del turno</span><b>${money(saleTotal)}</b></div>
+  <div class="stat"><span>🛒 Compras del turno</span><b>${money(buyTotal)}</b></div>
+  <div class="stat"><span>💸 Gastos</span><b>${money(expenseTotal)}</b></div>
+  <div class="stat"><span>📦 Inventario</span><b>${stock.toLocaleString()} kg</b></div>
+  <div class="stat"><span>💵 Efectivo esperado</span><b>${money(cashExpected())}</b></div>
+  <div class="stat"><span>💲 Dólares recibidos</span><b>$${dollars.toFixed(2)}</b></div>
+ </div>
+
+ <div class="card">
+  <h2>Acciones rápidas</h2>
+  <div class="quick-grid">
+   <button class="quick green" onclick="go('compras')"><span class="icon">🛒</span>Comprar</button>
+   <button class="quick blue" onclick="go('ventas')"><span class="icon">💰</span>Vender</button>
+   <button class="quick orange" onclick="go('caja')"><span class="icon">💵</span>Caja</button>
+   <button class="quick" onclick="go('inventario')"><span class="icon">📦</span>Inventario</button>
+  </div>
+ </div>
+ `;
+}
+
+/* MATERIAL PICKER */
+
+function materialPicker(mode){
+ const materials=db.materials.filter(m=>
+  operationCategory==="Todos"||getCategory(m.name)===operationCategory
+ );
+ return `
+ <div class="category-bar">
+ ${["Todos","Metal","Plastico","Papel","Otros"].map(c=>
+ `<button class="category ${operationCategory===c?"active":""}" onclick="setCategory('${mode}','${c}')">${c}</button>`
+ ).join("")}
+ </div>
+ <input id="${mode}Search" placeholder="🔎 Buscar material..." oninput="filterMaterials('${mode}')">
+ <div id="${mode}Materials" class="material-grid">
+ ${materials.map(m=>materialButton(m,mode)).join("")}
+ </div>`;
+}
+
+function materialButton(m,mode){
+ const selected=selectedMaterial===m.id;
+ const price=mode==="buy"?m.price:m.salePrice;
+ return `
+ <button class="material-btn ${selected?"selected":""}"
+  data-name="${esc(m.name.toLowerCase())}"
+  onclick="selectMaterial('${m.id}','${mode}')">
+  <span class="material-icon">${icons[m.name]||"♻️"}</span>
+  <span class="material-name">${esc(m.name)}</span>
+  <span class="material-price">${money(price)}/kg</span>
+ </button>`;
+}
+
+function setCategory(mode,c){
+ operationCategory=c;
+ render();
+}
+function filterMaterials(mode){
+ const q=document.getElementById(mode+"Search").value.toLowerCase();
+ document.querySelectorAll("#"+mode+"Materials .material-btn").forEach(b=>{
+  b.style.display=b.dataset.name.includes(q)?"block":"none";
+ });
+}
+function selectMaterial(id,mode){
+ selectedMaterial=id;
+ render();
+ setTimeout(()=>{
+  const el=document.getElementById(mode==="buy"?"buyKg":"saleKg");
+  if(el)el.focus();
+ },80);
+}
+
+function bindFastKilos(id, action){
+ const el=document.getElementById(id);
+ if(!el)return;
+ el.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){e.preventDefault();action();}
+ });
+ el.focus();
+}
+
+/* COMPRAS — REDISEÑADAS */
+
+function renderCompra(){
+ if(!db.currentShift){
+  document.getElementById("app").innerHTML=`
+  <div class="card">
+   <div class="shift-card">
+    <h2>🔒 Compra bloqueada</h2>
+    <p class="small">Primero debes abrir un turno para poder comprar.</p>
+    <button class="btn full" onclick="go('caja')">💵 Abrir turno</button>
+   </div>
+  </div>`;
+  return;
+ }
+
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  <h2>🛒 Nueva compra</h2>
+  <div class="notice">El precio es el configurado en Materiales y no puede modificarse aquí.</div>
+  ${db.materials.length?materialPicker("buy"):`<div class="empty">Primero agrega materiales.</div>`}
+
+  ${selectedMaterial?`
+   <div class="pc-workspace" style="margin-top:12px">
+    <div class="card" style="margin:0;background:#f5f8f6">
+      <div class="small">MATERIAL SELECCIONADO</div>
+      <h2 style="margin:4px 0">${esc(db.materials.find(x=>x.id===selectedMaterial)?.name||"Material")}</h2>
+      <div class="small">Precio fijo: ${money(db.materials.find(x=>x.id===selectedMaterial)?.price||0)}/kg</div>
+    </div>
+    <div class="card pc-sticky" style="margin:0">
+      <label>Kilos <span class="small">· Enter = agregar</span></label>
+      <input id="buyKg" class="pc-kilos" type="number" inputmode="decimal" min="0" step=".001" placeholder="0.000" onkeydown="if(event.key==='Enter'){event.preventDefault();addToBuyCart()}" autofocus>
+      <button class="btn pc-action full" onclick="addToBuyCart()">➕ Agregar kilos</button>
+    </div>
+   </div>`:""}
+ </div>
+
+ <div class="card">
+  <h2>📋 Carrito de compra</h2>
+  ${buyCart.length?buyCartHTML():`
+   <div class="empty">
+    Selecciona un material, indica los kilos y presiona<br>
+    <b>Agregar</b>.
+   </div>`}
+ </div>
+ `;
+}
+
+function addToBuyCart(){
+ if(!requireShift())return;
+ const m=db.materials.find(x=>x.id===selectedMaterial);
+ const kg=Number(document.getElementById("buyKg")?.value)||0;
+ if(!m||kg<=0)return alert("Selecciona un material y escribe los kilos.");
+ const existing=buyCart.find(x=>x.mid===m.id);
+ if(existing)existing.kg+=kg;
+ else buyCart.push({mid:m.id,kg});
+ selectedMaterial=null;
+ save();
+ render();
+}
+
+function buyCartHTML(){
+ let total=0;
+ const rows=buyCart.map((x,i)=>{
+  const m=db.materials.find(z=>z.id===x.mid);
+  const subtotal=x.kg*(Number(m?.price)||0);
+  total+=subtotal;
+  return `
+  <div class="cart-item">
+   <div class="cart-top">
+    <div>
+     <div class="cart-name">${icons[m?.name]||"♻️"} ${esc(m?.name||"Material")}</div>
+     <div class="small">${money(m?.price||0)} por kg</div>
+    </div>
+    <b>${money(subtotal)}</b>
+   </div>
+   <div class="cart-controls">
+    <input class="kg-input" type="number" min="0" step=".001" value="${x.kg}"
+     onchange="editCartKg(${i},this.value)">
+    <span class="small">kg</span>
+    <button class="icon-btn danger" onclick="removeCartItem(${i})">🗑️</button>
+   </div>
+  </div>`;
+ }).join("");
+
+ return `
+ <div class="cart">${rows}</div>
+
+ <div class="sticky-total">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+   <span class="small">TOTAL DE COMPRA</span>
+   <strong style="font-size:25px">${money(total)}</strong>
+  </div>
+
+  <label>Forma de pago</label>
+  <div class="payment-grid">
+   <button class="payment-btn ${buyPayment==="Efectivo"?"active":""}" onclick="setBuyPayment('Efectivo')">💵 Efectivo</button>
+   <button class="payment-btn ${buyPayment==="Transferencia"?"active":""}" onclick="setBuyPayment('Transferencia')">🏦 Transferencia</button>
+  </div>
+
+  <button class="btn full" onclick="confirmPurchase()">✅ Confirmar compra</button>
+  <button class="btn secondary full" onclick="clearBuyCart()">Vaciar compra</button>
+ </div>`;
+}
+
+function editCartKg(i,value){
+ const kg=Number(value)||0;
+ if(kg<=0)return alert("Los kilos deben ser mayores a cero.");
+ buyCart[i].kg=kg;
+ render();
+}
+function removeCartItem(i){
+ buyCart.splice(i,1);
+ render();
+}
+function clearBuyCart(){
+ if(!buyCart.length)return;
+ if(confirm("¿Vaciar toda la compra?")){
+  buyCart=[];
+  render();
+ }
+}
+function setBuyPayment(p){
+ buyPayment=p;
+ render();
+}
+
+function buyCartTotal(){
+ return buyCart.reduce((a,x)=>{
+  const m=db.materials.find(z=>z.id===x.mid);
+  return a+x.kg*(Number(m?.price)||0);
+ },0);
+}
+
+function confirmPurchase(){
+ if(!requireShift())return;
+ if(!buyCart.length)return alert("Agrega al menos un material.");
+ const total=buyCartTotal();
+
+ const detail=buyCart.map(x=>{
+  const m=db.materials.find(z=>z.id===x.mid);
+  return `${m.name}: ${x.kg} kg × ${money(m.price)} = ${money(x.kg*m.price)}`;
+ }).join("\n");
+
+ openModal(`
+  <h2>Confirmar compra</h2>
+  <div class="notice"><b>Revisa antes de registrar.</b></div>
+  <div style="white-space:pre-line;font-size:13px;line-height:1.6">${esc(detail)}</div>
+  <div class="total-box">
+   <small>TOTAL A PAGAR</small>
+   <strong>${money(total)}</strong>
+  </div>
+  <p class="small">Pago: <b>${buyPayment}</b></p>
+  <div class="modal-actions">
+   <button class="btn secondary" onclick="closeModal()">Cancelar</button>
+   <button class="btn" onclick="registerPurchase()">Confirmar compra</button>
+  </div>
+ `);
+}
+
+function registerPurchase(){
+ const total=buyCartTotal();
+ const date=new Date().toISOString();
+
+ const purchase={
+  id:uid(),
+  items:buyCart.map(x=>({
+   mid:x.mid,
+   kg:x.kg,
+   price:Number(db.materials.find(m=>m.id===x.mid)?.price)||0,
+   subtotal:x.kg*(Number(db.materials.find(m=>m.id===x.mid)?.price)||0)
+  })),
+  total,
+  payment:buyPayment,
+  ticket:db.settings.nextPurchaseTicket++,
+  date,
+  shiftId:shiftId(),
+  user:currentUser?.id||"",
+  userName:currentUser?.name||""
+ };
+
+ db.purchases.push(purchase);
+
+ purchase.items.forEach(item=>{
+  const before=inventory()[item.mid];
+  db.inventoryMoves.push({
+   id:uid(),
+   mid:item.mid,
+   type:"Compra",
+   delta:item.kg,
+   before,
+   after:before+item.kg,
+   reason:"Compra de material",
+   date,
+   user:currentUser?.id||"",
+   userName:currentUser?.name||"",
+   shiftId:shiftId()
+  });
+ });
+
+ save();
+ buyCart=[];
+ buyPayment="Efectivo";
+ closeModal();
+ render();
+ openPurchaseResultModal(purchase.id);
+}
+
+/* VENTAS */
+
+function renderVenta(){
+ if(!db.currentShift){
+  document.getElementById("app").innerHTML=`
+  <div class="card"><div class="shift-card">
+  <h2>🔒 Venta bloqueada</h2>
+  <p class="small">Debes abrir un turno antes de vender.</p>
+  <button class="btn full" onclick="go('caja')">💵 Abrir turno</button>
+  </div></div>`;
+  return;
+ }
+
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  <h2>💰 Nueva venta</h2>
+  ${db.materials.length?materialPicker("sale"):`<div class="empty">Primero agrega materiales.</div>`}
+ </div>
+
+ <div class="card">
+  ${selectedMaterial?saleForm():`
+   <div class="empty">Selecciona un material para comenzar.</div>`}
+ </div>
+
+ <div class="card">
+  <h3>Ventas recientes del turno</h3>
+  ${shiftFilter(db.sales).slice().reverse().slice(0,15).map(x=>{
+   const m=db.materials.find(z=>z.id===x.mid);
+   return `<div class="row"><div><b>${esc(m?.name||"Material")}</b>
+   <div class="small">${x.kg} kg · ${x.payment} · ${dateTime(x.date)}</div></div>
+   <div style="text-align:right"><span class="money">${money(x.total)}</span><div class="actions" style="margin-top:6px"><button class="btn secondary" onclick="previewSaleTicket('${x.id}')">👁️ Ver</button><button class="btn secondary" onclick="printTicket('${x.id}')">🖨️ Imprimir</button><button class="btn secondary" onclick="emailSaleTicket('${x.id}')">✉️ Correo</button></div></div></div>`;
+  }).join("")||`<div class="empty">Sin ventas.</div>`}
+ </div>`;
+}
+
+function saleForm(){
+ const m=db.materials.find(x=>x.id===selectedMaterial);
+ const I=inventory();
+
+ return `
+ <h2>Detalle de venta</h2>
+ <div class="success">
+  <b>${esc(m.name)}</b><br>
+  Precio fijo: <b>${money(m.salePrice)}/kg</b><br>
+  Disponible: <b>${(I[m.id]||0).toLocaleString()} kg</b>
+ </div>
+
+ <label>Kilos</label>
+ <input id="saleKg" class="pc-kilos" type="number" inputmode="decimal" min="0" step=".001" oninput="updateSaleTotal()" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmSale()}" placeholder="0.000">
+
+ <label>Cliente</label>
+ <input id="saleCustomer" placeholder="Opcional">
+
+ <label>Método de pago</label>
+ <div class="payment-grid">
+  <button class="payment-btn active" id="payEfectivo" onclick="selectPayment('Efectivo')">💵 Efectivo</button>
+  <button class="payment-btn" id="payTransferencia" onclick="selectPayment('Transferencia')">🏦 Transferencia</button>
+  <button class="payment-btn" id="payTarjeta" onclick="selectPayment('Tarjeta')">💳 Tarjeta</button>
+  <button class="payment-btn" id="payDolares" onclick="selectPayment('Dólares')">💲 Dólares</button>
+ </div>
+
+ <input id="salePayment" type="hidden" value="Efectivo">
+
+ <div id="dollarFields" class="hidden">
+  <label>Dólares recibidos</label>
+  <input id="dollarsReceived" type="number" inputmode="decimal" min="0" step=".01" oninput="updateDollarSale()">
+  <div class="notice">
+   Tipo de cambio del turno: <b>${money(db.currentShift.exchangeRate)}</b>
+  </div>
+  <div id="dollarInfo"></div>
+ </div>
+
+ <div class="total-box">
+  <small>TOTAL DE VENTA</small>
+  <strong id="saleTotal">$0.00</strong>
+ </div>
+
+ <button class="btn full" onclick="confirmSale()">✅ Continuar</button>
+ `;
+}
+
+function selectPayment(p){
+ const input=document.getElementById("salePayment");
+ if(!input)return;
+ input.value=p;
+ ["Efectivo","Transferencia","Tarjeta","Dólares"].forEach(x=>{
+  const id="pay"+x.replace("ó","o");
+  document.getElementById(id)?.classList.toggle("active",x===p);
+ });
+ document.getElementById("dollarFields")?.classList.toggle("hidden",p!=="Dólares");
+ updateDollarSale();
+}
+
+function updateSaleTotal(){
+ const m=db.materials.find(x=>x.id===selectedMaterial);
+ const kg=Number(document.getElementById("saleKg")?.value)||0;
+ if(m)document.getElementById("saleTotal").textContent=money(kg*m.salePrice);
+ updateDollarSale();
+}
+
+function updateDollarSale(){
+ const payment=document.getElementById("salePayment")?.value;
+ if(payment!=="Dólares")return;
+ const total=Number((document.getElementById("saleKg")?.value||0))*
+             Number(db.materials.find(x=>x.id===selectedMaterial)?.salePrice||0);
+ const dollars=Number(document.getElementById("dollarsReceived")?.value)||0;
+ const rate=Number(db.currentShift?.exchangeRate)||0;
+ const received=dollars*rate;
+ const change=received-total;
+ const box=document.getElementById("dollarInfo");
+ if(box)box.innerHTML=`
+ <div class="${change>=0?"success":"notice"}">
+  Equivalente: <b>${money(received)}</b><br>
+  ${change>=0?"Cambio en pesos: "+money(change):"Faltan: "+money(Math.abs(change))}
+ </div>`;
+}
+
+function confirmSale(){
+ if(!requireShift())return;
+ const m=db.materials.find(x=>x.id===selectedMaterial);
+ const kg=Number(document.getElementById("saleKg")?.value)||0;
+ const I=inventory();
+ if(!m||kg<=0)return alert("Selecciona material y cantidad.");
+ if(kg>(I[m.id]||0))return alert("No tienes suficiente inventario.");
+
+ const payment=document.getElementById("salePayment")?.value||"Efectivo";
+ const total=kg*Number(m.salePrice||0);
+ const customer=document.getElementById("saleCustomer")?.value.trim()||"";
+ let dollarsReceived=0,change=0;
+ if(payment==="Dólares"){
+  dollarsReceived=Number(document.getElementById("dollarsReceived")?.value)||0;
+  const received=dollarsReceived*Number(db.currentShift.exchangeRate||0);
+  change=received-total;
+  if(dollarsReceived<=0||change<0)return alert("Los dólares recibidos no cubren el total.");
+ }
+ window._pendingSale={payment,kg,dollarsReceived,change,customer};
+ openModal(`
+ <h2>Confirmar venta</h2>
+ <div class="success"><b>${esc(m.name)}</b><br>${kg.toLocaleString()} kg × ${money(m.salePrice)}${customer?`<br>Cliente: ${esc(customer)}`:""}</div>
+ <div class="total-box"><small>TOTAL</small><strong>${money(total)}</strong></div>
+ <p class="small">Pago: <b>${payment}</b>${payment==="Dólares"?`<br>Dólares recibidos: $${dollarsReceived.toFixed(2)}<br>Cambio: ${money(change)}`:""}</p>
+ <div class="modal-actions">
+  <button class="btn secondary" onclick="closeModal()">Cancelar</button>
+  <button class="btn" id="confirmSaleBtn" onclick="registerPendingSale()">Confirmar venta</button>
+ </div>`);
+}
+
+function registerPendingSale(){
+ const p=window._pendingSale;
+ if(!p)return alert("No hay una venta pendiente de confirmar.");
+ const btn=document.getElementById("confirmSaleBtn");
+ if(btn){btn.disabled=true;btn.textContent="Registrando...";}
+ registerSale(p.payment,p.kg,p.dollarsReceived,p.change,p.customer);
+}
+
+function registerSale(payment,kg,dollarsReceived,change,customer){
+ const m=db.materials.find(x=>x.id===selectedMaterial);
+ const total=kg*Number(m.salePrice||0);
+ const before=inventory()[m.id];
+ const sale={
+  id:uid(),mid:m.id,kg,price:Number(m.salePrice)||0,total,
+  customer:customer||"",
+  payment,
+  dollarsReceived,
+  exchangeRate:payment==="Dólares"?Number(db.currentShift.exchangeRate):0,
+  change,
+  ticket:db.settings.nextTicket++,
+  date:new Date().toISOString(),
+  user:currentUser?.id||"",
+  userName:currentUser?.name||"",
+  shiftId:shiftId()
+ };
+ db.sales.push(sale);
+ db.inventoryMoves.push({
+  id:uid(),mid:m.id,type:"Venta",delta:-kg,before,after:before-kg,
+  reason:"Venta de material",date:sale.date,
+  user:currentUser?.id||"",userName:currentUser?.name||"",shiftId:shiftId()
+ });
+ save();
+ selectedMaterial=null;
+ window._pendingSale=null;
+ closeModal();
+ render();
+ if(db.business.autoPrint)printTicket(sale.id);
+ else if(confirm("Venta registrada. ¿Imprimir ticket?"))printTicket(sale.id);
+}
+
+/* INVENTARIO */
+
+function renderInventario(){
+ const I=inventory();
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  <h2>📦 Inventario</h2>
+  <div class="actions">
+   <button class="btn" onclick="inventoryQuickAdjust()">➕ Ajustar inventario</button>
+   <button class="btn blue" onclick="showInventoryMoves()">📋 Ver movimientos</button>
+  </div>
+  <input id="inventorySearch" style="margin-top:10px" placeholder="🔎 Buscar material..." oninput="filterInventory()">
+  <div id="inventoryList">
+  ${db.materials.map(m=>inventoryRow(m,I)).join("")||`<div class="empty">Sin materiales.</div>`}
+  </div>
+ </div>`;
+}
+
+function inventoryRow(m,I){
+ const stock=I[m.id]||0;
+ return `<div class="row inv-row" data-name="${esc(m.name.toLowerCase())}">
+ <div>
+  <b>${icons[m.name]||"♻️"} ${esc(m.name)}</b>
+  <div class="small">Compra ${money(m.price)} · Venta ${money(m.salePrice)}</div>
+  ${stock<=Number(m.minStock||0)?`<span class="badge low">Inventario bajo</span>`:""}
+ </div>
+ <div style="text-align:right">
+  <b>${stock.toLocaleString()} kg</b>
+  <br><button class="btn secondary" onclick="inventoryAdjust('${m.id}')">Ajustar</button>
+ </div>
+ </div>`;
+}
+
+function filterInventory(){
+ const q=document.getElementById("inventorySearch").value.toLowerCase();
+ document.querySelectorAll(".inv-row").forEach(x=>x.style.display=x.dataset.name.includes(q)?"flex":"none");
+}
+
+function inventoryQuickAdjust(){
+ if(!db.materials.length)return alert("No hay materiales.");
+ inventoryAdjust(db.materials[0].id);
+}
+
+function inventoryAdjust(id){
+ const m=db.materials.find(x=>x.id===id);
+ const I=inventory();
+ openModal(`
+ <h2>Ajustar inventario</h2>
+ <div class="notice">${esc(m.name)} · Actual: <b>${(I[id]||0).toLocaleString()} kg</b></div>
+ <label>Material</label>
+ <select id="adjMaterial" onchange="refreshAdjustmentMaterial()">
+ ${db.materials.map(x=>`<option value="${x.id}" ${x.id===id?"selected":""}>${esc(x.name)}</option>`).join("")}
+ </select>
+ <label>Tipo</label>
+ <select id="adjType">
+  <option value="add">➕ Agregar</option>
+  <option value="remove">➖ Retirar</option>
+  <option value="set">📦 Establecer cantidad</option>
+ </select>
+ <label>Cantidad</label>
+ <input id="adjKg" type="number" inputmode="decimal" min="0" step=".001">
+ <label>Motivo</label>
+ <input id="adjReason" placeholder="Conteo físico, merma, etc.">
+ <button class="btn full" onclick="confirmAdjustment()">Continuar</button>
+ `);
+}
+
+function refreshAdjustmentMaterial(){}
+
+function confirmAdjustment(){
+ const id=document.getElementById("adjMaterial").value;
+ const type=document.getElementById("adjType").value;
+ const amount=Number(document.getElementById("adjKg").value)||0;
+ const reason=document.getElementById("adjReason").value.trim();
+ if(amount<0||!reason)return alert("Completa los datos.");
+ const I=inventory();
+ let delta=type==="remove"?-amount:type==="set"?amount-(I[id]||0):amount;
+ const m=db.materials.find(x=>x.id===id);
+ openModal(`
+ <h2>Confirmar ajuste</h2>
+ <div class="notice">${esc(m.name)}<br>${delta>=0?"+":""}${delta.toLocaleString()} kg</div>
+ <p>Inventario: <b>${(I[id]||0).toLocaleString()} kg → ${(I[id]+delta).toLocaleString()} kg</b></p>
+ <p class="small">Motivo: ${esc(reason)}</p>
+ <div class="modal-actions">
+  <button class="btn secondary" onclick="closeModal()">Cancelar</button>
+  <button class="btn" onclick="saveAdjustment('${id}',${delta},${JSON.stringify(type)},${JSON.stringify(reason)})">Confirmar</button>
+ </div>`);
+}
+
+function saveAdjustment(id,delta,type,reason){
+ const before=inventory()[id];
+ db.adjustments.push({
+  id:uid(),mid:id,delta,type,amount:Math.abs(delta),reason,
+  date:new Date().toISOString(),user:currentUser?.id||"",
+  userName:currentUser?.name||"",shiftId:shiftId()
+ });
+ db.inventoryMoves.push({
+  id:uid(),mid:id,type:delta>=0?"Ajuste positivo":"Ajuste negativo",
+  delta,before,after:before+delta,reason,
+  date:new Date().toISOString(),user:currentUser?.id||"",
+  userName:currentUser?.name||"",shiftId:shiftId()
+ });
+ save();closeModal();render();
+}
+
+function showInventoryMoves(){
+ const rows=db.inventoryMoves.slice().reverse().slice(0,100);
+ openModal(`
+ <h2>📋 Movimientos de inventario</h2>
+ ${rows.length?rows.map(x=>{
+  const m=db.materials.find(z=>z.id===x.mid);
+  return `<div class="row">
+   <div>
+    <b>${icons[m?.name]||"♻️"} ${esc(m?.name||"Material")}</b>
+    <div class="small">${esc(x.type)} · ${esc(x.userName||"Usuario")} · ${dateTime(x.date)}</div>
+    <div class="small">${esc(x.reason||"")} · ${x.before.toLocaleString()} → ${x.after.toLocaleString()} kg</div>
+   </div>
+   <span class="money">${x.delta>=0?"+":""}${x.delta.toLocaleString()} kg</span>
+  </div>`;
+ }).join(""):`<div class="empty">Sin movimientos.</div>`}
+ <button class="btn secondary full" onclick="closeModal()">Cerrar</button>
+ `);
+}
+
+/* CAJA Y TURNOS */
+
+function openShift(){
+ if(db.currentShift)return;
+ openModal(`
+ <h2>🟢 Abrir turno</h2>
+ <div class="notice">Es obligatorio abrir un turno antes de operar.</div>
+ <label>Fondo inicial en pesos</label>
+ <input id="openingCash" type="number" inputmode="decimal" min="0" step=".01" placeholder="0.00">
+ <label>Fondo inicial en dólares</label>
+ <input id="openingDollars" type="number" inputmode="decimal" min="0" step=".01" placeholder="0.00">
+ <label>Tipo de cambio del día</label>
+ <input id="exchangeRate" type="number" inputmode="decimal" min="0" step=".0001" placeholder="Ej. 18.50">
+ <button class="btn full" onclick="saveShift()">Abrir turno</button>
+ `);
+}
+
+function saveShift(){
+ const cash=Number(document.getElementById("openingCash").value)||0;
+ const dollars=Number(document.getElementById("openingDollars").value)||0;
+ const rate=Number(document.getElementById("exchangeRate").value)||0;
+ if(rate<=0)return alert("Escribe el tipo de cambio.");
+ db.currentShift={
+  id:uid(),
+  userId:currentUser.id,
+  userName:currentUser.name,
+  openedAt:new Date().toISOString(),
+  openingCash:cash,
+  openingDollars:dollars,
+  exchangeRate:rate
+ };
+ save();closeModal();render();
+}
+
+function cashExpected(){
+ const s=db.currentShift;
+ if(!s)return 0;
+ const sales=shiftFilter(db.sales).filter(x=>x.payment==="Efectivo").reduce((a,x)=>a+x.total,0);
+ const expenses=shiftFilter(db.expenses).filter(x=>x.payment==="Efectivo").reduce((a,x)=>a+x.amount,0);
+ const moves=shiftFilter(db.cashMoves).reduce((a,x)=>a+x.amount,0);
+ return Number(s.openingCash)+sales-expenses+moves;
+}
+
+function renderCaja(){
+ const s=db.currentShift;
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  ${s?`
+  <div class="shift-card shift-open">
+   <h2>🟢 Turno abierto</h2>
+   <div class="small">Abrió: <b>${esc(s.userName)}</b></div>
+   <div class="small">${dateTime(s.openedAt)}</div>
+   <div class="small">Fondo: ${money(s.openingCash)} · $${s.openingDollars.toFixed(2)} USD · TC ${money(s.exchangeRate)}</div>
+  </div>
+  <div class="total-box"><small>EFECTIVO ESPERADO</small><strong>${money(cashExpected())}</strong></div>
+  <div class="actions">
+   <button class="btn" onclick="cashMove(1)">+ Entrada</button>
+   <button class="btn danger" onclick="cashMove(-1)">− Salida</button>
+   <button class="btn orange" onclick="closeShift()">🔴 Cerrar turno</button>
+  </div>
+  `:`
+  <div class="shift-card">
+   <h2>🔴 No hay turno abierto</h2>
+   <button class="btn full" onclick="openShift()">🟢 Abrir turno</button>
+  </div>`}
+ </div>
+
+ <div class="card">
+  <h2>Historial de turnos</h2>
+  ${db.shifts.slice().reverse().slice(0,30).map(s=>`
+   <div class="row">
+    <div><b>Turno cerrado</b><div class="small">${esc(s.userName||s.openedBy||"")} · ${dateTime(s.openedAt)} → ${dateTime(s.closedAt)}</div></div>
+    <div style="text-align:right"><b>${money(s.countedCash)}</b><div class="small">Esperado ${money(s.expectedCash)} · Dif. ${money(s.difference)}</div><div class="actions" style="margin-top:6px"><button class="btn secondary" onclick="previewCashCut('${s.id}')">👁️ Ver corte</button><button class="btn secondary" onclick="printCashCut('${s.id}')">🖨️ Imprimir</button><button class="btn secondary" onclick="emailCashCut('${s.id}')">✉️ Correo</button></div></div>
+   </div>
+  `).join("")||`<div class="empty">No hay turnos anteriores.</div>`}
+ </div>`;
+}
+
+function cashMove(sign){
+ if(!requireShift())return;
+ const amount=Number(prompt(sign>0?"Cantidad de entrada:":"Cantidad de salida:"))||0;
+ if(amount<=0)return;
+ const reason=prompt("Motivo:");
+ if(!reason)return;
+ if(sign<0&&amount>cashExpected())return alert("La salida supera el efectivo esperado.");
+ db.cashMoves.push({
+  id:uid(),amount:amount*sign,reason,date:new Date().toISOString(),
+  user:currentUser.id,userName:currentUser.name,shiftId:shiftId()
+ });
+ save();render();
+}
+
+function closeShift(){
+ if(!db.currentShift)return;
+ const s=db.currentShift;
+ const sales=shiftFilter(db.sales);
+ const purchases=shiftFilter(db.purchases);
+ const expenses=shiftFilter(db.expenses);
+ const moves=shiftFilter(db.cashMoves);
+
+ const saleTotal=sales.reduce((a,x)=>a+x.total,0);
+ const buyTotal=purchases.reduce((a,x)=>a+x.total,0);
+ const expenseTotal=expenses.reduce((a,x)=>a+x.amount,0);
+ const expected=cashExpected();
+
+ const methods={};
+ sales.forEach(x=>methods[x.payment]=(methods[x.payment]||0)+x.total);
+
+ openModal(`
+ <h2>🔴 Cerrar turno</h2>
+ <div class="grid">
+  <div class="stat"><span>Fondo inicial</span><b>${money(s.openingCash)}</b></div>
+  <div class="stat"><span>Ventas</span><b>${money(saleTotal)}</b></div>
+  <div class="stat"><span>Compras</span><b>${money(buyTotal)}</b></div>
+  <div class="stat"><span>Gastos</span><b>${money(expenseTotal)}</b></div>
+ </div>
+ <div class="card" style="margin-top:10px;background:#f7f8f8">
+  <b>Ventas por método</b>
+  ${Object.entries(methods).map(([k,v])=>`<div class="row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join("")}
+ </div>
+ <div class="notice">Efectivo esperado: <b>${money(expected)}</b></div>
+ <label>Efectivo contado</label>
+ <input id="closingCash" type="number" inputmode="decimal" min="0" step=".01">
+ <div class="modal-actions">
+  <button class="btn secondary" onclick="closeModal()">Cancelar</button>
+  <button class="btn danger" onclick="saveShiftClose()">Cerrar turno</button>
+ </div>
+ `);
+}
+
+function saveShiftClose(){
+ const counted=Number(document.getElementById("closingCash").value)||0;
+ const s=db.currentShift;
+ const expected=cashExpected();
+
+ const summary={
+  ...s,
+  closedAt:new Date().toISOString(),
+  closedBy:currentUser.name,
+  closingUserId:currentUser.id,
+  countedCash:counted,
+  expectedCash:expected,
+  difference:counted-expected,
+  sales:shiftFilter(db.sales).map(x=>({...x})),
+  purchases:shiftFilter(db.purchases).map(x=>({...x})),
+  expenses:shiftFilter(db.expenses).map(x=>({...x})),
+  cashMoves:shiftFilter(db.cashMoves).map(x=>({...x})),
+  totalSales:shiftFilter(db.sales).reduce((a,x)=>a+x.total,0),
+  totalPurchases:shiftFilter(db.purchases).reduce((a,x)=>a+x.total,0),
+  totalExpenses:shiftFilter(db.expenses).reduce((a,x)=>a+x.amount,0)
+ };
+
+ db.shifts.push(summary);
+ db.cashCuts.push({
+  id:uid(),number:db.cashCuts.length+1,
+  expectedCash:expected,closingCash:counted,
+  difference:counted-expected,date:new Date().toISOString(),
+  user:currentUser.id,userName:currentUser.name,shiftId:s.id
+ });
+ db.currentShift=null;
+ save();
+ closeModal();
+ alert("Turno cerrado.\nDiferencia: "+money(counted-expected));
+ render();
+}
+
+function buildCashCutText(s){
+ const sales=s.sales||[], moves=s.cashMoves||[];
+ const width=db.business.paper==="58mm"?32:48;
+ const lines=[], add=x=>lines.push(normalizeTicketText(x));
+ add(db.business.name);add("CORTE DE CAJA");add("-".repeat(width));add("Usuario: "+(s.userName||""));add(dateTime(s.openedAt));add("Cierre: "+dateTime(s.closedAt));add("-".repeat(width));
+ add(padTicket("Fondo",money(s.openingCash),width));add(padTicket("Ventas",money(s.totalSales),width));add(padTicket("Compras",money(s.totalPurchases),width));add(padTicket("Gastos",money(s.totalExpenses),width));add(padTicket("Esperado",money(s.expectedCash),width));add(padTicket("Contado",money(s.countedCash),width));add(padTicket("DIFERENCIA",money(s.difference),width));add("-".repeat(width));
+ const methods={};sales.forEach(x=>methods[x.payment]=(methods[x.payment]||0)+Number(x.total||0));Object.entries(methods).forEach(([k,v])=>add(padTicket(k,money(v),width)));moves.forEach(x=>add((x.amount>=0?"Entrada ":"Salida ")+money(Math.abs(x.amount))));add("-".repeat(width));add(db.business.message||"");
+ return lines.join("\n");
+}
+function buildCashCutHtml(s){
+ const text=buildCashCutText(s);
+ return `<div class="ticket" style="white-space:pre-line">${esc(text)}</div>`;
+}
+function previewCashCut(shiftId){
+ const s=db.shifts.find(x=>x.id===shiftId);if(!s)return;
+ openModal(buildCashCutHtml(s)+`<div class="modal-actions"><button class="btn secondary" onclick="closeModal()">Cerrar</button><button class="btn" onclick="printCashCut('${s.id}')">🖨️ Imprimir</button><button class="btn blue" onclick="emailCashCut('${s.id}')">✉️ Enviar por correo</button></div>`);
+}
+async function printCashCut(shiftId){
+ const sh=db.shifts.find(x=>x.id===shiftId);if(!sh)return;
+ const printer=db.business.printerName;if(!printer)return alert('No hay una impresora de tickets configurada. Ve a Configuración → Impresora de tickets.');
+ const html=buildCashCutHtml(sh);
+ if(db.business.printMode==='raw'&&window.pc?.printRaw){
+   const raw=await window.pc.printRaw(printer,buildEscPosCut(sh,db.business.autoCut!==false));
+   if(raw?.success)return;
+   const win=await window.pc?.printPreview(html,printer,db.business.paper);
+   if(win?.success)return;
+   return alert('No se pudo imprimir el corte.\n\nRAW: '+(raw?.error||'falló')+'\nWindows: '+(win?.failureReason||'falló'));
+ }
+ const r=await window.pc?.printPreview(html,printer,db.business.paper);
+ if(!r?.success)alert('No se pudo imprimir el corte: '+(r?.failureReason||'error de impresión'));
+}
+async function emailText(subject,text){
+ const recipient=prompt('Correo del destinatario:');if(!recipient)return;
+ const safe=recipient.trim();
+ const choice=prompt('Escribe 1 Gmail, 2 Outlook o 3 Copiar contenido:', '1');
+ if(choice==='3'){try{await navigator.clipboard.writeText(text);alert('Contenido copiado. Abre tu correo y pega el ticket/corte.');}catch(e){alert('No se pudo copiar automáticamente. Selecciona el texto de la vista previa y cópialo.');}return;}
+ const to=encodeURIComponent(safe),su=encodeURIComponent(subject),body=encodeURIComponent(text);
+ const url=choice==='2' ? `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${su}&body=${body}` : `https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=${to}&su=${su}&body=${body}`;
+ if(window.pc?.openExternal){const r=await window.pc.openExternal(url);if(!r?.success)alert('No se pudo abrir el correo. Usa la opción 3 para copiar el contenido.');}
+ else window.open(url,'_blank');
+}
+
+function emailCashCut(shiftId){const s=db.shifts.find(x=>x.id===shiftId);if(s)emailText("Corte de caja - "+db.business.name,buildCashCutText(s));}
+
+/* GASTOS */
+
+function renderGastos(){
+ if(!db.currentShift){
+  document.getElementById("app").innerHTML=`<div class="card"><h2>🔒 Gastos bloqueados</h2><p class="small">Abre un turno primero.</p><button class="btn full" onclick="go('caja')">Abrir turno</button></div>`;
+  return;
+ }
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  <h2>💸 Registrar gasto</h2>
+  <label>Concepto</label><input id="expenseName" placeholder="Gasolina">
+  <label>Cantidad</label><input id="expenseAmount" type="number" inputmode="decimal" step=".01">
+  <label>Forma de pago</label>
+  <select id="expensePayment"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option></select>
+  <label>Observaciones</label><textarea id="expenseNote"></textarea>
+  <button class="btn full" onclick="confirmExpense()">Guardar gasto</button>
+ </div>
+ <div class="card"><h2>Gastos recientes</h2>
+ ${shiftFilter(db.expenses).slice().reverse().map(x=>`<div class="row"><div><b>${esc(x.name)}</b><div class="small">${dateTime(x.date)} · ${x.payment}</div></div><span class="money">${money(x.amount)}</span></div>`).join("")||`<div class="empty">Sin gastos.</div>`}
+ </div>`;
+}
+
+function confirmExpense(){
+ if(!requireShift())return;
+ const name=document.getElementById("expenseName").value.trim();
+ const amount=Number(document.getElementById("expenseAmount").value)||0;
+ const payment=document.getElementById("expensePayment").value;
+ if(!name||amount<=0)return alert("Revisa los datos.");
+ openModal(`
+ <h2>Confirmar gasto</h2>
+ <p>${esc(name)}</p>
+ <div class="total-box"><small>TOTAL</small><strong>${money(amount)}</strong></div>
+ <p class="small">Pago: ${payment}</p>
+ <div class="modal-actions">
+ <button class="btn secondary" onclick="closeModal()">Cancelar</button>
+ <button class="btn danger" onclick="saveExpense()">Confirmar</button>
+ </div>`);
+}
+function saveExpense(){
+ db.expenses.push({
+  id:uid(),
+  name:document.getElementById("expenseName").value.trim(),
+  amount:Number(document.getElementById("expenseAmount").value)||0,
+  payment:document.getElementById("expensePayment").value,
+  note:document.getElementById("expenseNote").value.trim(),
+  date:new Date().toISOString(),
+  user:currentUser.id,userName:currentUser.name,shiftId:shiftId()
+ });
+ save();closeModal();render();
+}
+
+/* REPORTES */
+
+function renderReportes(){
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  <h2>📊 Reportes</h2>
+  <select id="reportType" onchange="updateReport()">
+   <option value="sales">💰 Ventas</option>
+   <option value="purchases">🛒 Compras</option>
+   <option value="inventory">📦 Inventario</option>
+   <option value="cash">💵 Caja / Turnos</option>
+   <option value="users">👤 Usuarios</option>
+  </select>
+  <select id="reportPeriod" style="margin-top:7px" onchange="updateReport()">
+   <option value="today">Hoy</option>
+   <option value="week">Esta semana</option>
+   <option value="month">Este mes</option>
+   <option value="all">Todo</option>
+  </select>
+  <div id="reportResult" style="margin-top:12px"></div>
+ </div>`;
+ updateReport();
+}
+
+function getPeriod(){
+ const type=document.getElementById("reportPeriod").value;
+ const now=new Date();
+ let start,end;
+ if(type==="today"){start=todayStart();end=todayEnd()}
+ else if(type==="week"){
+  start=todayStart();start.setDate(start.getDate()-((start.getDay()+6)%7));end=todayEnd();
+ }else if(type==="month"){
+  start=new Date(now.getFullYear(),now.getMonth(),1);end=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999);
+ }else{start=new Date(0);end=new Date(8640000000000000)}
+ return {start,end};
+}
+function inPeriod(d,p){const x=new Date(d);return x>=p.start&&x<=p.end}
+
+function updateReport(){
+ const type=document.getElementById("reportType").value;
+ const p=getPeriod();
+
+ if(type==="inventory"){renderInventoryReport();return}
+ if(type==="cash"){renderCashReport();return}
+ if(type==="users"){renderUserReport();return}
+
+ let arr=type==="sales"?db.sales:db.purchases;
+ arr=arr.filter(x=>inPeriod(x.date,p));
+
+ if(type==="purchases"){
+  const total=arr.reduce((a,x)=>a+x.total,0);
+  const kg=arr.reduce((a,x)=>a+(x.kg||0),0)+arr.reduce((a,x)=>a+(x.items||[]).reduce((q,i)=>q+i.kg,0),0);
+  document.getElementById("reportResult").innerHTML=`
+   <div class="grid">
+    <div class="stat"><span>Total comprado</span><b>${money(total)}</b></div>
+    <div class="stat"><span>Kg comprados</span><b>${kg.toLocaleString()}</b></div>
+    <div class="stat"><span>Operaciones</span><b>${arr.length}</b></div>
+    <div class="stat"><span>Promedio</span><b>${money(arr.length?total/arr.length:0)}</b></div>
+   </div>
+   <div class="card" style="margin-top:12px"><h3>Compras</h3>
+   ${arr.slice().reverse().map(x=>`<div class="row"><div><b>${(x.items||[]).map(i=>esc(db.materials.find(m=>m.id===i.mid)?.name||"Material")).join(", ")}</b><div class="small">${esc(x.userName)} · ${x.payment} · ${dateTime(x.date)}</div></div><div style="text-align:right"><b>${money(x.total)}</b><div class="actions" style="margin-top:6px"><button class="btn secondary" onclick="previewPurchaseTicket('${x.id}')">👁️ Ver</button><button class="btn secondary" onclick="printPurchaseTicket('${x.id}')">🖨️ Imprimir</button><button class="btn secondary" onclick="emailPurchaseTicket('${x.id}')">✉️ Correo</button></div></div></div>`).join("")||`<div class="empty">Sin compras.</div>`}
+   </div>`;
+ }else{
+  const total=arr.reduce((a,x)=>a+x.total,0);
+  const kg=arr.reduce((a,x)=>a+x.kg,0);
+  const byPay={};
+  arr.forEach(x=>byPay[x.payment]=(byPay[x.payment]||0)+x.total);
+  document.getElementById("reportResult").innerHTML=`
+   <div class="grid">
+    <div class="stat"><span>Total vendido</span><b>${money(total)}</b></div>
+    <div class="stat"><span>Kg vendidos</span><b>${kg.toLocaleString()}</b></div>
+    <div class="stat"><span>Operaciones</span><b>${arr.length}</b></div>
+    <div class="stat"><span>Venta promedio</span><b>${money(arr.length?total/arr.length:0)}</b></div>
+   </div>
+   <div class="card" style="margin-top:12px"><h3>Por método de pago</h3>
+   ${Object.entries(byPay).map(([k,v])=>`<div class="row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join("")}</div>
+   <div class="card"><h3>Ventas</h3>
+   ${arr.slice().reverse().map(x=>`<div class="row"><div><b>${esc(db.materials.find(m=>m.id===x.mid)?.name||"Material")}</b><div class="small">${x.kg} kg · ${esc(x.userName)} · ${dateTime(x.date)}</div></div><b>${money(x.total)}</b></div>`).join("")||`<div class="empty">Sin ventas.</div>`}
+   </div>`;
+ }
+}
+
+function renderInventoryReport(){
+ const I=inventory();
+ const total=Object.entries(I).reduce((a,[id,kg])=>{
+  const m=db.materials.find(x=>x.id===id);
+  return a+kg*(Number(m?.price)||0);
+ },0);
+ document.getElementById("reportResult").innerHTML=`
+ <div class="grid">
+  <div class="stat"><span>Inventario</span><b>${Object.values(I).reduce((a,b)=>a+b,0).toLocaleString()} kg</b></div>
+  <div class="stat"><span>Valor estimado</span><b>${money(total)}</b></div>
+  <div class="stat"><span>Movimientos</span><b>${db.inventoryMoves.length}</b></div>
+  <div class="stat"><span>Materiales</span><b>${db.materials.length}</b></div>
+ </div>
+ <div class="card" style="margin-top:12px"><h3>Inventario actual</h3>
+ ${db.materials.map(m=>`<div class="row"><span>${esc(m.name)}</span><b>${(I[m.id]||0).toLocaleString()} kg</b></div>`).join("")}</div>`;
+}
+
+function renderCashReport(){
+ const rows=db.shifts.slice().reverse();
+ document.getElementById("reportResult").innerHTML=rows.map(s=>`
+ <div class="shift-card">
+  <b>Turno · ${dateOnly(s.openedAt)}</b>
+  <div class="small">${esc(s.openedBy)} → ${esc(s.closedBy)}</div>
+  <div class="small">Apertura ${dateTime(s.openedAt)}<br>Cierre ${dateTime(s.closedAt)}</div>
+  <div class="grid" style="margin-top:8px">
+   <div class="stat"><span>Ventas</span><b>${money(s.totalSales)}</b></div>
+   <div class="stat"><span>Compras</span><b>${money(s.totalPurchases)}</b></div>
+   <div class="stat"><span>Gastos</span><b>${money(s.totalExpenses)}</b></div>
+   <div class="stat"><span>Diferencia</span><b>${money(s.difference)}</b></div>
+  </div>
+ </div>`).join("")||`<div class="empty">Sin turnos cerrados.</div>`;
+}
+
+function renderUserReport(){
+ const users={};
+ [...db.sales,...db.purchases,...db.expenses,...db.adjustments,...db.cashMoves].forEach(x=>{
+  if(!users[x.userName])users[x.userName]={ops:0,sales:0,purchases:0,expenses:0,adjustments:0,cash:0};
+  users[x.userName].ops++;
+  if(db.sales.includes(x))users[x.userName].sales++;
+  if(db.purchases.includes(x))users[x.userName].purchases++;
+  if(db.expenses.includes(x))users[x.userName].expenses++;
+  if(db.adjustments.includes(x))users[x.userName].adjustments++;
+  if(db.cashMoves.includes(x))users[x.userName].cash++;
+ });
+ document.getElementById("reportResult").innerHTML=Object.entries(users).map(([name,v])=>`
+ <div class="card" style="margin-bottom:8px">
+  <b>👤 ${esc(name)}</b>
+  <div class="grid" style="margin-top:8px">
+   <div class="stat"><span>Operaciones</span><b>${v.ops}</b></div>
+   <div class="stat"><span>Ventas</span><b>${v.sales}</b></div>
+   <div class="stat"><span>Compras</span><b>${v.purchases}</b></div>
+   <div class="stat"><span>Inventario</span><b>${v.adjustments}</b></div>
+  </div>
+ </div>`).join("")||`<div class="empty">Sin operaciones.</div>`;
+}
+
+/* MATERIALES */
+
+function renderMateriales(){
+ const I=inventory();
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+  <h2>♻️ Materiales</h2>
+  <label>Nombre</label><input id="newMaterialName" placeholder="Ej. Cobre quemado">
+  <label>Precio fijo de compra por kg</label><input id="newBuyPrice" type="number" step=".01">
+  <label>Precio fijo de venta por kg</label><input id="newSalePrice" type="number" step=".01">
+  <label>Inventario inicial</label><input id="newInitial" type="number" step=".001">
+  <label>Inventario mínimo</label><input id="newMin" type="number" step=".001">
+  <button class="btn full" onclick="addMaterial()">+ Agregar material</button>
+  <button class="btn secondary full" onclick="seedMaterials()">Agregar materiales comunes</button>
+ </div>
+ <div class="card"><h2>Mis materiales</h2>
+ ${db.materials.map(m=>`
+ <div class="row"><div><b>${icons[m.name]||"♻️"} ${esc(m.name)}</b>
+ <div class="small">Compra ${money(m.price)} · Venta ${money(m.salePrice)} · Stock ${(I[m.id]||0).toLocaleString()} kg</div>
+ </div><button class="btn secondary" onclick="editMaterial('${m.id}')">Editar</button></div>
+ `).join("")||`<div class="empty">No hay materiales.</div>`}
+ </div>`;
+}
+
+function addMaterial(){
+ const name=document.getElementById("newMaterialName").value.trim();
+ if(!name)return alert("Escribe el nombre.");
+ db.materials.push({
+  id:uid(),name,
+  price:Number(document.getElementById("newBuyPrice").value)||0,
+  salePrice:Number(document.getElementById("newSalePrice").value)||0,
+  initial:Number(document.getElementById("newInitial").value)||0,
+  minStock:Number(document.getElementById("newMin").value)||0
+ });
+ save();render();
+}
+function seedMaterials(){
+ common.forEach(name=>{
+  if(!db.materials.some(m=>m.name.toLowerCase()===name.toLowerCase()))
+   db.materials.push({id:uid(),name,price:0,salePrice:0,initial:0,minStock:0});
+ });
+ save();render();
+}
+function editMaterial(id){
+ const m=db.materials.find(x=>x.id===id);
+ openModal(`
+ <h2>Editar material</h2>
+ <label>Nombre</label><input id="emName" value="${esc(m.name)}">
+ <label>Precio fijo de compra</label><input id="emBuy" type="number" step=".01" value="${m.price}">
+ <label>Precio fijo de venta</label><input id="emSale" type="number" step=".01" value="${m.salePrice}">
+ <label>Inventario mínimo</label><input id="emMin" type="number" step=".001" value="${m.minStock||0}">
+ <button class="btn full" onclick="saveMaterial('${id}')">Guardar cambios</button>
+ <button class="btn danger full" onclick="deleteMaterial('${id}')">Eliminar material</button>`);
+}
+function saveMaterial(id){
+ const m=db.materials.find(x=>x.id===id);
+ m.name=document.getElementById("emName").value.trim();
+ m.price=Number(document.getElementById("emBuy").value)||0;
+ m.salePrice=Number(document.getElementById("emSale").value)||0;
+ m.minStock=Number(document.getElementById("emMin").value)||0;
+ save();closeModal();render();
+}
+function deleteMaterial(id){
+ if(!confirm("¿Eliminar este material?"))return;
+ db.materials=db.materials.filter(x=>x.id!==id);
+ save();closeModal();render();
+}
+
+/* NEGOCIO */
+
+function renderNegocio(){
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+ <h2>🏪 Mi negocio</h2>
+ <label>Nombre</label><input id="bizName" value="${esc(db.business.name)}">
+ <label>Dirección</label><input id="bizAddress" value="${esc(db.business.address)}">
+ <label>Teléfono</label><input id="bizPhone" value="${esc(db.business.phone)}">
+ <label>RFC / dato fiscal</label><input id="bizTax" value="${esc(db.business.taxId)}">
+ <label>Mensaje del ticket</label><textarea id="bizMessage">${esc(db.business.message)}</textarea>
+ <label>Logo</label><input id="bizLogo" type="file" accept="image/*">
+ ${db.business.logo?`<div style="text-align:center;margin:10px"><img src="${db.business.logo}" style="max-width:180px;max-height:90px"><br><button class="btn danger" onclick="removeLogo()">Quitar logo</button></div>`:""}
+ <button class="btn full" onclick="saveBusiness()">Guardar datos</button>
+ </div>
+ <div class="card"><h2>🧾 Ticket</h2><button class="btn secondary full" onclick="previewTicket()">Vista previa</button><button class="btn blue full" onclick="go('impresora')">🖨️ Configurar impresora de tickets</button></div>`;
+}
+function saveBusiness(){
+ const file=document.getElementById("bizLogo").files[0];
+ db.business.name=document.getElementById("bizName").value.trim()||"Mi Recicladora";
+ db.business.address=document.getElementById("bizAddress").value.trim();
+ db.business.phone=document.getElementById("bizPhone").value.trim();
+ db.business.taxId=document.getElementById("bizTax").value.trim();
+ db.business.message=document.getElementById("bizMessage").value.trim();
+ if(file){
+  const reader=new FileReader();
+  reader.onload=()=>{db.business.logo=reader.result;save();loadLogin();render();};
+  reader.readAsDataURL(file);
+ }else{save();loadLogin();render();}
+}
+function removeLogo(){db.business.logo="";save();render()}
+
+/* TICKET */
+
+function ticketHeaderHtml(title, subtitle){
+ return `<div class="ticket-head">
+  ${db.business.logo?`<img class="logo-ticket" src="${db.business.logo}">`:''}
+  <div class="ticket-brand">${esc(db.business.name)}</div>
+  ${db.business.address?`<div class="ticket-meta">${esc(db.business.address)}</div>`:''}
+  ${db.business.phone?`<div class="ticket-meta">Tel. ${esc(db.business.phone)}</div>`:''}
+  ${db.business.taxId?`<div class="ticket-meta">${esc(db.business.taxId)}</div>`:''}
+  <div class="ticket-subtitle">${esc(title)}</div>
+  ${subtitle?`<div class="ticket-meta">${esc(subtitle)}</div>`:''}
+ </div>`;
+}
+function buildTicket(sale){
+ const m=db.materials.find(x=>x.id===sale.mid);
+ return `<div class="ticket">
+  ${ticketHeaderHtml('TICKET DE VENTA','Folio #'+String(sale.ticket).padStart(6,'0'))}
+  <div class="ticket-rule"></div>
+  <div class="ticket-row"><span>FECHA</span><b>${dateTime(sale.date)}</b></div>
+  <div class="ticket-row"><span>CAJERO</span><b>${esc(sale.userName||'')}</b></div>
+  ${sale.customer?`<div class="ticket-row"><span>CLIENTE</span><b>${esc(sale.customer)}</b></div>`:''}
+  <div class="ticket-rule"></div>
+  <div class="ticket-label">MATERIAL</div>
+  <div class="ticket-row"><div><div class="ticket-item-name">${esc(m?.name||'Material')}</div><div class="ticket-item-detail">${Number(sale.kg||0).toLocaleString()} kg × ${money(sale.price)}/kg</div></div><b>${money(sale.total)}</b></div>
+  <div class="ticket-total-box"><div class="ticket-row ticket-total"><span>TOTAL</span><span>${money(sale.total)}</span></div></div>
+  <div class="ticket-payment"><div class="ticket-row"><span>FORMA DE PAGO</span><b>${esc(sale.payment||'Efectivo')}</b></div>
+  ${sale.payment==='Dólares'?`<div class="ticket-row"><span>RECIBIDO USD</span><b>$${Number(sale.dollarsReceived||0).toFixed(2)}</b></div><div class="ticket-row"><span>TIPO DE CAMBIO</span><b>${Number(sale.exchangeRate||0).toFixed(4)}</b></div><div class="ticket-row"><span>CAMBIO</span><b>${money(sale.change||0)}</b></div>`:''}</div>
+  <div class="ticket-barcode">*${String(sale.ticket).padStart(6,'0')}*</div>
+  <div class="ticket-footer"><div class="ticket-rule"></div>${esc(db.business.message||'Gracias por su compra.')}</div>
+ </div>`;
+}
+function buildPurchaseTicket(purchase){
+ const items=purchase.items||[];
+ return `<div class="ticket">
+  ${ticketHeaderHtml('TICKET DE COMPRA','Folio #'+String(purchase.ticket||purchase.id?.slice(-6)||'').padStart(6,'0'))}
+  <div class="ticket-rule"></div>
+  <div class="ticket-row"><span>FECHA</span><b>${dateTime(purchase.date)}</b></div>
+  <div class="ticket-row"><span>COMPRADOR</span><b>${esc(purchase.userName||'')}</b></div>
+  <div class="ticket-rule"></div>
+  <div class="ticket-label">MATERIAL RECIBIDO</div>
+  ${items.map(i=>{const m=db.materials.find(x=>x.id===i.mid);return `<div class="ticket-row"><div><div class="ticket-item-name">${esc(m?.name||'Material')}</div><div class="ticket-item-detail">${Number(i.kg||0).toLocaleString()} kg × ${money(i.price)}/kg</div></div><b>${money(i.subtotal)}</b></div>`}).join('')}
+  <div class="ticket-kpis"><div class="ticket-kpi"><span>KILOS TOTALES</span><b>${items.reduce((a,i)=>a+Number(i.kg||0),0).toLocaleString()} kg</b></div><div class="ticket-kpi"><span>PARTIDAS</span><b>${items.length}</b></div></div>
+  <div class="ticket-total-box"><div class="ticket-row ticket-total"><span>TOTAL PAGADO</span><span>${money(purchase.total)}</span></div></div>
+  <div class="ticket-payment"><div class="ticket-row"><span>FORMA DE PAGO</span><b>${esc(purchase.payment||'Efectivo')}</b></div></div>
+  <div class="ticket-barcode">*${String(purchase.ticket||purchase.id?.slice(-6)||'').replace(/[^0-9A-Z]/gi,'')}*</div>
+  <div class="ticket-footer"><div class="ticket-rule"></div>Compra de material · ${esc(db.business.message||'Gracias por su preferencia.')}</div>
+ </div>`;
+}
+function buildCashCutHtml(s){
+ const sales=s.sales||[], purchases=s.purchases||[], expenses=s.expenses||[], moves=s.cashMoves||[];
+ const methods={};sales.forEach(x=>methods[x.payment]=(methods[x.payment]||0)+Number(x.total||0));
+ return `<div class="ticket">
+  ${ticketHeaderHtml('CORTE DE CAJA','Turno #'+String(s.id||'').slice(-6).toUpperCase())}
+  <div class="ticket-rule"></div>
+  <div class="ticket-row"><span>USUARIO</span><b>${esc(s.userName||'')}</b></div>
+  <div class="ticket-row"><span>APERTURA</span><b>${dateTime(s.openedAt)}</b></div>
+  <div class="ticket-row"><span>CIERRE</span><b>${dateTime(s.closedAt)}</b></div>
+  <div class="ticket-rule"></div>
+  <div class="ticket-row"><span>FONDO INICIAL</span><b>${money(s.openingCash)}</b></div>
+  <div class="ticket-row"><span>VENTAS</span><b>${money(s.totalSales)}</b></div>
+  <div class="ticket-row"><span>COMPRAS</span><b>${money(s.totalPurchases)}</b></div>
+  <div class="ticket-row"><span>GASTOS</span><b>${money(s.totalExpenses)}</b></div>
+  <div class="ticket-rule"></div>
+  <div class="ticket-label">VENTAS POR FORMA DE PAGO</div>
+  ${Object.entries(methods).map(([k,v])=>`<div class="ticket-row"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join('')||'<div class="ticket-meta">Sin ventas</div>'}
+  <div class="ticket-rule"></div>
+  <div class="ticket-row"><span>EFECTIVO ESPERADO</span><b>${money(s.expectedCash)}</b></div>
+  <div class="ticket-row"><span>EFECTIVO CONTADO</span><b>${money(s.countedCash)}</b></div>
+  <div class="ticket-total-box"><div class="ticket-row ticket-total"><span>DIFERENCIA</span><span>${money(s.difference)}</span></div></div>
+  <div class="ticket-kpis"><div class="ticket-kpi"><span>VENTAS</span><b>${sales.length}</b></div><div class="ticket-kpi"><span>COMPRAS</span><b>${purchases.length}</b></div><div class="ticket-kpi"><span>GASTOS</span><b>${expenses.length}</b></div><div class="ticket-kpi"><span>MOVIMIENTOS</span><b>${moves.length}</b></div></div>
+  <div class="ticket-footer"><div class="ticket-rule"></div>CONTROL DE CAJA · ${esc(db.business.name)}</div>
+ </div>`;
+}
+function normalizeTicketText(s){return String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[“”]/g,'"').replace(/[‘’]/g,"'");}
+function padTicket(a,b,width){a=normalizeTicketText(a);b=normalizeTicketText(b);const n=Math.max(1,width-a.length-b.length);return a+' '.repeat(n)+b;}
+function wrapTicket(text,width){const words=normalizeTicketText(text).split(/\s+/);let lines=[],line='';for(const w of words){if(!w)continue;if((line?line+' ':'')+w.length<=width)line+=(line?' ':'')+w;else{if(line)lines.push(line);line=w.slice(0,width);}}if(line)lines.push(line);return lines;}
+function latin1Bytes(s){const a=[];for(const ch of normalizeTicketText(s))a.push(ch.charCodeAt(0)&255);return a;}
+function escposBase(width){const out=[];const cmd=(...x)=>out.push(...x);const t=x=>out.push(...latin1Bytes(normalizeTicketText(x)+'\n'));cmd(0x1b,0x40);cmd(0x1b,0x61,1);cmd(0x1b,0x45,1);t(db.business.name);cmd(0x1b,0x45,0);if(db.business.address)wrapTicket(db.business.address,width).forEach(t);if(db.business.phone)t('Tel. '+db.business.phone);if(db.business.taxId)t(db.business.taxId);t('='.repeat(width));return {out,t,cmd};}
+function buildEscPos(sale,cut=true){const width=db.business.paper==='58mm'?32:48,{out,t,cmd}=escposBase(width),m=db.materials.find(x=>x.id===sale.mid);t('TICKET DE VENTA');t('FOLIO #'+String(sale.ticket).padStart(6,'0'));t(dateTime(sale.date));t('Cajero: '+(sale.userName||''));if(sale.customer)t('Cliente: '+sale.customer);t('-'.repeat(width));wrapTicket(m?.name||'Material',width).forEach(t);t(padTicket(`${sale.kg} kg`,money(sale.price),width));t(padTicket('TOTAL',money(sale.total),width));t('-'.repeat(width));t('Pago: '+(sale.payment||'Efectivo'));if(sale.payment==='Dólares'){t('USD: $'+Number(sale.dollarsReceived||0).toFixed(2));t('TC: '+Number(sale.exchangeRate||0).toFixed(4));t('Cambio: '+money(sale.change||0));}t('-'.repeat(width));wrapTicket(db.business.message||'Gracias por su compra.',width).forEach(t);cmd(0x0a,0x0a,0x0a);if(cut)cmd(0x1d,0x56,0);return out;}
+function buildEscPosPurchase(purchase,cut=true){const width=db.business.paper==='58mm'?32:48,{out,t,cmd}=escposBase(width);t('TICKET DE COMPRA');t('FOLIO #'+String(purchase.ticket||purchase.id?.slice(-6)||'').padStart(6,'0'));t(dateTime(purchase.date));t('Comprador: '+(purchase.userName||''));t('-'.repeat(width));(purchase.items||[]).forEach(i=>{const m=db.materials.find(x=>x.id===i.mid);wrapTicket(m?.name||'Material',width).forEach(t);t(padTicket(`${i.kg} kg`,money(i.price),width));t(padTicket('Subtotal',money(i.subtotal),width));});t('-'.repeat(width));t(padTicket('TOTAL PAGADO',money(purchase.total),width));t('Pago: '+(purchase.payment||'Efectivo'));t('-'.repeat(width));wrapTicket(db.business.message||'Gracias por su preferencia.',width).forEach(t);cmd(0x0a,0x0a,0x0a);if(cut)cmd(0x1d,0x56,0);return out;}
+function buildEscPosCut(s,cut=true){const width=db.business.paper==='58mm'?32:48,{out,t,cmd}=escposBase(width),sales=s.sales||[],methods={};sales.forEach(x=>methods[x.payment]=(methods[x.payment]||0)+Number(x.total||0));t('CORTE DE CAJA');t('Turno #'+String(s.id||'').slice(-6));t('Usuario: '+(s.userName||''));t('Apertura: '+dateTime(s.openedAt));t('Cierre: '+dateTime(s.closedAt));t('-'.repeat(width));t(padTicket('Fondo',money(s.openingCash),width));t(padTicket('Ventas',money(s.totalSales),width));t(padTicket('Compras',money(s.totalPurchases),width));t(padTicket('Gastos',money(s.totalExpenses),width));t('-'.repeat(width));Object.entries(methods).forEach(([k,v])=>t(padTicket(k,money(v),width)));t('-'.repeat(width));t(padTicket('Esperado',money(s.expectedCash),width));t(padTicket('Contado',money(s.countedCash),width));t(padTicket('DIFERENCIA',money(s.difference),width));t('-'.repeat(width));t('Operaciones: '+sales.length+' ventas');wrapTicket(db.business.message||'',width).forEach(t);cmd(0x0a,0x0a,0x0a);if(cut)cmd(0x1d,0x56,0);return out;}
+async function printTicketRaw(sale,isTest=false){
+ const printer=db.business.printerName;
+ if(!printer)return alert('No hay una impresora de tickets configurada. Ve a Configuración → Impresora de tickets.');
+ const html=buildTicket(sale);
+
+ // Primero usa el modo elegido. Si RAW falla, intenta automáticamente el
+ // controlador normal de Windows para evitar que una impresora instalada
+ // pero no compatible con RAW se quede sin imprimir.
+ if(db.business.printMode==='raw'&&window.pc?.printRaw){
+   const bytes=buildEscPos(sale,db.business.autoCut!==false||isTest);
+   const raw=await window.pc.printRaw(printer,bytes);
+   if(raw?.success)return;
+   if(window.pc?.printPreview){
+     const win=await window.pc.printPreview(html,printer,db.business.paper);
+     if(win?.success)return;
+     return alert('No se pudo imprimir el ticket.\n\nRAW: '+(raw?.error||'falló')+'\nWindows: '+(win?.failureReason||'falló'));
+   }
+   return alert('No se pudo imprimir en modo ESC/POS.\n'+(raw?.error||'error de impresión'));
+ }
+ const r=await window.pc?.printPreview(html,printer,db.business.paper);
+ if(!r?.success)alert('No se pudo imprimir: '+(r?.failureReason||'error de impresión'));
+}
+function printTicket(id){const sale=db.sales.find(x=>x.id===id);if(sale)printTicketRaw(sale);}
+function previewSaleTicket(id){const sale=db.sales.find(x=>x.id===id);if(!sale)return;openModal(buildTicket(sale)+`<div class="modal-actions"><button class="btn secondary" onclick="closeModal()">Cerrar</button><button class="btn" onclick="printTicket('${sale.id}')">🖨️ Imprimir</button><button class="btn blue" onclick="emailSaleTicket('${sale.id}')">✉️ Correo</button></div>`);}
+function ticketText(sale){const m=db.materials.find(x=>x.id===sale.mid),width=db.business.paper==='58mm'?32:48,lines=[],t=x=>lines.push(normalizeTicketText(x));t(db.business.name);t('TICKET DE VENTA');t('FOLIO #'+String(sale.ticket).padStart(6,'0'));t(dateTime(sale.date));t('Cajero: '+sale.userName);if(sale.customer)t('Cliente: '+sale.customer);t('-'.repeat(width));wrapTicket(m?.name||'Material',width).forEach(t);t(padTicket(`${sale.kg} kg`,money(sale.price),width));t(padTicket('TOTAL',money(sale.total),width));t('Pago: '+sale.payment);t(db.business.message||'Gracias por su compra.');return lines.join('\n');}
+function emailSaleTicket(id){const sale=db.sales.find(x=>x.id===id);if(sale)emailText('Ticket de venta #'+String(sale.ticket).padStart(6,'0')+' - '+db.business.name,ticketText(sale));}
+function purchaseText(p){const width=db.business.paper==='58mm'?32:48,lines=[],t=x=>lines.push(normalizeTicketText(x));t(db.business.name);t('TICKET DE COMPRA');t('Folio #'+String(p.ticket||p.id?.slice(-6)||'').padStart(6,'0'));t(dateTime(p.date));t('Comprador: '+p.userName);t('-'.repeat(width));(p.items||[]).forEach(i=>{const m=db.materials.find(x=>x.id===i.mid);wrapTicket(m?.name||'Material',width).forEach(t);t(padTicket(`${i.kg} kg`,money(i.price),width));t(padTicket('Subtotal',money(i.subtotal),width));});t('-'.repeat(width));t(padTicket('TOTAL PAGADO',money(p.total),width));t('Pago: '+(p.payment||'Efectivo'));t(db.business.message||'Gracias por su preferencia.');return lines.join('\n');}
+function openPurchaseResultModal(id){const p=db.purchases.find(x=>x.id===id);if(!p)return;openModal(`<h2>✅ Compra registrada</h2><div class="success">La compra fue registrada correctamente.</div>${buildPurchaseTicket(p)}<div class="modal-actions"><button class="btn secondary" onclick="closeModal()">Cerrar</button><button class="btn secondary" onclick="previewPurchaseTicket('${p.id}')">👁️ Ver ticket</button><button class="btn" onclick="printPurchaseTicket('${p.id}')">🖨️ Imprimir</button><button class="btn blue" onclick="emailPurchaseTicket('${p.id}')">✉️ Correo</button></div>`);}
+function previewPurchaseTicket(id){const p=db.purchases.find(x=>x.id===id);if(!p)return;openModal(buildPurchaseTicket(p)+`<div class="modal-actions"><button class="btn secondary" onclick="closeModal()">Cerrar</button><button class="btn" onclick="printPurchaseTicket('${p.id}')">🖨️ Imprimir</button><button class="btn blue" onclick="emailPurchaseTicket('${p.id}')">✉️ Correo</button></div>`);}
+async function printPurchaseTicket(id){
+ const p=db.purchases.find(x=>x.id===id);
+ if(!p)return;
+ const printer=db.business.printerName;
+ if(!printer)return alert('No hay una impresora de tickets configurada. Ve a Configuración → Impresora de tickets.');
+ const html=buildPurchaseTicket(p);
+ if(db.business.printMode==='raw'&&window.pc?.printRaw){
+   const raw=await window.pc.printRaw(printer,buildEscPosPurchase(p,db.business.autoCut!==false));
+   if(raw?.success)return;
+   const win=await window.pc?.printPreview(html,printer,db.business.paper);
+   if(win?.success)return;
+   return alert('No se pudo imprimir el ticket de compra.\n\nRAW: '+(raw?.error||'falló')+'\nWindows: '+(win?.failureReason||'falló'));
+ }
+ const r=await window.pc?.printPreview(html,printer,db.business.paper);
+ if(!r?.success)alert('No se pudo imprimir: '+(r?.failureReason||'error de impresión'));
+}
+function emailPurchaseTicket(id){const p=db.purchases.find(x=>x.id===id);if(p)emailText('Ticket de compra #'+String(p.ticket||'').padStart(6,'0')+' - '+db.business.name,purchaseText(p));}
+function previewTicket(){if(!db.materials.length)return alert('Agrega un material primero.');const m=db.materials[0],sale={id:'preview',mid:m.id,kg:10,price:m.salePrice,total:m.salePrice*10,payment:'Efectivo',ticket:db.settings.nextTicket,date:new Date().toISOString(),userName:currentUser?.name||'Administrador'};openModal(buildTicket(sale)+`<div class="modal-actions"><button class="btn secondary" onclick="closeModal()">Cerrar</button></div>`);}
+
+/* IMPRESORA PC */
+async function renderImpresora(){
+ const app=document.getElementById("app");
+ app.innerHTML=`
+ <div class="card">
+  <h2>🖨️ Impresora de tickets</h2>
+  <p class="small">Configuración para impresoras térmicas instaladas en Windows por USB. La impresora debe aparecer primero en Configuración de Windows → Impresoras y escáneres.</p>
+  <div id="printerStatus" class="printer-status"><span>Buscando impresoras...</span></div>
+  <label>Impresora de tickets</label>
+  <select id="printerName"><option value="">Selecciona una impresora</option></select>
+  <div class="actions"><button class="btn secondary" onclick="loadPrinters()">🔄 Actualizar lista</button><button class="btn secondary" onclick="openWindowsPrinters()">⚙️ Impresoras de Windows</button></div>
+  <label>Ancho del papel</label>
+  <div class="payment-grid">
+   <button class="payment-btn ${db.business.paper==="58mm"?"active":""}" onclick="setPaper('58mm')">58 mm</button>
+   <button class="payment-btn ${db.business.paper!=="58mm"?"active":""}" onclick="setPaper('80mm')">80 mm</button>
+  </div>
+  <label>Modo de impresión</label>
+  <select id="printMode">
+   <option value="raw" ${db.business.printMode==="raw"?"selected":""}>ESC/POS directo — recomendado para térmica</option>
+   <option value="electron" ${db.business.printMode!=="raw"?"selected":""}>Controlador de Windows</option>
+  </select>
+  <label><input id="autoPrint" type="checkbox" ${db.business.autoPrint?"checked":""} style="width:auto;margin-right:8px"> Imprimir ticket automáticamente después de registrar una venta</label>
+  <label><input id="autoCut" type="checkbox" ${db.business.autoCut!==false?"checked":""} style="width:auto;margin-right:8px"> Cortar automáticamente el ticket</label>
+  <div class="actions"><button class="btn" onclick="savePrinterSettings()">💾 Guardar configuración</button></div>
+ </div>
+ <div class="card">
+  <h2>🧪 Prueba de impresión</h2>
+  <p class="small">Haz una prueba después de seleccionar la impresora y el ancho. El ticket incluye el comando de corte cuando está activado.</p>
+  <button class="btn blue full" onclick="testPrinter()">🖨️ Imprimir ticket de prueba</button>
+  <button class="btn secondary full" onclick="previewTicket()">👁️ Ver ticket sin imprimir</button>
+ </div>
+ <div class="card">
+  <h2>ℹ️ Diagnóstico</h2>
+  <div class="small" id="printerHelp">
+   <b>USB:</b> conecta la impresora, instala su controlador en Windows y después pulsa “Actualizar lista”.<br><br>
+   <b>58 mm:</b> usa 32 caracteres por línea en ESC/POS.<br>
+   <b>80 mm:</b> usa 48 caracteres por línea en ESC/POS.<br><br>
+   Si la prueba falla en RAW, el sistema intentará automáticamente el “Controlador de Windows”. También puedes seleccionar “Controlador de Windows” para usar directamente el controlador instalado en Windows.
+  </div>
+ </div>`;
+ await loadPrinters();
+}
+async function loadPrinters(){
+ const select=document.getElementById("printerName");
+ if(!select)return;
+ if(!window.pc?.listPrinters){
+  select.innerHTML='<option value="">Esta versión no tiene acceso a impresoras del sistema</option>';
+  const status=document.getElementById("printerStatus"); if(status)status.innerHTML='<span>Modo navegador</span><span class="badge low">Sin acceso</span>';
+  return;
+ }
+ try{
+  const printers=await window.pc.listPrinters();
+  const valid=Array.isArray(printers)?printers:[];
+  select.innerHTML='<option value="">Selecciona una impresora</option>'+valid.map(p=>`<option value="${esc(p.name)}" ${p.name===db.business.printerName?"selected":""}>${esc(p.displayName||p.name)}${p.isDefault?" (predeterminada)":""}</option>`).join("");
+  const status=document.getElementById("printerStatus");
+  if(status){
+   status.innerHTML=`<span>Impresoras detectadas: <b>${valid.length}</b></span><span class="badge ${db.business.printerName?"":"low"}">${db.business.printerName?"Configurada":"Sin configurar"}</span>`;
+  }
+  if(!valid.length) select.innerHTML='<option value="">No hay impresoras instaladas en Windows</option>';
+ }catch(e){
+  select.innerHTML='<option value="">Error al leer las impresoras</option>';
+  const status=document.getElementById("printerStatus"); if(status)status.innerHTML=`<span>Error</span><span class="badge low">${esc(e.message||e)}</span>`;
+ }
+}
+function openWindowsPrinters(){
+ if(window.pc?.openPrintersSettings) window.pc.openPrintersSettings();
+ else alert("Abre Windows → Configuración → Bluetooth y dispositivos → Impresoras y escáneres. Instala la impresora y después vuelve aquí y pulsa Actualizar lista.");
+}
+function setPaper(p){db.business.paper=p;save();renderImpresora()}
+function savePrinterSettings(){
+ db.business.printerName=document.getElementById("printerName")?.value||"";
+ db.business.printMode=document.getElementById("printMode")?.value||"raw";
+ db.business.autoPrint=!!document.getElementById("autoPrint")?.checked;
+ db.business.autoCut=!!document.getElementById("autoCut")?.checked;
+ save();
+ alert(db.business.printerName?"Configuración de impresora guardada.":"Selecciona una impresora antes de guardar.");
+ if(db.business.printerName)renderImpresora();
+}
+async function testPrinter(){
+ if(!db.business.printerName){alert("Primero selecciona y guarda una impresora de tickets.");return;}
+ const test={id:uid(),mid:db.materials[0]?.id||"",kg:1,price:db.materials[0]?.salePrice||0,total:db.materials[0]?.salePrice||0,payment:"Efectivo",ticket:999999,date:new Date().toISOString(),userName:currentUser?.name||"Administrador"};
+ await printTicketRaw(test,true);
+}
+
+/* USUARIOS */
+
+function renderUsuarios(){
+ document.getElementById("app").innerHTML=`
+ <div class="card"><h2>👥 Usuarios</h2>
+ ${db.users.map(u=>`<div class="row"><div><b>${esc(u.name)}</b><div class="small">${esc(u.role)}</div></div><button class="btn secondary" onclick="editUser('${u.id}')">Editar</button></div>`).join("")}
+ <button class="btn full" onclick="addUser()">+ Agregar usuario</button>
+ </div>`;
+}
+function addUser(){
+ const name=prompt("Nombre del usuario:");
+ if(!name)return;
+ const pin=prompt("PIN de 4 a 8 números:");
+ if(!pin||!/^\d{4,8}$/.test(pin))return alert("PIN inválido.");
+ db.users.push({id:uid(),name:name.trim(),pin,role:"Empleado"});
+ save();render();
+}
+function editUser(id){
+ const u=db.users.find(x=>x.id===id);
+ const name=prompt("Nombre:",u.name);
+ if(name)u.name=name.trim();
+ const pin=prompt("Nuevo PIN:",u.pin);
+ if(pin&&/^\d{4,8}$/.test(pin))u.pin=pin;
+ save();render();
+}
+
+
+/* CAPACITACION INTERACTIVA */
+const trainingModules = [
+ {id:"inicio",icon:"🚀",title:"Comenzar a trabajar",desc:"Ingreso, turno y revisión inicial",
+  steps:[
+   ["Inicia sesión","Selecciona tu usuario y escribe tu PIN para entrar al sistema.","login","Cada usuario debe entrar con su propio PIN."],
+   ["Abre el turno","Entra a Caja y registra fondo inicial, dólares iniciales y tipo de cambio.","caja","Las operaciones que requieren turno no deben hacerse con el turno cerrado."],
+   ["Revisa Inicio","Comprueba que aparezca 🟢 Turno abierto y revisa los indicadores.","inicio","Inicio funciona como resumen rápido de la jornada."]
+  ],quiz:"¿Qué debes hacer antes de comenzar a registrar operaciones?",answer:"Abrir un turno."},
+ {id:"compras",icon:"🛒",title:"Comprar material",desc:"Registrar correctamente el material recibido",
+  steps:[
+   ["Entra a Comprar","Presiona Comprar en el menú o desde Acciones rápidas.","compras","Compra registra el material que entra al inventario."],
+   ["Selecciona el material","Usa categorías o buscador y toca el material correspondiente.","compras","Verifica el nombre antes de continuar."],
+   ["Captura los kilos","Introduce la cantidad recibida y revisa el precio.","compras","La cantidad registrada entra al cálculo del inventario."],
+   ["Confirma la compra","Completa la forma de pago y guarda la operación.","compras","Una compra suma kilos al inventario."]
+  ],quiz:"¿Qué efecto tiene registrar una compra?",answer:"Agrega los kilos comprados al inventario."},
+ {id:"ventas",icon:"💰",title:"Vender material",desc:"Registrar salidas y cobrar",
+  steps:[
+   ["Entra a Vender","Presiona Vender desde el menú o Inicio.","ventas","Verifica que exista un turno abierto."],
+   ["Selecciona el material","Busca y selecciona el material.","ventas","El sistema muestra el precio de venta configurado."],
+   ["Captura los kilos","Escribe la cantidad que sale del inventario.","ventas","La cantidad debe corresponder al material entregado."],
+   ["Selecciona el pago","Indica la forma de pago y completa los datos necesarios.","ventas","El sistema contempla el manejo de dólares y tipo de cambio."],
+   ["Guarda e imprime","Confirma la venta y usa la impresión del ticket cuando sea necesario.","ventas","La venta descuenta los kilos del inventario."]
+  ],quiz:"¿Qué sucede con el inventario después de registrar una venta?",answer:"Se restan los kilos vendidos."},
+ {id:"inventario",icon:"📦",title:"Consultar inventario",desc:"Saber cuánto material tienes",
+  steps:[
+   ["Abre Inventario","Entra al apartado Inventario.","inventario","Aquí consultas las existencias actuales por material."],
+   ["Interpreta los kilos","La existencia considera inicial, compras, ventas y ajustes.","inventario","Si algo no coincide, revisa los movimientos."],
+   ["Revisa movimientos","Utiliza los reportes para investigar cambios y diferencias.","reportes","Los movimientos ayudan a encontrar el origen de una diferencia."]
+  ],quiz:"¿Qué operaciones principales modifican el inventario?",answer:"Compras, ventas y ajustes."},
+ {id:"caja",icon:"💵",title:"Caja y turnos",desc:"Controlar el efectivo de la jornada",
+  steps:[
+   ["Abrir turno","Registra fondo inicial, dólares iniciales y tipo de cambio.","caja","Estos datos sirven para el control de la jornada."],
+   ["Controlar movimientos","Durante el turno revisa entradas y salidas registradas.","caja","Mantén los movimientos correctamente registrados."],
+   ["Cerrar turno","Cuenta físicamente el efectivo e introduce el efectivo contado.","caja","No cierres sin contar primero el efectivo real."],
+   ["Revisar diferencia","El sistema compara contado contra esperado y guarda la diferencia.","reportes","Una diferencia debe investigarse."]
+  ],quiz:"¿Qué se compara al cerrar un turno?",answer:"El efectivo contado contra el efectivo esperado."},
+ {id:"gastos",icon:"💸",title:"Registrar gastos",desc:"Controlar salidas que no son compras de material",
+  steps:[
+   ["Abre Gastos","Entra a Gastos. El sistema requiere un turno abierto.","gastos","Sin turno abierto, primero debes abrirlo."],
+   ["Escribe el concepto","Captura el concepto del gasto.","gastos","Usa conceptos claros."],
+   ["Captura cantidad y pago","Introduce el importe y selecciona la forma de pago.","gastos","El gasto queda asociado al turno activo."],
+   ["Guarda observaciones","Añade observaciones cuando necesites información adicional.","gastos","Ayudan a identificar el motivo del gasto."]
+  ],quiz:"¿Se puede registrar un gasto con el turno cerrado?",answer:"No."},
+ {id:"reportes",icon:"📊",title:"Usar Reportes",desc:"Analizar lo ocurrido",
+  steps:[
+   ["Consulta operaciones","Revisa compras o ventas y sus totales.","reportes","Puedes revisar cantidades y operaciones."],
+   ["Consulta inventario","Revisa kilos, valor estimado, movimientos y materiales.","reportes","El valor estimado depende de los precios registrados."],
+   ["Consulta caja","Revisa turnos cerrados, ventas, compras, gastos y diferencias.","reportes","Es el reporte indicado para revisar cierres."],
+   ["Consulta usuarios","Revisa la actividad registrada por usuario.","reportes","Los registros identifican al usuario que operó."]
+  ],quiz:"¿Dónde revisarías la diferencia de un turno cerrado?",answer:"En el reporte de caja."},
+ {id:"materiales",icon:"♻️",title:"Configurar Materiales",desc:"Mantener nombres y precios actualizados",
+  steps:[
+   ["Entra a Materiales","Administra los materiales que aparecen en compras y ventas.","materiales","Mantén nombres claros y consistentes."],
+   ["Revisa precio de compra","Comprueba que el precio utilizado para comprar sea correcto.","materiales","La compra utiliza el precio configurado."],
+   ["Revisa precio de venta","Comprueba que el precio de venta esté actualizado.","materiales","La venta utiliza el precio de venta configurado."]
+  ],quiz:"¿Por qué debes revisar Materiales antes de comenzar?",answer:"Porque los precios configurados se utilizan en las operaciones."},
+ {id:"negocio",icon:"🏪",title:"Mi negocio y ticket",desc:"Personalizar la información",
+  steps:[
+   ["Configura los datos","Revisa la información que identifica al establecimiento.","negocio","Mantén los datos actualizados."],
+   ["Configura el mensaje","Revisa el mensaje que puede aparecer en el ticket.","negocio","Haz una prueba antes de imprimir muchos tickets."],
+   ["Previsualiza el ticket","Usa la vista previa para comprobar el formato.","negocio","La vista previa permite revisar antes de imprimir."]
+  ],quiz:"¿Qué herramienta sirve para comprobar cómo quedará el ticket?",answer:"La vista previa del ticket."},
+ {id:"usuarios",icon:"👥",title:"Administrar Usuarios",desc:"Controlar accesos y responsables",
+  steps:[
+   ["Agregar usuario","Pulsa Agregar usuario, escribe nombre y asigna PIN de 4 a 8 números.","usuarios","No compartas un mismo PIN."],
+   ["Editar usuario","Usa Editar para cambiar nombre o PIN.","usuarios","Actualiza los datos cuando cambie el responsable."],
+   ["Usar usuarios individuales","Cada persona debe entrar con su propio usuario.","usuarios","Esto mejora el control de las operaciones."]
+  ],quiz:"¿Qué longitud debe tener un PIN?",answer:"De 4 a 8 números."},
+ {id:"respaldo",icon:"💾",title:"Respaldar información",desc:"Proteger los datos",
+  steps:[
+   ["Descargar respaldo","En Respaldo pulsa Descargar respaldo para generar el archivo JSON.","respaldo","Haz respaldos periódicos."],
+   ["Conservar una copia","Guarda el archivo en un lugar seguro y diferente al equipo.","respaldo","Una copia externa protege frente a pérdida del equipo."],
+   ["Restaurar","Selecciona un archivo y confirma la restauración.","respaldo","La restauración reemplaza los datos actuales."],
+   ["Zona peligrosa","Borrar todos los datos es destructivo y requiere confirmación.","respaldo","Solo úsalo cuando estés completamente seguro."]
+  ],quiz:"¿Qué ocurre al restaurar un respaldo?",answer:"Los datos actuales son reemplazados por los del respaldo."},
+ {id:"rutina",icon:"✅",title:"Capacitación completa",desc:"Rutina recomendada de principio a fin",
+  steps:[
+   ["1 · Inicia sesión","Entra con el usuario correspondiente.","inicio","No uses el usuario de otra persona."],
+   ["2 · Abre el turno","Registra fondo, dólares y tipo de cambio.","caja","El turno es la base del control."],
+   ["3 · Revisa precios","Comprueba Materiales antes de operar.","materiales","Evita precios desactualizados."],
+   ["4 · Registra operaciones","Registra compras, ventas y gastos conforme ocurran.","inicio","Evita dejar operaciones para después."],
+   ["5 · Revisa el resumen","Consulta Inicio y Reportes.","reportes","Una revisión temprana detecta errores."],
+   ["6 · Cierra el turno","Cuenta efectivo y realiza el cierre.","caja","Investiga cualquier diferencia."],
+   ["7 · Respalda","Realiza un respaldo periódico.","respaldo","Protege los datos."]
+  ],quiz:"¿Cuál es el flujo recomendado?",answer:"Iniciar sesión → abrir turno → revisar precios → operar → revisar → cerrar turno → respaldar."}
+];
+
+let trainingState={module:0,step:0,completed:{}};
+
+function trainingPractice(target){
+ if(target==="login"){alert("Para practicar el inicio de sesión, cierra sesión y vuelve a entrar.");return;}
+ go(target);
+}
+
+function showFirstLoginTutorialChoice(){
+  try{if(localStorage.getItem("recicladora_tutorial_choice_made")==="1")return;}catch(e){}
+  setTimeout(function(){
+    openModal(`
+      <div class="first-login-tutorial">
+        <div class="first-login-icon">🎓</div>
+        <div class="training-label">PRIMER INGRESO</div>
+        <h2>¿Quieres realizar el tutorial?</h2>
+        <p>Es tu primera vez entrando al sistema. Podemos guiarte paso a paso para aprender a utilizar todas las funciones.</p>
+        <div class="first-login-options">
+          <button class="btn" onclick="startFirstLoginTutorial()">🎓 Sí, quiero hacer el tutorial</button>
+          <button class="btn secondary" onclick="skipFirstLoginTutorial()">Ahora no</button>
+        </div>
+      </div>`);
+  },250);
+}
+function startFirstLoginTutorial(){
+  try{localStorage.setItem("recicladora_tutorial_choice_made","1");}catch(e){}
+  closeModal(); trainingState.module=0; trainingState.step=0; trainingState.started=true; go("tutorial");
+}
+function skipFirstLoginTutorial(){
+  try{localStorage.setItem("recicladora_tutorial_choice_made","1");}catch(e){}
+  closeModal();
+}
+
+function renderTutorial(){
+ const m=trainingModules[trainingState.module], s=m.steps[trainingState.step];
+ const total=s?m.steps.length:1, pct=Math.round(((trainingState.step+1)/total)*100);
+ const done=Object.keys(trainingState.completed).length, all=trainingModules.length;
+ document.getElementById("app").innerHTML=`
+ <div class="training-wrap">
+  <div class="card training-welcome">
+   <div class="training-label">🎓 CAPACITACIÓN INTERACTIVA</div>
+   <h1>Aprende a utilizar tu sistema</h1>
+   <p>Aprende cada función paso a paso y practica directamente dentro del sistema.</p>
+   <div class="training-overall"><span style="width:${Math.round(done/all*100)}%"></span></div>
+   <div class="training-overall-text">${done} de ${all} lecciones completadas</div>
+  </div>
+  <div class="training-module-grid">
+   ${trainingModules.map((x,i)=>`<button class="training-module ${i===trainingState.module?"selected":""} ${trainingState.completed[x.id]?"completed":""}" onclick="trainingSelect(${i})"><span class="tm-icon">${x.icon}</span><span><b>${x.title}</b><small>${trainingState.completed[x.id]?"✓ Completada":"Lección "+(i+1)}</small></span></button>`).join("")}
+  </div>
+  <div class="card training-card">
+   <div class="training-head">
+    <div><div class="training-kicker">LECCIÓN ${trainingState.module+1} DE ${all}</div><h2>${m.icon} ${m.title}</h2><p>${m.desc}</p></div>
+    <div class="training-step-count">${trainingState.step+1}/${total}</div>
+   </div>
+   <div class="training-bar"><span style="width:${pct}%"></span></div>
+   <div class="training-instruction">
+    <div class="training-big-number">${trainingState.step+1}</div>
+    <div class="training-copy">
+     <div class="training-action">AHORA HAZ ESTO</div>
+     <h3>${esc(s[0])}</h3><p>${esc(s[1])}</p>
+     <div class="training-tip"><b>💡 Consejo:</b> ${esc(s[3])}</div>
+    </div>
+   </div>
+   <div class="training-practice-box">
+    <div><b>🖱️ ¿Quieres practicar?</b><small>Ve directamente a la función relacionada.</small></div>
+    <button class="btn secondary" onclick="trainingPractice('${s[2]}')">Practicar ahora →</button>
+   </div>
+   <div class="training-nav">
+    <button class="btn secondary" ${trainingState.step===0?"disabled":""} onclick="trainingPrev()">← Anterior</button>
+    ${trainingState.step<total-1?`<button class="btn" onclick="trainingNext()">Siguiente paso →</button>`:`<button class="btn" onclick="trainingQuiz()">🎯 Terminar y comprobar</button>`}
+   </div>
+  </div>
+  <div class="card training-checklist">
+   <h3>📋 Pasos de esta lección</h3>
+   ${m.steps.map((x,i)=>`<div class="check-row ${i===trainingState.step?"current":""} ${i<trainingState.step?"past":""}"><span>${i<trainingState.step?"✓":i+1}</span><div><b>${esc(x[0])}</b><small>${i===trainingState.step?"Estás aquí":i<trainingState.step?"Paso completado":"Pendiente"}</small></div></div>`).join("")}
+  </div>
+ </div>`;
+}
+function trainingSelect(i){trainingState.module=i;trainingState.step=0;trainingState.started=true;renderTutorial();}
+function trainingPrev(){if(trainingState.step>0){trainingState.step--;renderTutorial();}}
+function trainingNext(){if(trainingState.step<trainingModules[trainingState.module].steps.length-1){trainingState.step++;renderTutorial();}}
+function trainingQuiz(){
+ const m=trainingModules[trainingState.module];
+ openModal(`<div class="training-quiz"><div class="training-label">🎯 COMPROBACIÓN</div><h2>${m.icon} ${m.title}</h2><p class="quiz-question">${esc(m.quiz)}</p><button class="btn secondary full" onclick="document.getElementById('trainingAnswer').classList.remove('hidden')">👁️ Mostrar respuesta</button><div id="trainingAnswer" class="training-answer hidden"><b>Respuesta correcta:</b><br>${esc(m.answer)}</div><div class="modal-actions"><button class="btn" onclick="trainingMarkComplete()">✓ Entendí la lección</button></div></div>`);
+}
+function trainingMarkComplete(){
+ const m=trainingModules[trainingState.module];
+ trainingState.completed[m.id]=true; closeModal();
+ if(trainingState.module<trainingModules.length-1){trainingState.module++;trainingState.step=0;alert("✓ Lección completada. Vamos a la siguiente.");}
+ else alert("🎉 ¡Capacitación completada! Ya revisaste todas las funciones.");
+ renderTutorial();
+}
+
+/* RESPALDO */
+
+function renderRespaldo(){
+ document.getElementById("app").innerHTML=`
+ <div class="card">
+ <h2>💾 Respaldo</h2>
+ <p class="small">Incluye negocio, usuarios, materiales, inventario, compras, ventas, gastos, turnos, caja, movimientos y configuración.</p>
+ <button class="btn full" onclick="exportData()">Descargar respaldo</button>
+ </div>
+ <div class="card">
+ <h2>Restaurar</h2>
+ <input id="restoreFile" type="file" accept=".json,application/json">
+ <button class="btn full" onclick="importData()">Restaurar respaldo</button>
+ <div class="notice">⚠️ El respaldo reemplazará los datos actuales.</div>
+ </div>
+ <div class="card"><h2>Zona peligrosa</h2><button class="btn danger full" onclick="factoryReset()">Borrar todos los datos</button></div>`;
+}
+function exportData(){
+ const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="recicladora_v14_"+new Date().toISOString().slice(0,10)+".json";
+ a.click();
+ URL.revokeObjectURL(url);
+}
+function importData(){
+ const file=document.getElementById("restoreFile").files[0];
+ if(!file)return alert("Selecciona un respaldo.");
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const data=JSON.parse(reader.result);
+   if(!data.business||!Array.isArray(data.materials))throw new Error();
+   if(!confirm("¿Reemplazar los datos actuales?"))return;
+   db={...clone(DEFAULT_DB),...data};
+   save();
+   alert("Respaldo restaurado.");
+   location.reload();
+  }catch(e){alert("El archivo no es válido.")}
+ };
+ reader.readAsText(file);
+}
+function factoryReset(){
+ const x=prompt("Escribe BORRAR para confirmar:");
+ if(x!=="BORRAR")return;
+ localStorage.removeItem(KEY);
+ location.reload();
+}
+
+/* MODAL */
+
+function openModal(content){
+ document.getElementById("modalContent").innerHTML=content;
+ document.getElementById("modal").classList.remove("hidden");
+}
+function closeModal(e){
+ if(e&&e.target!==e.currentTarget)return;
+ document.getElementById("modal").classList.add("hidden");
+}
+
+/* INICIO */
+
+loadLogin();
+</script>
+</body>
+</html>

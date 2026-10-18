@@ -1,0 +1,17 @@
+RESTAURANTE 9.2.15 — MULTIPLES CUADROS EN UNA MISMA FOTOGRAFIA
+
+Corrección del error informado por el usuario en 9.2.14:
+1. El botón «Guardar cuadro» estaba DEBAJO de la foto y se perdía fuera de la vista. Ahora está ENCIMA de la fotografía, con barra visible y botón destacado.
+2. Al elegir otro color, el recuadro nuevo reemplazaba al anterior. Ahora el cuadro activo se guarda automáticamente antes de añadir el siguiente.
+3. Puedes guardar muchos recuadros, incluso varios del mismo color (máximo 500 por fotografía).
+4. Ya no es obligatorio escribir texto para guardar la ubicación: queda un cuadro PENDIENTE, visible en la imagen y en la lista «cuadros pendientes».
+5. Toca un cuadro pendiente para moverlo, redimensionarlo, escribir su texto, corregirlo o eliminar sólo ese cuadro.
+6. Si se completa texto, se convierte en una categoría/producto/precio/descripcion según su color, sin insertar nada directamente en SQL.
+7. Deshacer/rehacer y JSON de recuperación incluyen los cuadros pendientes. Compartir proyecto usa la validación existente sin perderlos.
+8. Se conserva el análisis automático, Gemini gratis, el modo guiado por colores y el enlace a Soft Restaurant 11.
+
+USO: Capturar menú > foto ya analizada > «Corregir sobre la imagen» > «+ Cuadro rojo» > arrástralo > «Guardar cuadro». Repite para cada producto o precio. También puedes pulsar otro color sin guardar: el anterior quedará pendiente.
+
+NOTA: Los recuadros sin texto son marcas PENDIENTES de revisión; no generan productos ficticios ni importan SQL. Para convertirlos en propuestas, selecciona el cuadro, escribe o confirma el texto y guárdalo. Los cuadros con texto OCR coincidente pueden recuperarlo automáticamente.
+
+Esta actualización no cambia SQL, empresa, impuestos ni claves de productos. Haz un respaldo antes de actualizar la instalación. No se verificó contra el SQL real del negocio ni en Safari físico.

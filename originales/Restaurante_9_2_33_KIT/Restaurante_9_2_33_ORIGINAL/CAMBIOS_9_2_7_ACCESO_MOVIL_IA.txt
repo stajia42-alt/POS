@@ -1,0 +1,30 @@
+RESTAURANTE 9.2.7 - ADMINISTRACION Y MENU IA DESDE EL TELEFONO
+
+QUE CAMBIO
+- El motor de OCR/IA sigue ejecutandose en el servidor Windows, sin instalar Python, Ollama ni SQL Server en el telefono.
+- Una cuenta de DUENO puede entrar a /menu-ia, usar la camara y administrar grupos y productos con el MISMO editor de escritorio.
+- Una cuenta de DUENO puede abrir /configuracion, probar y cambiar la conexion SQL. No se devuelve la contrasena SQL al navegador y los cambios se prueban antes de guardarse.
+- Al activar usuarios reales, se deja de pedir el cuadro extra HTTP Basic; el telefono inicia una unica sesion en Mi negocio.
+- Antes de activar usuarios, se conserva la proteccion HTTP Basic. Una clave de acceso remoto NO se convierte automaticamente en una cuenta de dueno.
+- La primera cuenta se crea solo en la computadora del servidor en http://127.0.0.1:3000/activar-celular (no desde Internet), con contrasena propia de al menos 10 caracteres.
+- El borrador continua local en cada navegador. Botones expresos 'Guardar proyecto compartido' y 'Continuar proyecto compartido' permiten pasar del PC al telefono con comprobacion de version. Se conservan los JSON de respaldo; no se incluyen los archivos originales de foto en este traspaso, solo la lectura OCR y los productos.
+- Los permisos de dueno y CSRF se comprueban en el servidor para edicion y carga de proyectos.
+
+COMO ACTUALIZAR
+1. Haz un respaldo de la carpeta de Restaurante y de su configuracion (sin enviar claves a terceros).
+2. Cierra el programa actual. No detengas ni reinicies SQL ni el tunel de Cloudflare.
+3. Extrae este ZIP en una carpeta distinta. Si tienes una instalacion existente, usa ACTUALIZAR_INSTALACION.cmd y selecciona la carpeta de Restaurante. No reinstales el tunel.
+4. En la computadora del negocio, visita http://127.0.0.1:3000/activar-celular y crea la cuenta de dueno UNA SOLA VEZ.
+5. Desde el telefono abre tu URL publica de siempre; ahora inicia sesion con el usuario y la contrasena de dueno que creaste. Desde el inicio aparecen Capturar menu con IA y Configurar SQL.
+6. Para continuar un proyecto en otro dispositivo: primero pulsa Guardar proyecto compartido, despues Continuar proyecto compartido en el otro dispositivo.
+7. Nunca vuelvas a importar el menu completo solo para probar el acceso remoto: revisa duplicados antes de guardar en SQL.
+
+SEGURIDAD Y LIMITACIONES
+- No se modificaron deliberadamente las tablas SQL ni los algoritmos de creacion de productos/grupos de la 9.2.6.
+- No se detecta por si mismo que se esta usando Cloudflare Access adicional; si el tunel tiene un control de acceso externo, sigue vigente.
+- Usa HTTPS y una contrasena fuerte. Solo una cuenta de dueno debe administrar SQL y hacer inserciones.
+- Si el servidor Windows esta apagado, el telefono puede abrir la web si el tunel responde, pero no puede analizar fotos ni consultar SQL.
+- El procesamiento visual con Ollama solo funciona si Ollama y su modelo estan instalados y encendidos en la computadora.
+- La seleccion de fotografia en el telefono permite usar la camara o galeria. El OCR puede ser lento en fotos grandes o con poca luz.
+- Cambiar conexiones SQL remotamente puede desconectar temporalmente las consultas; se comprueba la nueva conexion antes de guardarla.
+- No probamos escritura en SQL real del negocio. Ejecuta respaldo SQL y una prueba controlada con un producto NUEVO antes de cualquier lote.

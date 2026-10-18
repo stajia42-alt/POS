@@ -1,0 +1,32 @@
+{
+  "name": "metales-gv-pc",
+  "version": "15.4.0",
+  "description": "METales-GV POS para Windows",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^38.8.6",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.metalesgv.pos",
+    "productName": "METales-GV",
+    "files": [
+      "main.js",
+      "preload.js",
+      "recicladora_pc_v15.html"
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "METales-GV-Setup-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

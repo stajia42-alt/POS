@@ -1,0 +1,61 @@
+const base=require('@playwright/test'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const {start}=require('../../src/server');
+const test=base.test.extend({service:async({},use)=>{const dir=fs.mkdtempSync(path.join(os.tmpdir(),'mgv-ui-')),s=await start({port:0,dataDir:dir});try{await use(s);}finally{await s.stop();fs.rmSync(dir,{recursive:true,force:true});}}});
+const {expect}=base;
+async function setup(page,service){
+ await page.goto(service.url);await page.getByLabel('Nombre del negocio').fill('Recicladora del Norte');await page.getByLabel('Usuario',{exact:true}).fill('Ana');await page.getByLabel('Contraseña',{exact:true}).fill('Clave-Larga-123');await page.getByRole('button',{name:'Crear mi negocio'}).click();await expect(page.getByRole('heading',{name:'Resumen',exact:true})).toBeVisible();
+}
+async function go(page,name){await page.locator(`#navigation [data-go="${name}"]`).click();await expect(page.locator('#content')).not.toBeEmpty();}
+async function req(page,service,url,method='GET',data){const s=await(await page.request.get(service.url+'/api/session')).json();const r=await page.request.fetch(service.url+url,{method,data,headers:{'X-CSRF-Token':s.nonce}});expect(r.ok()).toBeTruthy();return r.json();}
+async function seed(page,s,{initial='0',shift=true}={}){
+ const m=await req(page,s,'/api/materials','POST',{name:'Cobre',category:'Metal',buyPrice:'5',salePrice:'10',initialKg:initial,minKg:'2'});
+ if(shift)await req(page,s,'/api/shifts/open','POST',{openingMxn:'1000',openingUsd:'0',rate:'20'});
+ await page.locator('[data-action="refresh"]').click();return m;
+}
+test('flujo real: catálogo, apertura, compra con tara, venta, cancelación, gasto y corte',async({page,service})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));await setup(page,service);
+ await go(page,'materiales');await page.getByRole('button',{name:'+ Nuevo material',exact:true}).click();
+ const dialog=page.getByRole('dialog');await dialog.getByLabel('Nombre',{exact:true}).fill('Cobre');await dialog.getByLabel('Precio de compra / kg').fill('5');await dialog.getByLabel('Precio de venta / kg').fill('10');await dialog.getByRole('button',{name:'Guardar material'}).click();await expect(dialog).not.toBeVisible();
+ await go(page,'caja');await page.getByLabel('Fondo inicial MXN').fill('1000');await page.getByLabel('Tipo de cambio manual').fill('20');await page.getByRole('button',{name:'Abrir turno',exact:true}).click();await expect(page.getByText('EFECTIVO ESPERADO MXN',{exact:true})).toBeVisible();
+ await go(page,'compras');await page.locator('.material').filter({hasText:'Cobre'}).click();await page.getByLabel('Peso bruto (kg)').fill('10.125');await page.getByLabel('Tara (kg)').fill('0.125');await expect(page.locator('#netKg')).toHaveText('10.000 kg');await page.getByLabel('Peso bruto (kg)').press('Enter');
+ await page.getByLabel('Proveedor (opcional)').fill('Proveedor Norte');await page.getByRole('button',{name:'Revisar compra'}).click();await dialog.getByRole('button',{name:'Registrar compra',exact:true}).click();await expect(dialog.locator('pre')).toContainText('TICKET DE COMPRA');await expect(dialog.locator('pre')).toContainText('$50.00');await dialog.getByLabel('Cerrar diálogo').click();
+ let state=await req(page,service,'/api/state');expect(state.shift.expected.mxn).toBe(95000);expect(state.materials[0].stock_g).toBe(10000);
+ await page.keyboard.press('F3');await expect(page.getByRole('heading',{name:'Ventas',exact:true})).toBeVisible();await page.locator('.material').click();await page.getByLabel('Peso bruto (kg)').fill('2.500');await page.getByLabel('Tara (kg)').fill('0.500');await page.getByRole('button',{name:'+ Agregar al ticket'}).click();await page.getByLabel('Recibido (MXN)').fill('50');await page.getByRole('button',{name:'Revisar venta'}).click();await expect(dialog).toContainText('Cambio MXN:');await dialog.getByRole('button',{name:'Registrar venta',exact:true}).click();await expect(dialog.locator('pre')).toContainText('Cambio MXN: $30.00');
+ await dialog.getByRole('button',{name:'Cancelar operación',exact:true}).click();await dialog.getByLabel('Motivo').fill('Captura duplicada');await dialog.getByRole('button',{name:'Confirmar cancelación'}).click();await expect(dialog.locator('pre')).toContainText('CANCELADO');await page.keyboard.press('Escape');
+ await go(page,'gastos');await page.getByLabel('Concepto').fill('Flete');await page.getByLabel('Importe MXN').fill('20');await page.getByRole('button',{name:'Registrar gasto',exact:true}).click();await expect(page.locator('#toast')).toContainText('Movimiento registrado');
+ await page.keyboard.press('F4');await page.getByRole('button',{name:'Cerrar turno',exact:true}).click();await dialog.getByLabel('Efectivo contado MXN').fill('930');await dialog.getByRole('button',{name:'Confirmar corte y cerrar turno'}).click();await expect(dialog.locator('pre')).toContainText('CORTE DE CAJA');await expect(dialog.locator('pre')).toContainText('$930.00');await page.keyboard.press('Escape');
+ await go(page,'respaldo');const downloadPromise=page.waitForEvent('download');await page.getByRole('link',{name:'Descargar respaldo completo'}).click();const download=await downloadPromise;expect(download.suggestedFilename()).toMatch(/\.sqlite$/);const filename=await download.path();expect(fs.readFileSync(filename).subarray(0,15).toString()).toBe('SQLite format 3');
+ await go(page,'inicio');await expect(page.locator('.kpi').filter({hasText:'COMPRAS DE HOY'})).toContainText('$50.00');await page.screenshot({path:test.info().outputPath('resumen.png'),fullPage:true});expect(errors).toEqual([]);
+});
+test('venta en USD muestra tipo de cambio y no permite exceder existencias',async({page,service})=>{
+ await setup(page,service);await seed(page,service,{initial:'2'});await go(page,'ventas');await page.locator('.material').click();await page.getByLabel('Peso bruto (kg)').fill('3');await page.getByRole('button',{name:'+ Agregar al ticket'}).click();await expect(page.locator('#toast')).toContainText('No hay existencias');await page.getByLabel('Peso bruto (kg)').fill('2');await page.getByRole('button',{name:'+ Agregar al ticket'}).click();await page.getByLabel('Forma de pago').selectOption('usd');await page.getByLabel('Recibido (USD)').fill('2');await expect(page.locator('#paymentInfo')).toContainText('20.0000');await page.getByRole('button',{name:'Revisar venta'}).click();const dialog=page.getByRole('dialog');await dialog.getByRole('button',{name:'Registrar venta',exact:true}).click();await expect(dialog.locator('pre')).toContainText('TC MXN/USD: 20.0000');const state=await req(page,service,'/api/state');expect(state.shift.expected).toEqual({mxn:98000,usd:200});await page.keyboard.press('Escape');
+ await go(page,'inventario');await expect(page.locator('tbody tr').first()).toContainText('0.000');
+});
+test('usuarios consulta, inicio de sesión, contraseña y permisos en interfaz',async({page,service})=>{
+ await setup(page,service);await go(page,'usuarios');await page.getByRole('button',{name:'+ Nuevo usuario'}).click();const dialog=page.getByRole('dialog');await dialog.getByLabel('Nombre de usuario').fill('Lector');await dialog.getByLabel('Rol').selectOption('viewer');await dialog.getByLabel('Contraseña',{exact:true}).fill('Clave-Consulta-123');await dialog.getByRole('button',{name:'Guardar usuario'}).click();await expect(dialog).not.toBeVisible();
+ await page.getByRole('button',{name:'Salir',exact:true}).click();await page.getByLabel('Usuario',{exact:true}).fill('Lector');await page.getByLabel('Contraseña',{exact:true}).fill('mala');await page.getByRole('button',{name:'Iniciar sesión'}).click();await expect(page.locator('#authError')).toContainText('incorrectos');await page.getByLabel('Contraseña',{exact:true}).fill('Clave-Consulta-123');await page.getByRole('button',{name:'Iniciar sesión'}).click();await expect(page.locator('#navigation [data-go="compras"]')).toHaveCount(0);await expect(page.locator('#navigation [data-go="usuarios"]')).toHaveCount(0);await go(page,'reportes');await expect(page.getByRole('heading',{name:'Reportes',exact:true})).toBeVisible();
+ await page.locator('#account').click();await dialog.getByLabel('Contraseña actual').fill('Clave-Consulta-123');await dialog.getByLabel('Nueva contraseña').fill('Clave-Nueva-456');await dialog.getByRole('button',{name:'Cambiar contraseña'}).click();await expect(dialog).not.toBeVisible();
+});
+test('configuración y contacto se guardan; texto HTML se muestra como texto',async({page,service})=>{
+ await setup(page,service);await go(page,'negocio');await page.getByLabel('Nombre comercial').fill('METales <b>GV</b>');await page.getByLabel('Zona horaria').fill('America/Mexico_City');await page.getByLabel('Papel',{exact:true}).selectOption('58mm');await page.getByLabel('Mensaje del ticket').fill('Gracias por reciclar');await page.getByRole('button',{name:'Guardar configuración'}).click();await expect(page.locator('#businessName')).toHaveText('METales <b>GV</b>');await expect(page.locator('#businessName b')).toHaveCount(0);
+ await go(page,'contactos');await page.getByRole('button',{name:'+ Nuevo contacto'}).click();const dialog=page.getByRole('dialog');await dialog.getByLabel('Nombre',{exact:true}).fill('Acero del Norte');await dialog.getByLabel('Tipo',{exact:true}).selectOption('both');await dialog.getByRole('button',{name:'Guardar contacto'}).click();await expect(page.locator('tbody')).toContainText('Acero del Norte');
+ const s=await req(page,service,'/api/state');expect(s.business.paper).toBe('58mm');expect(s.business.timezone).toBe('America/Mexico_City');
+});
+test('importación V15 con revisión previa, kardex y archivo original descargable',async({page,service})=>{
+ await setup(page,service);await go(page,'respaldo');const payload={business:{name:'Recicladora V15'},materials:[{id:'c',name:'Cobre',initial:1,price:5,salePrice:10,minStock:0}],purchases:[{items:[{mid:'c',kg:2.5}]}],sales:[{mid:'c',kg:0.5}],currentShift:null};
+ await page.locator('[data-form="legacy-preview"] input[type="file"]').setInputFiles({name:'respaldo-v15.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(payload))});await page.getByRole('button',{name:'Analizar respaldo'}).click();const dialog=page.getByRole('dialog');await expect(dialog).toContainText('3.000');await dialog.getByLabel('Escribe IMPORTAR').fill('IMPORTAR');await dialog.getByRole('button',{name:'Importar catálogo y saldos'}).click();await expect(dialog).not.toBeVisible();await expect(page.getByRole('link',{name:/respaldo-v15.json/})).toBeVisible();await go(page,'inventario');await page.getByRole('button',{name:'Kardex',exact:true}).click();await expect(dialog).toContainText('Saldo inicial importado V15');
+});
+test('interfaz móvil permite navegación y mantiene contenidos dentro de la pantalla',async({page,service})=>{
+ await page.setViewportSize({width:390,height:844});await setup(page,service);await expect(page.getByRole('heading',{name:'Resumen',exact:true})).toBeVisible();
+ await page.getByLabel('Abrir menú').click();await page.locator('#navigation [data-go="inventario"]').click();await expect(page.getByRole('heading',{name:'Inventario',exact:true})).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();await page.screenshot({path:test.info().outputPath('movil.png'),fullPage:true});
+});
+test('una respuesta lenta de reportes no reemplaza el módulo elegido después',async({page,service})=>{
+ await setup(page,service);await expect(page.locator('.kpis')).toBeVisible();
+ let release;const gate=new Promise(resolve=>release=resolve);
+ await page.route(/\/api\/report\?/,async route=>{const response=await route.fetch();await gate;await route.fulfill({response});});
+ const request=page.waitForRequest(/\/api\/report\?/);await go(page,'reportes');await request;
+ await go(page,'compras');await expect(page.locator('#materialSearch')).toBeVisible();
+ const response=page.waitForResponse(/\/api\/report\?/);release();await response;await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ await expect(page.getByRole('heading',{name:'Compras',exact:true})).toBeVisible();await expect(page.locator('#materialSearch')).toBeVisible();
+});

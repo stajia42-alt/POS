@@ -1,0 +1,17 @@
+RESTAURANTE 9.2.30 — VERSIÓN GENERAL CON MENÚS ZIP
+
+Este ZIP contiene únicamente Restaurante, sin menús precargados de clientes.
+1. Extrae el ZIP completo en una carpeta propia para cada instalación.
+2. Abre ABRIR_RESTAURANTE.cmd (requiere Node.js y dependencias locales).
+3. Entra a Estudio de menú y pulsa "Importar menú ZIP".
+4. Elige el ZIP de menú portable de tu cliente. Revísalo antes de escribir en SQL.
+5. Pulsa "Crear incluidos en Soft Restaurant" para iniciar el guardado habitual.
+
+Puedes preparar un menú en Restaurante y compartirlo usando "Guardar menú ZIP".
+Es independiente de los respaldos XML originales de Soft Restaurant: éstos NO se
+importan directamente a través del botón nuevo.
+
+Lee LEEME_MENUS_ZIP.txt para pasos, límites y seguridad.
+
+El programa no modifica ni elimina productos existentes al abrir un menú ZIP.
+Conserva tu instalación anterior como respaldo hasta validar una venta real.

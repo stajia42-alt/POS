@@ -1,0 +1,10 @@
+RESTAURANTE 9.2.14 — CUADROS LISTOS PARA ARRASTRAR
+
+1. En Capturar menú -> Corregir sobre la imagen aparecen cinco botones: rojo categoría, amarillo producto, azul descripción, verde precio, gris ignorar.
+2. Pulsar un botón crea sobre la MISMA fotografía un rectángulo predeterminado. Se arrastra desde dentro y se redimensiona desde la esquina inferior derecha, con mouse o dedo.
+3. Si el OCR reconoció un solo texto en la zona, se propone automáticamente; si no, se escribe el texto visible. Guardar agrega o reclasifica el bloque en el proyecto.
+4. Cancelar descarta el recuadro temporal; deshacer/rehacer conserva el historial. También puedes mover con las flechas del teclado (Mayús+flechas cambia tamaño).
+5. No requiere volver a subir la fotografía; conserva el modo manual de dibujar y el análisis guiado por colores.
+6. No modifica productos SQL: sólo propuestas hasta confirmar la importación. Clave Gemini y configuración SQL no fueron modificadas.
+
+Para fotos de proyectos antiguos sin original disponible se necesita volver a vincular la imagen, ya que no puede editarse una imagen que no existe en el servidor.

@@ -1,0 +1,8 @@
+Actualización: detección de nombres duplicados y tempuras.
+- La lectura OCR contempla bloques de dos nombres, dos traducciones y dos precios.
+- Compara nombres sin distinguir mayúsculas, acentos o signos de puntuación.
+- Consulta la tabla completa de productos SQL, no solo los primeros 500.
+- Los duplicados quedan desmarcados por defecto. Puedes autorizar uno con su casilla específica.
+- El guardado desde Menús con IA comprueba nuevamente el nombre en SQL antes de insertar.
+- Se conserva la confirmación de guardado y la transacción SQL original.
+IMPORTANTE: validar los precios de las tempuras con la fotografía original. Hacer respaldo antes de guardar.

@@ -1,0 +1,9 @@
+RESTAURANTE 9.2.32 - OPCIONES COMPARTIDAS
+
+Se corrige el conflicto Producto ya existente o repetido: NIVEL 1 al importar menús con un mismo modificador para alimentos y bebidas. Se generan una sola vez las opciones de un mismo nombre en el lote, y todas las relaciones apuntan a su ID exacto. Se preserva el orden de los modificadores por producto y el precio adicional de cada opción.
+
+No cambia interfaz, tablas SQL, datos previos ni otros módulos.
+
+Pruebas: 22 pruebas específicas aprobadas; suite general 208/219 aprobadas (11 fallos por faltar dependencias del servidor en este entorno). No se realizó prueba con escritura SQL real.
+
+Para probar: extraer ZIP en carpeta nueva, usar ABRIR_RESTAURANTE.cmd, importar el ZIP Punjabi corregido, entrar a revisión y confirmar que no aparece NIVEL 1 repetido. Revisar una bebida y Chicken Curry antes de guardar SQL. Respaldar SQL previamente.

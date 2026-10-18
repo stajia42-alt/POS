@@ -1,0 +1,57 @@
+RESTAURANTE 9.2.5 - REVISION FINAL DEL FLUJO DE MENU
+AVILES TECNOLOGIAS - 08/10/2026
+
+CORRECCIONES
+1. Corregido el bloqueo de "Valores de categorias nuevas: usar grupo existente".
+   La estructura real revisada del cliente admite grupos.clasificacion NULL.
+   No se exige copiar un valor de otro grupo si SQL no lo requiere.
+   Cuando SQL si exige campos obligatorios sin DEFAULT, se busca un modelo
+   valido y se elige automaticamente solo si sus valores obligatorios son
+   iguales entre los grupos disponibles. Si son diferentes se ofrece una
+   seleccion real; si no hay modelos, se muestra un error util, no un control vacio.
+2. Modo de precio interno: no se muestra selector cuando hay un solo valor
+   compatible. Cuando no existen valores, queda el respaldo 2 heredado del
+   proyecto anterior, identificado como NO confirmado por un producto real.
+   Si SQL devuelve varios modos, se muestran en configuracion avanzada.
+3. Empresa: se lee desde SQL, nunca se introduce una segunda empresa ficticia.
+4. Unidad: si solo existe una unidad registrada, se preselecciona.
+5. Impuestos: si no existe referencia fiscal verificable, el usuario confirma
+   la tasa real (0, 8 o 16). Nunca se asume una tasa por la zona geografica.
+6. Resumen: se retira el desplazamiento vertical doble de la tabla y se
+   conserva una unica area desplazable para ver el lote completo.
+7. Categorias preparadas y productos se revisan juntos. Se conservan las
+   claves automaticas, la clave manual y la decision de incluir/descartar.
+8. La captura JSON original de diez productos se conserva exactamente;
+   ninguno esta marcado como importado y ninguno ha sido enviado a SQL.
+9. Se vuelve a generar el manifiesto de distribucion. Version y hashes
+   coinciden con el contenido, evitando el error de instalacion "archivo cambio".
+
+VALIDACIONES REALIZADAS
+- 73 pruebas unitarias del menu, contexto, proyecto y OCR: correctas.
+- Chromium con HTTP simulado en memoria: cargar 10 productos reales del JSON,
+  pantalla sin selector de grupo ni precio innecesario, unidad unica y
+  validacion expresa de impuesto, vista previa enviada sin escribir SQL.
+- Pantalla verificada sin desbordamiento horizontal a 1024, 768, 390 y 320 px.
+- Contrato de SQL revisado: planifica 1 categoria y los 10 productos sin
+  exigir modelo de grupo (en estructura revisada, sin escritura).
+- Sintaxis de JS y distribucion verificadas.
+
+LIMITES / ADVERTENCIAS IMPORTANTES
+- Estas pruebas NO suplen comprobar el insert en SQL Server 2014 del negocio.
+- El valor interno precioabierto=2 se heredo del codigo antiguo; cuando la
+  base no tiene productos de referencia, debe comprobarse en Soft Restaurant
+  que el precio y comportamiento del articulo son correctos.
+- Los productos con modificadores no se insertan como productos independientes
+  incompletos; requieren un contrato SQL de modificadores validado.
+- Los archivos de configuracion del negocio se conservan fuera del ZIP.
+- No sustituir el sistema anterior antes de probar un articulo en Soft.
+
+INSTALAR / CONTINUAR
+1. Cerrar la instancia anterior de Restaurante (NO cerrar Soft Restaurant).
+2. Extraer este ZIP en una NUEVA carpeta. No mezclar con archivos de 9.2.4.
+3. Ejecutar ABRIR_RESTAURANTE.cmd (requiere Node.js 24 y paquetes npm).
+4. Capturar menu > Revisar productos > Crear incluidos en Soft Restaurant.
+5. Si no aparece la captura, Abrir proyecto > PROYECTO_MENU_ENVIADO.json.
+6. Verificar nombre, clave, precio y categoria. Elegir la tasa fiscal correcta
+   cuando el sistema no encuentre una referencia real para copiar.
+7. Confirmar el lote SOLO tras comprobar los valores de la vista previa.

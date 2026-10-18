@@ -1,0 +1,17 @@
+RESTAURANTE 9.2 - OCR HIBRIDO (VERSION DE PRUEBA)
+
+1. Instala Python de 64 bits (con py launcher) si no lo tienes.
+2. Ejecuta INSTALAR_OCR_GRATIS.cmd y espera a que termine. PaddleOCR puede descargar modelos la primera vez.
+3. Inicia Restaurante 9.2 con INICIAR_RESTAURANTE.cmd.
+4. Abre http://127.0.0.1:3000/menu-ia y elige un modo:
+   - RAPIDO: OCR y deteccion conservadora de nombres/precios en la misma linea.
+   - INTELIGENTE: OCR + Ollama para ordenar texto.
+   - VISUAL: Ollama analiza imagen directamente (modo anterior).
+5. Prueba UNA foto y revisa TODOS los datos antes de guardar.
+
+IMPORTANTE:
+- OCR no garantiza que asocie cada precio con el producto correcto.
+- Esta version NO incluye Python/PaddleOCR dentro del ZIP; requiere instalacion inicial.
+- No se modifica el mecanismo de guardado SQL anterior.
+- Si PaddleOCR no funciona en tu version de Windows/Python, envia el error de CMD.
+- Es una integracion inicial: sintaxis comprobada, NO validada con tu PC ni con un menu real.

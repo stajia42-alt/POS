@@ -1,0 +1,26 @@
+RESTAURANTE 9.2.6 - CLASIFICACION Y COLOR DE GRUPOS
+
+CAMBIOS
+- Cada grupo nuevo tiene clasificacion Alimentos (1), Bebidas (2) u Otros (3).
+- La clasificacion se sugiere a partir del nombre y se puede cambiar por grupo.
+- Boton naranja y letras negras de manera predeterminada; si hay un grupo
+  existente naranja con letras negras, se copia SU VALOR NUMERICO REAL.
+- Se verifica tras el INSERT la clasificacion, el color y las letras.
+- Pantalla para corregir UNO de los grupos que ya existen en SQL.
+  Abre la pestaña Grupos > Grupos existentes > Corregir clasificacion y colores.
+  Selecciona el grupo y su clasificacion; se genera una vista previa, luego
+  confirmas y se hace UPDATE solo a clasificacion, color y colorletra.
+- No se modifican precios, productos, ventas ni otros grupos.
+- El sistema detecta inconsistencias en codigos al comparar los grupos llamados
+  literalmente Alimentos/Bebidas/Otros y detiene la escritura en vez de adivinar.
+
+IMPORTANTE
+Esta distribucion NO realiza correcciones automaticas en la base de datos.
+Para reparar el grupo antiguo Entradas tienes que seleccionarlo y confirmar.
+Prueba esta operacion primero en una copia o con un respaldo reciente de SQL,
+porque actualizar la clasificacion puede cambiar el desglose historico en
+reportes por tipo de producto.
+
+El proyecto JSON de la 9.2.5 se conserva y sigue siendo compatible.
+Las pruebas automatizadas verifican la logica y SQL simulado, NO reemplazan
+una prueba real en Soft Restaurant 11.

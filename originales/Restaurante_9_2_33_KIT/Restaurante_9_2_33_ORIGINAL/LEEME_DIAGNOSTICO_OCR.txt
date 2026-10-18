@@ -1,0 +1,9 @@
+DIAGNOSTICO OCR - Restaurante 9.2
+
+1. Inicia Restaurante con INICIAR_RESTAURANTE.cmd.
+2. Abre /menu-ia y selecciona Rápido - solo OCR.
+3. Analiza una fotografía.
+4. Abre Ver texto detectado por OCR (diagnóstico).
+5. Si hay líneas pero cero productos, usa Copiar texto OCR para compartir el resultado sin datos sensibles.
+
+El diagnóstico no escribe en SQL. La extracción rápida sigue requiriendo que el precio esté en la misma línea del producto; no guarda automáticamente.

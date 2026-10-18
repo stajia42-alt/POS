@@ -1,0 +1,21 @@
+RESUMEN DEL ZIP DE MUESTRA LOTE28.ZIP
+
+Se inspeccionó el archivo recibido de Soft Restaurant, que contiene 43 XML.
+IMPORTANTE: la exportación XML NO certifica el esquema SQL ni autoriza escrituras.
+
+almacen.xml: idalmacen=2, nombre=ALMACEN PRUEBA, tipo=1, empresa=0000000001
+gruposi.xml: idgruposi=001, descripcion=GRUPO PRUEBA
+proveedores.xml: idproveedor=01, PROVEEDOR DE PRUEBA (tipo GRAL)
+insumos.xml: idinsumo=001001, INSUMO DE PRUEBA, unidad KGS
+insumosdetalle.xml: costo=50, inventariable=1, merma=10%, empresa=0000000001
+insumospresentaciones.xml: id=001001, insumo=001001, rendimiento=1.0000
+insumospresentacionesdetalle.xml: proveedor=01, costo=0
+costos.xml: receta del producto 000017 -> insumo 001001, cantidad=1.0000
+recetasalmacenes.xml: producto 000017, almacen=2 y areas 01, 02, 03
+stockinsumos.xml e insumoscostoproveedor.xml: sin registros
+
+La presentación exportada cuesta $0 aunque el insumo informa costo $50. No copiar ese valor como costo de compra.
+Para estudiar conversiones, faltaría una presentación real con rendimiento distinto a 1.
+
+Siguiente paso: ejecutar DIAGNOSTICAR_INVENTARIOS.cmd con Restaurante abierto y enviar el JSON.
+No se altera ningún registro de la base de datos.

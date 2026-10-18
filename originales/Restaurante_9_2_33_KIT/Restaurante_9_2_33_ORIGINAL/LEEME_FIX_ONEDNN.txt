@@ -1,0 +1,4 @@
+Corrección experimental de oneDNN en PaddleOCR.
+Se desactiva oneDNN en el proceso Python y en la configuración del OCR.
+No modifica SQL. Si persiste el error, comparte el texto exacto; puede requerir ajustar la versión de PaddlePaddle.
+No se ha probado en Windows del cliente.

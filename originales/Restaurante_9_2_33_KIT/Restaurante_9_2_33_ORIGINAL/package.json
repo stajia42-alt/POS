@@ -1,0 +1,66 @@
+{
+  "name": "restaurante",
+  "version": "9.2.33",
+  "description": "Restaurante 9.2.33 - corregida validacion de opciones compartidas y catalogos nuevos",
+  "main": "app.js",
+  "bin": "app.js",
+  "scripts": {
+    "build:win": "pkg app.js --config package.json --targets node24-win-x64 --output dist/Restaurante.exe",
+    "start": "node app.js",
+    "test": "node --test tests/*.test.js",
+    "prestart": "node preparar_interfaz.js",
+    "prebuild:win": "node preparar_interfaz.js"
+  },
+  "devDependencies": {
+    "@yao-pkg/pkg": "6.12.0"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "mssql": "12.0.0",
+    "exceljs": "4.4.0"
+  },
+  "pkg": {
+    "scripts": [
+      "reportes.js",
+      "diagnostico_menu.js",
+      "diagnostico_producto.js",
+      "interfaz.js",
+      "gestion.js",
+      "mejoras.js",
+      "fuentes.js",
+      "menu_admin.js",
+      "menu_ia.js",
+      "menu_contexto.js",
+      "menu_diagnostico.js",
+      "menu_seguridad.js",
+      "menu_contrato.js",
+      "menu_operaciones.js",
+      "menu_perfil_sql.js",
+      "menu_preflight.js",
+      "menu_ensayo.js",
+      "menu_guardar.js",
+      "ocr_proceso.js",
+      "version.js",
+      "menu_grupo_config.js",
+      "menu_nube.js",
+      "public/menu-proyecto.js",
+      "gemini_gratis.js",
+      "menu_trabajos.js",
+      "menu_visual_fotos.js",
+      "menu_visual_sugerencias.js",
+      "public/menu-visual-logica.js",
+      "menu_colores.js",
+      "menu_cuadros_lectura.js",
+      "menu_captura_inteligente.js",
+      "menu_precios_multiples.js",
+      "menu_compuestos.js",
+      "menu_perfil_compuesto.js",
+      "menu_paquetes.js",
+      "inventario_diagnostico.js"
+    ],
+    "assets": [
+      "DIAGNOSTICO_MENU_SOLO_LECTURA.sql",
+      "menu_colores_detector.py"
+    ]
+  }
+}

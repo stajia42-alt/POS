@@ -1,0 +1,13 @@
+<!doctype html>
+<!-- Estructura de sidebar/workspace/topbar, paneles y diálogo adaptada de Restaurante 9.2.33. -->
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#112e2a"><title>METales-GV Pro</title><link rel="icon" href="/brand.svg" type="image/svg+xml"><link rel="stylesheet" href="/foundation.css"><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<section id="auth" class="auth" hidden></section>
+<div id="shell" hidden>
+ <aside class="sidebar" id="sidebar"><a href="#inicio" class="brand"><img src="/brand.svg" alt=""><span>METales-GV<small>GESTIÓN & RECICLAJE · PRO</small></span></a><div class="nav-label">TU OPERACIÓN</div><nav id="navigation" aria-label="Módulos"></nav><div class="sidefoot"><span class="status-dot"></span> Operación local · SQLite<small>Versión 1.0.0 · Tus datos, en tu equipo</small></div></aside>
+ <div class="workspace"><header class="topbar"><button class="iconbutton" data-action="menu" aria-label="Abrir menú">☰</button><span id="businessName"></span><span class="connection" id="connection">● SQLite conectado</span><button id="account" class="account" data-action="password"></button><button class="linkbutton" data-action="logout">Salir</button></header>
+ <main><div class="pageheading"><div><div class="eyebrow" id="eyebrow">CONTROL DE TU NEGOCIO</div><h1 id="pageTitle"></h1><p id="pageSubtitle"></p></div><div id="headingActions" class="actions"></div></div><div id="shiftBanner"></div><section id="content" aria-label="Contenido del módulo"></section><footer><span>METales-GV Pro · MXN / kg</span><span id="updated"></span></footer></main></div>
+</div>
+<dialog id="detailDialog"><div class="dialogHeader"><h2 id="detailTitle"></h2><button class="iconbutton" data-action="close" aria-label="Cerrar diálogo">✕</button></div><div id="detailBody"></div></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div><div id="printArea"></div>
+</body></html>

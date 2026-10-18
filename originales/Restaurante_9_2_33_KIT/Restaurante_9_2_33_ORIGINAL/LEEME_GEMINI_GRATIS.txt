@@ -1,0 +1,30 @@
+RESTAURANTE 9.2.11 - GEMINI GRATIS / SELECCION AUTOMATICA DE MODELOS
+
+1. Google AI Studio: https://aistudio.google.com/apikey
+   IMPORTANTE: utiliza un proyecto SIN FACTURACION ACTIVADA si necesitas garantizar $0.
+   El programa NO puede desactivar la facturacion ni verificar el tipo de cuenta.
+2. En Windows ejecuta CONFIGURAR_GEMINI_GRATIS.cmd e introduce tu clave.
+3. Reinicia Restaurante, entra a Capturar menu y elige Gemini gratis.
+4. La aplicacion consulta /v1beta/models (incluidas paginas adicionales) y busca SOLO
+   modelos incluidos en una lista de modelos de lectura con nivel gratuito
+   documentado por Google. No utiliza automaticamente un modelo de pago.
+5. Si un modelo anunciado devuelve HTTP 404, prueba otro de la lista gratuita.
+   Si la cuota termina (429), NO salta a otros modelos para eludir limites: usa OCR local.
+6. Cuando Google no permite el analisis, la app intenta PaddleOCR local automaticamente.
+   OCR requiere Python/PaddleOCR instalado y operativo en la PC del negocio.
+7. "Modelo aparece disponible" NO equivale a "cuota gratuita comprobada".
+   La API models.list NO muestra estado de facturacion ni cuota restante.
+8. En el nivel gratuito, Google puede utilizar el contenido para mejorar sus productos.
+   No proceses informacion confidencial; revisa nombres y precios antes de importar.
+9. La clave API sigue almacenada solamente en el entorno del usuario de Windows.
+   El metodo de configuracion visible muestra la clave en pantalla, tenlo en cuenta.
+10. Los productos y grupos SQL NO se insertan durante una captura.
+11. Para actualizaciones: cierra Restaurante y usa ACTUALIZAR_INSTALACION.cmd,
+    o conserva la instalacion anterior y prueba en una carpeta nueva.
+    No incluye .env, contrasenas ni credenciales personales.
+12. Si usas la version compilada, recompila antes de actualizarla.
+
+Modelos gratuitos documentados consultados al desarrollar esta entrega:
+  gemini-3.5-flash-lite, gemini-3.1-flash-lite,
+  gemini-2.5-flash-lite, gemini-2.5-flash.
+Consulta tarifas actualizadas en https://ai.google.dev/gemini-api/docs/pricing
