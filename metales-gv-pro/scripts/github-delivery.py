@@ -117,12 +117,16 @@ def prepare_assets():
 
 
 def release_info(required=True):
-    response = command(["gh", "api", f"repos/{REPO}/releases/tags/{TAG}"], check=False)
+    # El endpoint por etiqueta solo devuelve versiones publicadas; esta lista incluye borradores propios.
+    response = command(["gh", "api", f"repos/{REPO}/releases?per_page=100"], check=False)
     if response.returncode:
-        if not required and "HTTP 404" in response.stderr:
-            return None
         raise RuntimeError("No se pudo consultar la versión: " + response.stderr[-4000:])
-    return json.loads(response.stdout)
+    matches = [release for release in json.loads(response.stdout) if release["tag_name"] == TAG]
+    assert len(matches) <= 1, "Hay varias versiones con la misma etiqueta; se conservan para revisión."
+    if not matches and not required:
+        return None
+    assert matches, "No se encontró la versión después de crearla."
+    return matches[0]
 
 
 def publish():
