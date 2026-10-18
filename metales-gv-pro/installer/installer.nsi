@@ -34,7 +34,7 @@ Function .onInit
 FunctionEnd
 Section "METales-GV Pro"
  SetOutPath "$INSTDIR"
- File /r "${PROJECT_DIR}/dist/win-unpacked/*"
+ File /r "${PROJECT_DIR}\dist\win-unpacked\*"
  WriteUninstaller "$INSTDIR\Desinstalar.exe"
  CreateDirectory "$SMPROGRAMS\METales-GV Pro"
  CreateShortcut "$SMPROGRAMS\METales-GV Pro\METales-GV Pro.lnk" "$INSTDIR\METales-GV Pro.exe" "" "$INSTDIR\resources\brand.ico"
