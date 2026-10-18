@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const asar=require('@electron/asar');
-const archive=path.resolve('dist/win-unpacked/resources/app.asar'),files=asar.listPackage(archive);
+const archive=path.resolve('dist/win-unpacked/resources/app.asar'),files=asar.listPackage(archive).map(file=>file.replace(/\\/g,'/'));
 for(const directory of ['src','public']) for(const name of fs.readdirSync(directory)) {
  const file=directory+'/'+name;if(!fs.statSync(file).isFile())continue;
  assert.deepEqual(asar.extractFile(archive,file),fs.readFileSync(file),'Paquete desactualizado: '+file);
