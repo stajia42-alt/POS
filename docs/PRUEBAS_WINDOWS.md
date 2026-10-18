@@ -1,6 +1,6 @@
 # Validación en Windows pendiente
 
-El entorno de desarrollo de esta entrega es Linux. La compilación del instalador no verifica su ejecución en Windows. Ejecuta esta lista en una PC de pruebas con Windows 10/11 x64 antes de usarlo en caja real.
+El desarrollo inicial se realizó en Linux y GitHub Actions ejecutó las 37 pruebas, Electron fuente/empaquetado y la compilación en Windows. Esas pruebas automatizadas no verifican la instalación ni una impresora física. Ejecuta esta lista en una PC de pruebas con Windows 10/11 x64 antes de usarlo en caja real.
 
 | Comprobación | Resultado a verificar |
 | --- | --- |

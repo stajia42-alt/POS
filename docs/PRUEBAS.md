@@ -1,5 +1,13 @@
 # Evidencia de validación
 
+## Entrega publicada y validada en Windows
+
+La [ejecución de GitHub Actions](https://github.com/stajia42-alt/POS/actions/runs/39095767612) compiló y publicó METales-GV Pro 1.0.0 en Windows. Pasaron las 30 pruebas del motor, los 7 recorridos de interfaz, Electron fuente y empaquetado, la comprobación del app.asar y la generación del instalador NSIS. Los [archivos publicados](https://github.com/stajia42-alt/POS/releases/tag/metales-gv-pro-v1.0.0) se descargaron por HTTPS y se comprobaron sus tamaños y SHA-256; ambos ZIP y los 79 archivos del instalador pasaron la verificación de integridad. Los originales conservaron sus SHA-256.
+
+La instalación, actualización/desinstalación y la impresión física siguen pendientes en una PC del negocio; consulta `PRUEBAS_WINDOWS.md`. El instalador no tiene firma digital.
+
+## Validación inicial en Linux
+
 Entorno: Linux x64, Node.js 24.19.0, npm 11.9.0, Chromium 154.0.8037.57. Electron 44.9.0 incorpora Node.js 24.22.0. SQLite reporta versión 3.54.0 mediante sql.js 1.15.0.
 
 | Verificación | Resultado |
@@ -43,4 +51,4 @@ Las capturas `captura-resumen.png` y `captura-movil.png` proceden de datos tempo
 
 No se ejecutó el instalador ni el spooler de Windows: se necesita una PC Windows y una impresora física para las comprobaciones de `PRUEBAS_WINDOWS.md`. La impresión RAW se genera y valida como bytes; no se afirma que una impresora concreta acepte el corte o su configuración.
 
-No se ejecutó el workflow de GitHub, no se publicó el repositorio y no se verificó la restauración del entorno en una tarea nueva. Se guardaron `install_script` y `start_skill` en el borrador de configuración del entorno para revisión y publicación del usuario; guardar esos campos no publica el entorno.
+El proyecto está publicado en la rama independiente `entrega-metales-gv-pro` y la versión 1.0.0 está disponible en GitHub Releases. `main` conserva su commit inicial. No se verificó la restauración del entorno en una tarea nueva. Se guardaron `install_script` y `start_skill` en el borrador de configuración del entorno para revisión y publicación del usuario; guardar esos campos no publica el entorno.
