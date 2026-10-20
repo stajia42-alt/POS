@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { Capacitor } from '@capacitor/core';
 import { openDatabase } from './db/open';
 import { Pos } from './domain/pos';
-import { App } from './ui/App';
+import { SessionGate } from './ui/SessionGate';
 import './styles.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
@@ -35,7 +35,7 @@ async function boot() {
   const db = await openDatabase();
   const pos = new Pos(db);
   await pos.initialize();
-  root.render(<App pos={pos} initial={await pos.snapshot()} />);
+  root.render(<SessionGate pos={pos} />);
   if (!Capacitor.isNativePlatform() && import.meta.env.PROD && 'serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(console.error);
   }

@@ -8,7 +8,7 @@ Android utiliza `@capacitor-community/sqlite` y su SQLite/SQLCipher nativo, sin 
 
 El navegador mantiene un Web Lock por origen durante la sesión. Una segunda pestaña recibe un aviso y no abre otro escritor. Se considera la versión web una herramienta de desarrollo y validación; Android es la plataforma objetivo. Para catálogos grandes, debe perfilarse la lectura de fotografías y el coste de exportar el archivo en web.
 
-## Esquemas 1 y 2
+## Esquemas 1, 2 y 3
 
 La migración se encuentra en `src/db/migrations.ts`. Usa `PRAGMA user_version`, claves foráneas activadas, índices y restricciones. Se aplica en una transacción; repetirla conserva los datos. Una versión de esquema posterior a la soportada impide abrir la aplicación sin borrar información.
 
@@ -34,13 +34,23 @@ erDiagram
 | `inventory_movements` | Existencias iniciales, ajustes desde catálogo y movimientos de ventas                     |
 | `settings`            | Negocio, preferencia cuadrícula/lista e identificador del ticket activo                   |
 
-Los tickets pendientes son ventas con estado `parked`; no se duplica su contenido en otra tabla. El historial incluye únicamente estado `paid`. Las cancelaciones se conservan como `cancelled`, sin borrar filas. El esquema no inventa tablas ni funciones de módulos no implementados. Las siguientes versiones deben añadir migraciones para variantes, modificadores, empleados, permisos, turnos, movimientos de caja y respaldos.
+Los tickets pendientes son ventas con estado `parked`; no se duplica su contenido en otra tabla. El historial incluye únicamente estado `paid`. Las cancelaciones se conservan como `cancelled`, sin borrar filas. El esquema no inventa tablas ni funciones de módulos no implementados. Las siguientes versiones deben añadir migraciones para variantes, modificadores, devoluciones y los demás módulos pendientes.
 
 La migración 2 renombra temporalmente la tabla de pagos anterior, crea la tabla ampliada, copia todas las filas y retira únicamente la tabla temporal al terminar la copia. Todo ocurre dentro de la misma transacción, incluida la versión de esquema. No se reconstruye ni se reinicia la base completa. Si hay un error, se restaura el estado anterior. Los pagos originales conservan todos sus campos comerciales.
 
 `src/domain/payments.ts` valida la distribución antes de mover inventario. Se aceptan entre 1 y 10 partes; cada parte de un reparto tiene importe positivo. La suma debe ser exactamente el total. Solo `cash` admite recibido superior al aplicado; los otros métodos se registran por su importe exacto y no generan cambio. Las referencias se guardan por pago, hasta 120 caracteres. `CheckoutForm` prepara los datos y solo `Pos.checkoutPayments` los registra dentro del cierre transaccional.
 
 El método original `Pos.checkout(saleId, tendered)` sigue disponible como cobro simple en efectivo. El recibo expone `payments` y conserva `payment` como alias de la primera parte para compatibilidad con la API 1.0. La interfaz usa la colección completa.
+
+## Acceso, inventario y caja en esquema 3
+
+`AccessControl` deriva PIN fuera de la cola SQL, pero confirma credenciales vigentes, contador de intentos y bloqueo dentro de una transacción. Cada operación vuelve a leer estado y permisos. La sesión solo reside en memoria y un bloqueo invalida un login todavía en curso. Los DTO de empleados no exponen hashes ni sales criptográficas. `SessionGate` mantiene la interfaz comercial cerrada hasta iniciar sesión.
+
+`Inventory` registra movimientos con actor, motivo y antes/después. Un conteo conserva esperado y contado incluso si el delta es cero. `recordStock` es compartido por entradas/ajustes, edición del catálogo y cobros: nunca abre una transacción anidada. El promedio ponderado usa enteros y límites que preservan precisión. La consulta no carga fotografías y página el libro de movimientos.
+
+`Cash` calcula esperado como fondo más efectivo aplicado e ingresos menos salidas/retiros. `checkoutShift` exige turno abierto solo si la opción está activa y comprueba el límite de efectivo. El cobro registra pagos, stock, empleado, turno y auditoría junto al estado pagado y nuevo borrador, en una transacción. El cierre guarda esperado/contado/diferencia una sola vez. Un índice parcial impide dos turnos abiertos. Las consultas completas requieren reportes; permisos de caja permiten solo la información necesaria para su operación.
+
+Migración 3: tablas `employees`, `employee_permissions`, `administrative_actions`, `shifts`, `cash_movements`, `inventory_counts`; columnas `products.low_stock`, `sales.employee_id/employee_name/shift_id` y datos de trazabilidad en `inventory_movements`. No se reconstruyen antes/después ni usuarios históricos que no se guardaron. La auditoría captura nombres al escribir y nunca guarda PIN. Las migraciones y todas las operaciones siguen compartiendo la cola del adaptador.
 
 ## Ciclo de una venta
 
@@ -71,6 +81,6 @@ La navegación administrativa se abre desde el cajón lateral. Las categorías p
 
 - Los anticipos confirmados con saldo pendiente requerirán un ciclo de cobro parcial adicional; la versión 1.1 confirma todos los pagos juntos. No reutilizar una clave de venta como si representara una parte independiente.
 - Variantes y modificadores requieren tablas propias y capturas de lo vendido, no productos duplicados.
-- Permisos deben verificarse en la capa de negocio; ocultar un botón no será suficiente.
+- Las funciones futuras deben usar `AccessControl.require` dentro de su transacción y `audit`; ocultar un botón no será suficiente.
 - ESC/POS debe tener un transporte Android separado para cada conexión. Ninguna impresora se considera compatible sin una prueba real.
 - Restauración debe validar integridad, versión y referencias antes de cualquier cambio de base y obtener confirmación del administrador.

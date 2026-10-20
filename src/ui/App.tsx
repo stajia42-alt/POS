@@ -28,6 +28,7 @@ import {
   CheckCircle2,
   Pencil,
   Store,
+  LockKeyhole,
 } from 'lucide-react';
 import type { Pos } from '../domain/pos';
 import { money, parsePercent } from '../domain/money';
@@ -35,9 +36,24 @@ import type { Category, Customer, Product, Receipt, SaleLine, Snapshot } from '.
 import { Modal } from './Modal';
 import { ProductForm } from './ProductForm';
 import { CheckoutForm } from './CheckoutForm';
+import { SessionError } from '../domain/access';
+import { ROLE_LABELS, type Permission } from '../domain/access-types';
+import { InventoryPanel } from './InventoryPanel';
+import { EmployeesPanel } from './EmployeesPanel';
+import { CashPanel } from './CashPanel';
 import { paymentSummary, PAYMENT_LABELS } from '../domain/payments';
 
-type Page = 'sales' | 'products' | 'categories' | 'pending' | 'history' | 'customers' | 'settings';
+type Page =
+  | 'sales'
+  | 'products'
+  | 'categories'
+  | 'pending'
+  | 'history'
+  | 'customers'
+  | 'settings'
+  | 'inventory'
+  | 'employees'
+  | 'cash';
 type Dialog =
   | 'product'
   | 'category'
@@ -59,6 +75,9 @@ const nav: { key: Page; title: string; icon: typeof Menu }[] = [
   { key: 'products', title: 'Productos', icon: Package },
   { key: 'categories', title: 'Categorías', icon: FolderOpen },
   { key: 'customers', title: 'Clientes', icon: UsersRound },
+  { key: 'inventory', title: 'Inventario', icon: Package },
+  { key: 'cash', title: 'Caja y turnos', icon: Banknote },
+  { key: 'employees', title: 'Empleados', icon: UsersRound },
   { key: 'settings', title: 'Configuración', icon: Settings },
 ];
 const date = (iso: string) =>
@@ -112,7 +131,7 @@ function ProductImage({ product, color }: { product: Product; color?: string }) 
   );
 }
 
-export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
+export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onLock: () => void }) {
   const [data, setData] = useState(initial);
   const [page, setPage] = useState<Page>('sales');
   const [sidebar, setSidebar] = useState(false);
@@ -158,7 +177,8 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
       if (message) setNotice(message);
       if (close) setDialog(null);
     } catch (error) {
-      setError(errorMessage(error));
+      if (error instanceof SessionError) onLock();
+      else setError(errorMessage(error));
     } finally {
       running.current = false;
       setBusy(false);
@@ -170,7 +190,22 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
       setError('');
     }
   };
+  const can = (...permissions: Permission[]) =>
+    permissions.some((permission) => data.actor.permissions.includes(permission));
+  const allowed: Record<Page, boolean> = {
+    sales: true,
+    pending: can('sell'),
+    history: can('reports'),
+    products: can('products'),
+    categories: can('products'),
+    customers: can('sell'),
+    settings: can('settings'),
+    inventory: can('inventory', 'reports'),
+    cash: can('reports', 'open_cash', 'close_cash', 'cash_moves'),
+    employees: can('employees'),
+  };
   const go = (next: Page) => {
+    if (!allowed[next]) return;
     setPage(next);
     setSearch('');
     setSidebar(false);
@@ -480,7 +515,9 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
                   <small>{c.phone || c.email || 'Sin datos de contacto'}</small>
                 </div>
                 <span className="muted">
-                  {data.history.filter((s) => s.customer_id === c.id).length} compras
+                  {can('reports')
+                    ? `${data.history.filter((s) => s.customer_id === c.id).length} compras`
+                    : ''}
                 </span>
                 <Pencil size={18} />
               </button>
@@ -513,6 +550,7 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
                   phone: String(form.get('phone')),
                   taxBps: parsePercent(String(form.get('tax'))),
                   receiptFooter: String(form.get('footer')),
+                  cashManagement: form.has('cashManagement'),
                 }),
               'Configuración guardada',
             );
@@ -554,6 +592,18 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
             Mensaje del recibo
             <input name="footer" maxLength={200} defaultValue={data.business.receiptFooter} />
           </label>
+          <label className="check-label">
+            <input
+              type="checkbox"
+              name="cashManagement"
+              defaultChecked={!!data.business.cashManagement}
+            />{' '}
+            Control de caja por turnos
+          </label>
+          <p className="field-hint">
+            Al activarlo, deberás abrir un turno antes de cobrar. No se atribuyen las ventas
+            antiguas a turnos nuevos.
+          </p>
           <div className="settings-note">
             <Banknote size={23} />
             <div>
@@ -568,12 +618,27 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
             {busy ? 'Guardando…' : 'Guardar configuración'}
           </button>
           <p className="field-hint">
-            La aplicación 1.1 no incluye respaldos exportables. Conserva los datos de la aplicación;
-            desinstalarla o borrar su almacenamiento elimina la información local.
+            Esta versión todavía no incluye respaldos exportables. Conserva los datos de la
+            aplicación; desinstalarla o borrar su almacenamiento elimina la información local.
           </p>
         </form>
       </section>
     );
+
+  const moduleProps = {
+    pos,
+    actor: data.actor,
+    onLock,
+    onChanged: async () => {
+      const value = await pos.snapshot();
+      setData(value);
+      if (!value.actor.permissions.includes('employees') && page === 'employees') setPage('sales');
+    },
+  };
+  if (page === 'inventory' && allowed.inventory) admin = <InventoryPanel {...moduleProps} />;
+  if (page === 'employees' && allowed.employees) admin = <EmployeesPanel {...moduleProps} />;
+  if (page === 'cash' && allowed.cash)
+    admin = <CashPanel {...moduleProps} enabled={!!data.business.cashManagement} />;
 
   const titles: Record<Exclude<Dialog, null>, string> = {
     product: product ? 'Editar producto' : 'Nuevo producto',
@@ -597,7 +662,9 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
         categories={data.categories}
         busy={busy}
         onError={setError}
-        onSave={(p) => void run(() => pos.saveProduct(p), 'Producto guardado', true)}
+        onSave={(p, reason) =>
+          void run(() => pos.saveProduct(p, reason), 'Producto guardado', true)
+        }
       />
     );
   if (dialog === 'category')
@@ -729,6 +796,7 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
           <input
             data-autofocus
             name="discount"
+            readOnly={!can('discounts')}
             inputMode="decimal"
             required
             defaultValue={(ticket.discount_bps / 100).toFixed(2)}
@@ -1056,7 +1124,7 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
         <div className="about-brand">
           <span className="brand-mark">A</span>
           <h2>
-            AVILES POS <span>1.1</span>
+            AVILES POS <span>1.2</span>
           </h2>
         </div>
         <p>
@@ -1072,9 +1140,9 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
           transferencia u otros y permite consultar el recibo en el historial.
         </p>
         <p className="field-hint">
-          Alcance 1.1: no incluye empleados y permisos, devoluciones, impresoras, respaldos,
-          variantes ni modificadores. Consulta la documentación del proyecto antes de usarlo
-          comercialmente.
+          Versión 1.2: acceso de empleados con PIN, permisos, inventario operativo y turnos de caja.
+          Pendientes: devoluciones, impresoras, respaldos exportables, variantes y modificadores.
+          Consulta la documentación del proyecto antes de usarlo comercialmente.
         </p>
         <button className="secondary" onClick={close}>
           Entendido
@@ -1401,13 +1469,19 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
                 </div>
               </div>
               <div className="ticket-buttons">
-                <button disabled={busy || !data.lines.length} onClick={() => setDialog('park')}>
+                <button
+                  disabled={busy || !data.lines.length || !can('sell')}
+                  onClick={() => setDialog('park')}
+                >
                   GUARDAR
                 </button>
                 <button
-                  disabled={busy || !data.lines.length}
+                  disabled={busy || !data.lines.length || !can('sell')}
                   onClick={() => {
-                    setDialog('checkout');
+                    if (data.business.cashManagement && !data.shift) {
+                      go('cash');
+                      setNotice('Abre el turno antes de cobrar');
+                    } else setDialog('checkout');
                   }}
                 >
                   COBRAR
@@ -1458,21 +1532,28 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
               <Store size={26} />
               <div>
                 <strong>{data.business.name}</strong>
-                <span>Tu negocio, en tus manos</span>
+                <span>
+                  {data.actor.name} · {ROLE_LABELS[data.actor.role]}
+                </span>
               </div>
             </div>
-            {nav.map((n) => (
-              <button
-                key={n.key}
-                aria-label={n.title}
-                className={page === n.key ? 'active' : ''}
-                onClick={() => go(n.key)}
-              >
-                <n.icon size={22} />
-                <span>{n.title}</span>
-                {n.key === 'pending' && data.parked.length > 0 && <b>{data.parked.length}</b>}
-              </button>
-            ))}
+            {nav
+              .filter((n) => allowed[n.key])
+              .map((n) => (
+                <button
+                  key={n.key}
+                  aria-label={n.title}
+                  className={page === n.key ? 'active' : ''}
+                  onClick={() => go(n.key)}
+                >
+                  <n.icon size={22} />
+                  <span>{n.title}</span>
+                  {n.key === 'pending' && data.parked.length > 0 && <b>{data.parked.length}</b>}
+                </button>
+              ))}
+            <button onClick={onLock} disabled={busy}>
+              <LockKeyhole size={21} /> Bloquear y cambiar empleado
+            </button>
             <button
               className="menu-help"
               onClick={() => {
@@ -1480,7 +1561,7 @@ export function App({ pos, initial }: { pos: Pos; initial: Snapshot }) {
                 setDialog('help');
               }}
             >
-              <CircleHelp size={21} /> Acerca de y ayuda <small>1.1</small>
+              <CircleHelp size={21} /> Acerca de y ayuda <small>1.2</small>
             </button>
           </div>
         </Modal>

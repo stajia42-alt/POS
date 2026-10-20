@@ -37,33 +37,38 @@ export function ProductForm({
   product?: Product;
   categories: Category[];
   busy: boolean;
-  onSave: (product: Omit<Product, 'id'> & { id?: string }) => void;
+  onSave: (product: Omit<Product, 'id'> & { id?: string }, reason: string) => void;
   onError: (message: string) => void;
 }) {
   const [photo, setPhoto] = useState(product?.photo || '');
   const [processing, setProcessing] = useState(false);
   const [track, setTrack] = useState(!!product?.track_stock);
+  const [stock, setStock] = useState(product?.stock || 0);
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const values = new FormData(event.currentTarget);
     const text = (key: string) => String(values.get(key) || '');
     try {
-      onSave({
-        id: product?.id,
-        name: text('name'),
-        sku: text('sku'),
-        barcode: text('barcode'),
-        description: text('description'),
-        category_id: text('category') || null,
-        price: parseMoney(text('price')),
-        cost: parseMoney(text('cost') || '0'),
-        photo,
-        active: values.has('active') ? 1 : 0,
-        favorite: values.has('favorite') ? 1 : 0,
-        track_stock: track ? 1 : 0,
-        stock: Number(text('stock') || product?.stock || 0),
-        unit: text('unit'),
-      });
+      onSave(
+        {
+          id: product?.id,
+          name: text('name'),
+          sku: text('sku'),
+          barcode: text('barcode'),
+          description: text('description'),
+          category_id: text('category') || null,
+          price: parseMoney(text('price')),
+          cost: parseMoney(text('cost') || '0'),
+          photo,
+          active: values.has('active') ? 1 : 0,
+          favorite: values.has('favorite') ? 1 : 0,
+          track_stock: track ? 1 : 0,
+          stock,
+          low_stock: Number(text('lowStock') || product?.low_stock || 0),
+          unit: text('unit'),
+        },
+        text('stockReason'),
+      );
     } catch (error) {
       onError((error as Error).message);
     }
@@ -204,8 +209,34 @@ export function ProductForm({
               min="0"
               max="999999"
               step="1"
-              defaultValue={product?.stock || 0}
+              value={stock}
+              onChange={(e) => setStock(Number(e.target.value))}
               required
+            />
+          </label>
+        )}
+        {track && (
+          <label>
+            Umbral de stock bajo
+            <input
+              name="lowStock"
+              type="number"
+              min="0"
+              max="999999"
+              step="1"
+              defaultValue={product?.low_stock || 0}
+              required
+            />
+          </label>
+        )}
+        {product && stock !== product.stock && (
+          <label>
+            Motivo del ajuste
+            <input
+              name="stockReason"
+              required
+              maxLength={500}
+              placeholder="Explica el cambio de existencias"
             />
           </label>
         )}

@@ -1,0 +1,495 @@
+ACTÚA COMO INGENIERO DE SOFTWARE SÉNIOR
+ESPECIALIZADO EN ANDROID, REACT, TYPESCRIPT,
+CAPACITOR, SQLITE Y SISTEMAS POS.
+
+PROYECTO: AVILES POS
+
+CONTEXTO:
+
+Ya desarrollaste y entregaste AVILES POS 1.0.
+
+La primera versión funciona correctamente.
+
+Ahora necesito continuar el desarrollo hasta
+incorporar todos los módulos que quedaron pendientes
+del PROMPT MAESTRO ORIGINAL.
+
+IMPORTANTE:
+
+NO CREES OTRO PROYECTO.
+
+NO EMPIECES DESDE CERO.
+
+NO REEMPLACES LA APLICACIÓN EXISTENTE.
+
+NO CAMBIES LA INTERFAZ DE VENTAS.
+
+NO ELIMINES FUNCIONES QUE YA TRABAJAN.
+
+NO MODIFIQUES LA BASE DE DATOS DE FORMA
+QUE SE PIERDA INFORMACIÓN EXISTENTE.
+
+TRABAJA DIRECTAMENTE SOBRE EL PROYECTO
+AVILES POS 1.0.
+
+==================================================
+OBJETIVO
+==================================================
+
+Convertir AVILES POS en una aplicación
+comercial completa, tomando como referencia
+las funcionalidades de Loyverse POS.
+
+La aplicación seguirá funcionando:
+
+- En tabletas Android.
+- Sin computadora.
+- Sin servidor.
+- Sin Internet.
+- Con SQLite local.
+- Mediante APK.
+- En orientación horizontal.
+
+Conservar la interfaz visual de la versión 1.0.
+
+==================================================
+FASE 1 — INVENTARIO PROFESIONAL
+==================================================
+
+Implementar:
+
+1. Inventario por producto.
+2. Existencias actuales.
+3. Costos de adquisición.
+4. Entradas de mercancía.
+5. Salidas de mercancía.
+6. Ajustes de inventario.
+7. Historial de movimientos.
+8. Alertas de existencias bajas.
+9. Productos sin control de inventario.
+10. Inventario de productos con variantes.
+11. Conteos físicos.
+12. Correcciones de inventario.
+13. Productos compuestos.
+14. Descuento automático al vender.
+15. Reposición de inventario por devolución.
+
+Cada movimiento debe registrar:
+
+Fecha.
+Hora.
+Usuario.
+Producto.
+Cantidad.
+Motivo.
+Existencia anterior.
+Existencia nueva.
+
+==================================================
+FASE 2 — CONTROL DE CAJA
+==================================================
+
+Implementar:
+
+1. Apertura de caja.
+2. Fondo inicial.
+3. Entradas de efectivo.
+4. Salidas de efectivo.
+5. Retiros de efectivo.
+6. Arqueo.
+7. Cierre de caja.
+8. Diferencias de efectivo.
+9. Historial de turnos.
+10. Reporte de movimientos.
+11. Ventas por turno.
+12. Efectivo esperado.
+13. Efectivo contado.
+14. Reporte de cierre.
+15. Reimpresión autorizada.
+
+Los movimientos deben quedar asociados
+al empleado y al turno correspondiente.
+
+==================================================
+FASE 3 — EMPLEADOS Y PERMISOS
+==================================================
+
+Crear administración de empleados.
+
+Cada empleado tendrá:
+
+Nombre.
+Identificador.
+PIN de acceso.
+Rol.
+Estado activo/inactivo.
+
+Roles iniciales:
+
+Administrador.
+Supervisor.
+Cajero.
+
+Permisos:
+
+Vender.
+Aplicar descuentos.
+Cancelar ventas.
+Modificar precios.
+Realizar devoluciones.
+Consultar reportes.
+Administrar inventario.
+Abrir caja.
+Cerrar caja.
+Modificar configuraciones.
+Reimprimir tickets.
+
+El administrador podrá configurar
+los permisos individualmente.
+
+No guardar PIN en texto plano.
+
+==================================================
+FASE 4 — CLIENTES Y FIDELIZACIÓN
+==================================================
+
+Implementar:
+
+1. Registro de clientes.
+2. Historial de compras.
+3. Teléfono.
+4. Correo electrónico.
+5. Observaciones.
+6. Asignación de cliente a venta.
+7. Búsqueda de clientes.
+8. Puntos acumulados.
+9. Canje de puntos.
+10. Configuración de recompensas.
+11. Historial de puntos.
+12. Ajustes autorizados de puntos.
+
+Los puntos deben calcularse
+automáticamente según reglas configurables.
+
+==================================================
+FASE 5 — IMPRESORAS TÉRMICAS
+==================================================
+
+Implementar integración real con
+impresoras ESC/POS.
+
+Conexiones:
+
+Bluetooth.
+USB OTG.
+Wi-Fi / LAN.
+
+Funciones:
+
+Detectar impresoras compatibles.
+Configurar impresora.
+Guardar configuración.
+Imprimir ticket.
+Imprimir copia.
+Reimprimir ticket.
+Imprimir cierre de caja.
+Abrir cajón de efectivo.
+Realizar prueba de impresión.
+
+Compatibilidad:
+
+58 mm.
+80 mm.
+
+Personalización del ticket:
+
+Nombre del negocio.
+Logotipo.
+Dirección.
+Teléfono.
+Folio.
+Fecha.
+Hora.
+Productos.
+Cantidades.
+Precios.
+Descuentos.
+Impuestos.
+Total.
+Método de pago.
+Cambio.
+Mensaje final.
+
+Implementar cola de impresión y
+manejo de errores.
+
+No marcar una impresión como exitosa
+si el dispositivo no confirmó
+la operación cuando el protocolo
+permita verificarla.
+
+==================================================
+FASE 6 — REPORTES Y ESTADÍSTICAS
+==================================================
+
+Crear módulo de reportes.
+
+Reportes:
+
+Ventas del día.
+Ventas por fechas.
+Ventas por empleado.
+Ventas por categoría.
+Ventas por producto.
+Ventas por hora.
+Ventas por método de pago.
+Descuentos.
+Devoluciones.
+Cancelaciones.
+Utilidad bruta estimada.
+Productos más vendidos.
+Productos menos vendidos.
+Inventario valorizado.
+Movimientos de caja.
+Cierres de turno.
+
+Agregar:
+
+Filtros.
+Gráficas.
+Totales.
+Exportación CSV.
+Exportación PDF cuando sea viable.
+
+==================================================
+FASE 7 — RESTAURANTES
+==================================================
+
+Implementar funciones para restaurantes.
+
+1. Administración de mesas.
+2. Apertura de mesas.
+3. Asignación de meseros.
+4. Agregar productos a mesas.
+5. Modificar pedidos.
+6. Transferir mesas.
+7. Unir cuentas.
+8. Dividir cuentas.
+9. Cobros parciales.
+10. Modificadores.
+11. Notas de preparación.
+12. Comandas.
+13. Áreas de preparación.
+14. Cocina.
+15. Barra.
+16. Estados de pedidos.
+
+Permitir configurar áreas de preparación
+e impresoras correspondientes.
+
+Las funciones que requieran otros
+dispositivos deben documentar
+claramente sus requisitos.
+
+==================================================
+FASE 8 — COMPRAS Y PROVEEDORES
+==================================================
+
+Implementar:
+
+Catálogo de proveedores.
+Órdenes de compra.
+Recepción de mercancía.
+Compras parciales.
+Costos.
+Historial de compras.
+Productos pendientes.
+Actualización de inventario.
+Reportes de compras.
+
+==================================================
+FASE 9 — CONFIGURACIÓN AVANZADA
+==================================================
+
+Implementar:
+
+Datos del negocio.
+Moneda MXN.
+Impuestos configurables.
+Numeración de tickets.
+Logotipo.
+Configuración de impresión.
+Métodos de pago.
+Descuentos.
+Unidades de medida.
+Configuración de inventario.
+Respaldo.
+Restauración.
+Exportación de información.
+
+==================================================
+FASE 10 — RESPALDOS Y SEGURIDAD
+==================================================
+
+Implementar:
+
+Respaldo completo de SQLite.
+Exportación de respaldos.
+Restauración validada.
+Verificación de integridad.
+Migraciones de base de datos.
+Registro de acciones administrativas.
+
+Proteger las operaciones críticas.
+
+No perder información durante
+actualizaciones del APK.
+
+==================================================
+FASE 11 — OPTIMIZACIÓN ANDROID
+==================================================
+
+Optimizar para Samsung Galaxy Tab A11.
+
+Prioridades:
+
+Velocidad.
+Estabilidad.
+Bajo consumo de memoria.
+Respuesta táctil.
+Funcionamiento offline.
+Persistencia de datos.
+Recuperación ante cierres inesperados.
+
+Evitar bloqueos de interfaz.
+
+No cargar fotografías grandes
+innecesariamente.
+
+==================================================
+REGLAS OBLIGATORIAS
+==================================================
+
+1. Trabajar sobre AVILES POS 1.0.
+
+2. Conservar el diseño existente.
+
+3. No eliminar funcionalidades.
+
+4. No inventar resultados de pruebas.
+
+5. No entregar botones sin funcionalidad.
+
+6. No utilizar datos simulados
+   como sustituto de funciones reales.
+
+7. No modificar tablas existentes
+   de forma destructiva.
+
+8. Utilizar migraciones SQLite.
+
+9. Ejecutar pruebas de regresión.
+
+10. Conservar compatibilidad Android.
+
+11. Mantener código organizado.
+
+12. Documentar cada módulo.
+
+13. No introducir dependencias
+    innecesarias de Internet.
+
+14. No depender de una computadora.
+
+15. Mantener la aplicación comercial
+    completamente independiente.
+
+==================================================
+PROCEDIMIENTO DE DESARROLLO
+==================================================
+
+PRIMERO:
+
+Inspecciona el proyecto existente.
+
+Identifica qué funciones ya están
+implementadas y cuáles faltan.
+
+No dupliques funcionalidades existentes.
+
+SEGUNDO:
+
+Crea una rama de desarrollo o
+un punto de restauración en Git.
+
+TERCERO:
+
+Implementa las fases pendientes
+directamente sobre el código existente.
+
+CUARTO:
+
+Después de cada fase:
+
+- Ejecuta pruebas.
+- Verifica compilación.
+- Comprueba persistencia.
+- Comprueba compatibilidad.
+- Corrige errores encontrados.
+
+QUINTO:
+
+No declares un módulo terminado
+si tiene funciones incompletas.
+
+SEXTO:
+
+Mantén un archivo:
+
+AVILES_POS_PROGRESO.md
+
+Debe contener:
+
+- Funciones implementadas.
+- Funciones verificadas.
+- Funciones pendientes.
+- Errores conocidos.
+- Cambios de base de datos.
+- Versión actual.
+
+==================================================
+ENTREGA
+==================================================
+
+Entregar:
+
+Código fuente actualizado.
+Proyecto Android.
+Migraciones SQLite.
+Pruebas.
+Documentación.
+APK si es posible compilarlo.
+
+NO ENTREGAR SOLAMENTE UN INFORME.
+
+QUIERO QUE IMPLEMENTES LAS FUNCIONES.
+
+No te detengas después de analizar
+el proyecto.
+
+Comienza a programar.
+
+Si el alcance supera una sola sesión,
+completa módulos funcionales y
+documenta exactamente dónde continuar.
+
+NO SACRIFIQUES CALIDAD POR VELOCIDAD.
+
+OBJETIVO FINAL:
+
+AVILES POS debe convertirse en un
+sistema de punto de venta profesional,
+estable y comercializable, con funciones
+comparables a Loyverse.
+
+COMIENZA AHORA.

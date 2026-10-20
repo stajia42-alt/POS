@@ -1,6 +1,6 @@
 import type { Database } from './database';
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 const migration1 = [
   `CREATE TABLE categories (id TEXT PRIMARY KEY, name TEXT NOT NULL COLLATE NOCASE UNIQUE, color TEXT NOT NULL)`,
   `CREATE TABLE products (
@@ -52,7 +52,40 @@ const migration2 = [
     SELECT id,sale_id,0,method,amount,tendered,change_amount,'',created_at FROM payments_v1`,
   `DROP TABLE payments_v1`,
 ];
-const migrations = [migration1, migration2];
+const migration3 = [
+  `CREATE TABLE employees (id TEXT PRIMARY KEY, name TEXT NOT NULL, identifier TEXT NOT NULL UNIQUE COLLATE NOCASE,
+    role TEXT NOT NULL CHECK(role IN ('admin','supervisor','cashier')), active INTEGER NOT NULL CHECK(active IN (0,1)),
+    pin_hash TEXT NOT NULL, salt TEXT NOT NULL, iterations INTEGER NOT NULL, failed_attempts INTEGER NOT NULL DEFAULT 0,
+    locked_until TEXT, created_at TEXT NOT NULL)`,
+  `CREATE TABLE employee_permissions (employee_id TEXT NOT NULL REFERENCES employees(id), permission TEXT NOT NULL,
+    allowed INTEGER NOT NULL CHECK(allowed IN (0,1)), PRIMARY KEY(employee_id,permission))`,
+  `CREATE TABLE administrative_actions (id TEXT PRIMARY KEY, actor_id TEXT REFERENCES employees(id), actor_name TEXT NOT NULL,
+    action TEXT NOT NULL, target TEXT NOT NULL, details TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL)`,
+  `CREATE TABLE shifts (id TEXT PRIMARY KEY, status TEXT NOT NULL CHECK(status IN ('open','closed')), opening INTEGER NOT NULL CHECK(opening>=0),
+    opened_by TEXT NOT NULL REFERENCES employees(id), opened_name TEXT NOT NULL, opened_at TEXT NOT NULL,
+    closed_by TEXT REFERENCES employees(id), closed_name TEXT, closed_at TEXT, expected INTEGER, counted INTEGER, difference INTEGER)`,
+  `CREATE UNIQUE INDEX one_open_shift ON shifts(status) WHERE status='open'`,
+  `CREATE TABLE cash_movements (id TEXT PRIMARY KEY, shift_id TEXT NOT NULL REFERENCES shifts(id), employee_id TEXT NOT NULL REFERENCES employees(id),
+    employee_name TEXT NOT NULL, kind TEXT NOT NULL CHECK(kind IN ('in','out','withdrawal')), amount INTEGER NOT NULL CHECK(amount>0),
+    reason TEXT NOT NULL, created_at TEXT NOT NULL)`,
+  `CREATE INDEX cash_movements_shift ON cash_movements(shift_id,created_at)`,
+  `ALTER TABLE sales ADD COLUMN employee_id TEXT REFERENCES employees(id)`,
+  `ALTER TABLE sales ADD COLUMN employee_name TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE sales ADD COLUMN shift_id TEXT REFERENCES shifts(id)`,
+  `CREATE INDEX sales_shift ON sales(shift_id,status)`,
+  `ALTER TABLE products ADD COLUMN low_stock INTEGER NOT NULL DEFAULT 0 CHECK(low_stock>=0)`,
+  `ALTER TABLE inventory_movements ADD COLUMN before_stock INTEGER`,
+  `ALTER TABLE inventory_movements ADD COLUMN after_stock INTEGER`,
+  `ALTER TABLE inventory_movements ADD COLUMN actor_id TEXT REFERENCES employees(id)`,
+  `ALTER TABLE inventory_movements ADD COLUMN actor_name TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE inventory_movements ADD COLUMN kind TEXT NOT NULL DEFAULT 'legacy'`,
+  `ALTER TABLE inventory_movements ADD COLUMN unit_cost INTEGER`,
+  `CREATE INDEX inventory_product_date ON inventory_movements(product_id,created_at)`,
+  `CREATE TABLE inventory_counts (id TEXT PRIMARY KEY, product_id TEXT NOT NULL REFERENCES products(id), expected INTEGER NOT NULL,
+    counted INTEGER NOT NULL CHECK(counted>=0), actor_id TEXT NOT NULL REFERENCES employees(id), actor_name TEXT NOT NULL,
+    reason TEXT NOT NULL, movement_id TEXT NOT NULL REFERENCES inventory_movements(id), created_at TEXT NOT NULL)`,
+];
+const migrations = [migration1, migration2, migration3];
 
 export async function migrate(db: Database, targetVersion = SCHEMA_VERSION): Promise<void> {
   if (!Number.isInteger(targetVersion) || targetVersion < 1 || targetVersion > SCHEMA_VERSION)

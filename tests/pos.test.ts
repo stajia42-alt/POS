@@ -28,6 +28,8 @@ async function setup(persistence = memory()) {
   await migrate(db);
   const pos = new Pos(db);
   await pos.initialize();
+  if (await pos.access.hasEmployees()) await pos.access.login('owner', '832641');
+  else await pos.access.bootstrap({ name: 'Test owner', identifier: 'owner', pin: '832641' });
   return { pos, db, persistence };
 }
 async function product(pos: Pos, input: Partial<Product> = {}) {
@@ -274,6 +276,8 @@ describe('pagos múltiples persistentes', () => {
     await migrate(db);
     const pos = new Pos(db);
     await pos.initialize();
+    if (await pos.access.hasEmployees()) await pos.access.login('owner', '832641');
+    else await pos.access.bootstrap({ name: 'Test owner', identifier: 'owner', pin: '832641' });
     const migrated = await pos.getReceipt('paid');
     expect(migrated.payments).toEqual([
       {
@@ -314,7 +318,7 @@ describe('pagos múltiples persistentes', () => {
     expect(columns.some((column) => column.name === 'position')).toBe(false);
     persistence.fail = false;
     await migrate(db);
-    expect(await db.read((sql) => sql.query('PRAGMA user_version'))).toEqual([{ user_version: 2 }]);
+    expect(await db.read((sql) => sql.query('PRAGMA user_version'))).toEqual([{ user_version: 3 }]);
   });
   it('completa una venta combinada y conserva referencias y cambio tras reabrir', async () => {
     const { pos, persistence } = await setup();

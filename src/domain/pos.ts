@@ -1,6 +1,10 @@
 import type { Database, SqlDriver } from '../db/database';
 import { integer, totals } from './money';
 import { preparePayments } from './payments';
+import { AccessControl } from './access';
+import { Inventory, recordStock } from './inventory';
+import { Cash, checkoutShift } from './cash';
+import { audit } from './shared';
 import type {
   Business,
   Category,
@@ -90,7 +94,14 @@ async function receipt(sql: SqlDriver, saleId: string): Promise<Receipt> {
 }
 
 export class Pos {
-  constructor(readonly db: Database) {}
+  readonly access: AccessControl;
+  readonly inventory: Inventory;
+  readonly cash: Cash;
+  constructor(readonly db: Database) {
+    this.access = new AccessControl(db);
+    this.inventory = new Inventory(db, this.access);
+    this.cash = new Cash(db, this.access);
+  }
 
   async initialize() {
     await this.db.transaction(async (sql) => {
@@ -103,6 +114,7 @@ export class Pos {
 
   snapshot(): Promise<Snapshot> {
     return this.db.read(async (sql) => {
+      const actor = await this.access.require(sql);
       const [active] = await sql.query<{ value: string }>(
         "SELECT value FROM settings WHERE key='activeSale'",
       );
@@ -122,38 +134,57 @@ export class Pos {
         parked: await sql.query<Sale>(
           "SELECT * FROM sales WHERE status='parked' ORDER BY updated_at DESC",
         ),
-        history: await sql.query<Sale & { payment_methods: string }>(
-          `SELECT sales.*, (SELECT GROUP_CONCAT(method) FROM (SELECT method FROM payments WHERE sale_id=sales.id ORDER BY position)) AS payment_methods
+        history: actor.permissions.includes('reports')
+          ? await sql.query<Sale & { payment_methods: string }>(
+              `SELECT sales.*, (SELECT GROUP_CONCAT(method) FROM (SELECT method FROM payments WHERE sale_id=sales.id ORDER BY position)) AS payment_methods
            FROM sales WHERE status='paid' ORDER BY paid_at DESC`,
-        ),
+            )
+          : [],
         business: await business(sql),
         view: view.value,
+        actor,
+        shift:
+          (
+            await sql.query<import('./cash').Shift>("SELECT * FROM shifts WHERE status='open'")
+          )[0] || null,
       };
     });
   }
 
   saveView(view: 'grid' | 'list') {
     if (!['grid', 'list'].includes(view)) throw new Error('Vista no válida.');
-    return this.db.transaction((sql) => setting(sql, 'view', view));
+    return this.db.transaction(async (sql) => {
+      await this.access.require(sql);
+      await setting(sql, 'view', view);
+    });
   }
 
   saveCategory(name: string, color = '#4caf50', categoryId: string = id()) {
     const value = required(name, 'el nombre de la categoría');
     if (!/^#[0-9a-f]{6}$/i.test(color)) throw new Error('Color no válido.');
     return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql, 'products');
       await sql.run(
         'INSERT INTO categories(id,name,color) VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,color=excluded.color',
         [categoryId, value, color],
       );
+      await audit(sql, actor, 'category.save', categoryId);
       return categoryId;
     });
   }
 
   deleteCategory(categoryId: string) {
-    return this.db.transaction((sql) => sql.run('DELETE FROM categories WHERE id=?', [categoryId]));
+    return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql, 'products');
+      await sql.run('DELETE FROM categories WHERE id=?', [categoryId]);
+      await audit(sql, actor, 'category.delete', categoryId);
+    });
   }
 
-  saveProduct(input: Omit<Product, 'id'> & { id?: string }) {
+  saveProduct(
+    input: Omit<Product, 'id' | 'low_stock'> & { id?: string; low_stock?: number },
+    stockReason = '',
+  ) {
     const name = required(input.name, 'el nombre del producto');
     integer(input.price);
     integer(input.cost);
@@ -167,7 +198,19 @@ export class Pos {
     }
     const productId = input.id || id();
     return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql, 'products');
       const [previous] = await sql.query<Product>('SELECT * FROM products WHERE id=?', [productId]);
+      if (previous && previous.price !== input.price) await this.access.require(sql, 'edit_prices');
+      const lowStock = integer(input.low_stock ?? previous?.low_stock ?? 0, 0, 999999);
+      const delta = input.stock - (previous?.stock || 0);
+      if (
+        delta ||
+        (previous ? previous.track_stock !== input.track_stock : !!input.track_stock) ||
+        lowStock !== (previous?.low_stock || 0)
+      )
+        await this.access.require(sql, 'inventory');
+      if (previous && delta && !stockReason.trim())
+        throw new Error('Escribe el motivo del ajuste de existencias.');
       await sql.run(
         `INSERT INTO products(id,name,sku,barcode,description,category_id,price,cost,photo,active,favorite,track_stock,stock,unit)
         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,sku=excluded.sku,barcode=excluded.barcode,
@@ -186,22 +229,28 @@ export class Pos {
           input.active,
           input.favorite,
           input.track_stock,
-          input.stock,
+          previous?.stock || 0,
           required(input.unit, 'la unidad de medida'),
         ],
       );
-      const delta = input.stock - (previous?.stock || 0);
+      await sql.run('UPDATE products SET low_stock=? WHERE id=?', [lowStock, productId]);
       if (delta)
-        await sql.run(
-          'INSERT INTO inventory_movements(id,product_id,quantity,reason,created_at) VALUES(?,?,?,?,?)',
-          [id(), productId, delta, previous ? 'Ajuste en catálogo' : 'Existencia inicial', now()],
+        await recordStock(
+          sql,
+          actor,
+          { id: productId, stock: previous?.stock || 0, cost: input.cost },
+          delta,
+          previous ? 'adjustment' : 'initial',
+          previous ? stockReason.trim().slice(0, 500) : 'Existencia inicial al crear el producto',
         );
+      await audit(sql, actor, previous ? 'product.update' : 'product.create', productId);
       return productId;
     });
   }
 
   addProduct(saleId: string, productId: string) {
     return this.db.transaction(async (sql) => {
+      await this.access.require(sql, 'sell');
       await editable(sql, saleId);
       const [product] = await sql.query<Product>('SELECT * FROM products WHERE id=? AND active=1', [
         productId,
@@ -227,6 +276,7 @@ export class Pos {
   updateLine(saleId: string, lineId: string, quantity: number, note: string) {
     integer(quantity, 0, 9999);
     return this.db.transaction(async (sql) => {
+      await this.access.require(sql, 'sell');
       await editable(sql, saleId);
       if (quantity === 0)
         await sql.run('DELETE FROM sale_lines WHERE id=? AND sale_id=?', [lineId, saleId]);
@@ -247,7 +297,9 @@ export class Pos {
   ) {
     integer(input.discountBps, 0, 10_000);
     return this.db.transaction(async (sql) => {
-      await editable(sql, saleId);
+      const actor = await this.access.require(sql, 'sell');
+      const previous = await editable(sql, saleId);
+      if (previous.discount_bps !== input.discountBps) await this.access.require(sql, 'discounts');
       let customerName = '';
       if (input.customerId) {
         const [customer] = await sql.query<Customer>('SELECT * FROM customers WHERE id=?', [
@@ -268,11 +320,13 @@ export class Pos {
         ],
       );
       await recalculate(sql, saleId);
+      await audit(sql, actor, 'ticket.update', saleId, { discountBps: input.discountBps });
     });
   }
 
   park(saleId: string, label: string) {
     return this.db.transaction(async (sql) => {
+      await this.access.require(sql, 'sell');
       await editable(sql, saleId);
       if (!(await linesFor(sql, saleId)).length)
         throw new Error('Agrega al menos un producto para guardar el ticket.');
@@ -287,6 +341,7 @@ export class Pos {
 
   resume(saleId: string) {
     return this.db.transaction(async (sql) => {
+      await this.access.require(sql, 'sell');
       const selected = await saleById(sql, saleId);
       if (selected.status !== 'parked') throw new Error('El ticket ya no está pendiente.');
       const [active] = await sql.query<{ value: string }>(
@@ -305,11 +360,13 @@ export class Pos {
 
   cancel(saleId: string) {
     return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql, 'cancel_sales');
       const sale = await saleById(sql, saleId);
       if (!['draft', 'parked'].includes(sale.status))
         throw new Error('Solo puedes cancelar tickets abiertos o pendientes.');
       await sql.run("UPDATE sales SET status='cancelled',updated_at=? WHERE id=?", [now(), saleId]);
       if (sale.status === 'draft') await newDraft(sql);
+      await audit(sql, actor, 'ticket.cancel', saleId);
     });
   }
 
@@ -320,14 +377,25 @@ export class Pos {
 
   checkoutPayments(saleId: string, requests: readonly PaymentRequest[]): Promise<Receipt> {
     return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql, 'sell');
       const existing = await saleById(sql, saleId);
-      if (existing.status === 'paid') return receipt(sql, saleId);
+      if (existing.status === 'paid') {
+        if (!actor.permissions.includes('reports') && existing.employee_id !== actor.id)
+          throw new Error('Sin permiso para consultar esta venta.');
+        return receipt(sql, saleId);
+      }
       await editable(sql, saleId);
       const lines = await linesFor(sql, saleId);
       if (!lines.length) throw new Error('El ticket está vacío.');
       await recalculate(sql, saleId);
       const sale = await saleById(sql, saleId);
       const payments = preparePayments(sale.total, requests);
+      const shiftId = await checkoutShift(
+        sql,
+        payments
+          .filter((payment) => payment.method === 'cash')
+          .reduce((sum, payment) => sum + payment.amount, 0),
+      );
       // Aggregate identical products before checking inventory; separate notes may create multiple lines.
       const quantities = new Map<string, number>();
       for (const line of lines)
@@ -342,11 +410,9 @@ export class Pos {
             throw new Error(
               `Existencias insuficientes: ${product.name} (disponibles: ${product.stock}).`,
             );
-          await sql.run('UPDATE products SET stock=stock-? WHERE id=?', [quantity, productId]);
-          await sql.run(
-            'INSERT INTO inventory_movements(id,product_id,sale_id,quantity,reason,created_at) VALUES(?,?,?,?,?,?)',
-            [id(), productId, saleId, -quantity, 'Venta', date],
-          );
+          await recordStock(sql, actor, product, -quantity, 'sale', `Venta #${sale.number}`, {
+            saleId,
+          });
         }
       }
       for (const payment of payments) {
@@ -365,18 +431,31 @@ export class Pos {
           ],
         );
       }
-      await sql.run("UPDATE sales SET status='paid',paid_at=?,updated_at=? WHERE id=?", [
-        date,
-        date,
-        saleId,
-      ]);
+      await sql.run(
+        "UPDATE sales SET status='paid',paid_at=?,updated_at=?,employee_id=?,employee_name=?,shift_id=? WHERE id=?",
+        [date, date, actor.id, actor.name, shiftId, saleId],
+      );
+      await audit(sql, actor, 'sale.complete', saleId, {
+        total: sale.total,
+        payments: payments.length,
+        shiftId,
+      });
       await newDraft(sql);
       return receipt(sql, saleId);
     });
   }
 
   getReceipt(saleId: string) {
-    return this.db.read((sql) => receipt(sql, saleId));
+    return this.db.read(async (sql) => {
+      const actor = await this.access.require(sql);
+      const sale = await saleById(sql, saleId);
+      if (
+        !actor.permissions.includes('reports') &&
+        (!actor.permissions.includes('sell') || sale.employee_id !== actor.id)
+      )
+        throw new Error('Sin permiso para consultar esta venta.');
+      return receipt(sql, saleId);
+    });
   }
 
   saveBusiness(input: Business) {
@@ -387,9 +466,20 @@ export class Pos {
       phone: clean(input.phone, 40),
       taxBps: input.taxBps,
       receiptFooter: clean(input.receiptFooter, 200),
+      cashManagement: !!input.cashManagement,
     };
     return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql, 'settings');
+      if (
+        !value.cashManagement &&
+        (await sql.query("SELECT id FROM shifts WHERE status='open'")).length
+      )
+        throw new Error('Cierra el turno antes de desactivar el control de caja.');
       await setting(sql, 'business', JSON.stringify(value));
+      await audit(sql, actor, 'business.update', 'business', {
+        taxBps: value.taxBps,
+        cashManagement: value.cashManagement,
+      });
       const [active] = await sql.query<{ value: string }>(
         "SELECT value FROM settings WHERE key='activeSale'",
       );
@@ -405,6 +495,7 @@ export class Pos {
     const customerId = input.id || id();
     const name = required(input.name, 'el nombre del cliente');
     return this.db.transaction(async (sql) => {
+      await this.access.require(sql, 'sell');
       await sql.run(
         `INSERT INTO customers(id,name,phone,email,note) VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,phone=excluded.phone,email=excluded.email,note=excluded.note`,
         [customerId, name, clean(input.phone, 40), clean(input.email, 150), clean(input.note, 500)],

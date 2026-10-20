@@ -1,70 +1,75 @@
-# Registro de verificación: AVILES POS 1.1
+# Registro de verificación: AVILES POS 1.2
 
-Fecha: 20 de octubre de 2026. Entorno Linux x86_64, Node 24.19.0, JDK 21, Android SDK 36, Build Tools 36.0.0 y Gradle 8.14.3. La aplicación Android no se ejecutó en un dispositivo ni emulador.
+Fecha: 20 de octubre de 2026. Linux x86_64, Node 24.19.0, Chromium, JDK 21, Android SDK 36, Build Tools 36.0.0 y Gradle 8.14.3. La aplicación Android no se ejecutó en dispositivo ni emulador.
 
-## Resultados finales
+## Resultados ejecutados
 
-| Comando o comprobación                    | Resultado observado                                                                              |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `npm test`                                | 39 pruebas aprobadas en 3 archivos; sin fallidas ni omitidas                                     |
-| `npm run build`                           | TypeScript y bundle Vite correctos; también ejecutado por android:debug                          |
-| `npm run test:e2e`                        | 11 flujos aprobados en Chromium, sobre producción web; sin fallidos ni omitidos                  |
-| `npm run android:debug`                   | BUILD SUCCESSFUL; recursos web sincronizados, 126 tareas, compilación incremental de 11 s        |
-| `apksigner verify --verbose`              | APK válido, firmado con esquema v2                                                               |
-| Comparación de certificados APK 1.0 / 1.1 | Mismo SHA256 del certificado de desarrollo                                                       |
-| Manifiesto del APK                        | Identificador mx.aviles.pos, versionCode 2, versionName 1.1.0                                    |
-| Integridad del APK                        | ZIP íntegro; cada recurso web empaquetado coincide byte por byte con dist; SQLite ARM64 incluido |
+| Comprobación                               | Resultado observado                                                                                   |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `npm test`                                 | 60 pruebas aprobadas en 4 archivos, sin fallidas ni omitidas                                          |
+| `npm run build`                            | TypeScript y bundle de producción correctos                                                           |
+| `npm run test:e2e`                         | 14 flujos aprobados en Chromium (aprox. 1 minuto), sin fallidos ni omitidos                           |
+| `npm run android:debug`                    | BUILD SUCCESSFUL en 12 s; 126 tareas, 33 ejecutadas y 93 actualizadas                                 |
+| `apksigner verify --verbose --print-certs` | APK válido; certificado SHA256 igual a APK 1.0 y 1.1                                                  |
+| Manifiesto empaquetado                     | `mx.aviles.pos`, versionCode 3, versionName 1.2.0                                                     |
+| Integridad del APK                         | ZIP íntegro, SQLite ARM64 incluido, los 12 archivos de dist coinciden byte por byte con assets/public |
+| Inspección visual Chromium                 | Acceso, inventario y formulario de empleados revisados a 1280 × 800; interfaz de ventas conservada    |
 
-## Pruebas de lógica y persistencia
+Las 39 pruebas y los 11 flujos anteriores siguen pasando. Sus resultados históricos se conservan en [PRUEBAS-1.1.md](PRUEBAS-1.1.md) y [PRUEBAS-1.0.md](PRUEBAS-1.0.md). No se usa su resultado anterior como sustituto de la regresión actual.
 
-Las 24 pruebas originales se conservaron. Siguen cubriendo dinero en centavos, formato MXN, límites, migración repetida, integridad y claves foráneas, catálogos, notas, cantidades, persistencia, pendientes, precio histórico, cancelaciones, inventario, efectivo, cobros concurrentes y fallo de escritura. Se mantienen las pruebas del archivo SQLite en IndexedDB.
+## 21 pruebas nuevas de lógica y SQLite
 
-Se añadieron 15 casos para los pagos ampliados:
+En `tests/operations.test.ts`:
 
-- Registro simple de efectivo, tarjeta, transferencia y otro método.
-- Distribución en centavos, diferencia entre aplicado y recibido y cambio exclusivamente en efectivo.
-- Rechazo de importes menores/mayores al total, cantidades inválidas, método desconocido, referencia excesiva y más de 10 partes.
-- Ticket gratuito y varias partes del mismo método.
-- Migración de una base esquema 1 con una venta pagada, su pago en efectivo, producto, foto, cliente, línea con nota y ticket pendiente. Se verifica la reapertura, la integridad y la conservación de los datos anteriores.
-- Fallo de persistencia durante migración: se conserva esquema 1 y se puede reintentar a esquema 2.
-- Venta con los cuatro métodos: se conservan orden, referencias, aplicado, recibido y cambio al reabrir la base.
-- Importe incompleto o excesivo: no quedan pagos ni movimientos parciales y el ticket permanece abierto.
-- Solicitudes repetidas y concurrentes del mismo cobro combinado, incluso con otros métodos en el reintento: devuelven los pagos originales sin duplicar ventas ni inventario.
-- Fallo al confirmar un reparto: todos los pagos y el stock se revierten y el reintento funciona al recuperar la persistencia.
+- Acceso requerido antes de consultar/modificar, bloqueo de sesión y posterior acceso correcto.
+- PIN derivado con sal distinta entre empleados que usan el mismo PIN; DTO y auditoría sin credenciales.
+- Permisos comprobados llamando directamente a los servicios: cajero sin acceso a empleados, inventario, descuentos, cancelaciones o recibos ajenos; venta y recibo propio atribuidos correctamente.
+- Revocación de permisos e inactivación aplicada a otra sesión ya abierta.
+- Protección del último administrador y restablecimiento del PIN sin revelar el anterior.
+- Intentos fallidos/bloqueo temporal conservados tras reabrir SQLite.
+- Un bloqueo explícito cancela un login todavía en curso.
+- Entradas con costo promedio, salidas y ajustes con actor, motivo y antes/después.
+- Conteos coincidentes y discrepantes, incluido cero; alerta y persistencia al reabrir.
+- Rechazo de stock insuficiente, fracciones, motivo vacío y producto sin seguimiento.
+- Corrección desde el formulario de producto con motivo obligatorio y movimiento conservado.
+- Paginación de 52 movimientos sin duplicar/omitir, filtros y rechazo de rango invertido.
+- Fallo de persistencia revierte conteo, cantidad, costo y auditoría.
+- Sin caja activa se mantiene el cobro previo; al activar exige turno y no permite dos abiertos ni desactivar con turno abierto.
+- Caja con pago combinado, diferencia entre aplicado y recibido, ingreso, egreso, retiro y arqueo; cierre persistente e inmutable al repetir.
+- Rechazo de cobro/movimiento sobre turno cerrado sin pagos ni stock parciales; nuevo turno independiente.
+- Retiros limitados al esperado, permisos de cierre/movimientos y protección de consultas detalladas.
+- Límite de efectivo validado tanto en cobros como movimientos.
+- Fallo al cobrar revierte venta, stock, caja y auditoría; reintentos concurrentes no duplican.
+- Fallo al cerrar conserva turno abierto sin arqueo parcial.
+- Migración esquema 2→3 conserva producto/foto/costo/stock/movimientos antiguos sin inventar actor o antes/después; fallo de disco revierte el esquema y permite reintentar.
 
-El motor es SQLite real de sql.js. El fallo de persistencia se inyecta expresamente para comprobar rollback. Esto no equivale a una prueba del plugin nativo en Android.
+Los tests existentes de actualización desde esquema 1 ahora migran hasta 3 y siguen comprobando pagos originales, fotos, pendientes, clientes, líneas e integridad. Se utiliza SQLite real de sql.js; la persistencia web tiene pruebas con IndexedDB. La inyección de fallo de disco valida rollback; no equivale a simular un apagado físico del dispositivo.
 
-## Navegador: 11 flujos
+## Tres flujos nuevos de navegador
 
-Se conservan los cinco flujos de 1.0: venta con foto, descuento e impuesto; operación y recarga offline; tamaños tableta/teléfono y teclado; bloqueo de una segunda pestaña; catálogo de varias filas, categorías, búsqueda y clientes. Se añadieron:
+En `e2e/operations.spec.ts`, sobre la producción web:
 
-1. **Combinado:** total $101.01; tarjeta $40.01, efectivo aplicado $31.00 con recibido $50.00 y cambio $19.00, transferencia $30.00. Un centavo faltante o sobrante bloquea el cobro. Dos pulsaciones de confirmación producen una sola venta. Referencias, métodos y cambio persisten en el historial tras recargar.
-2. **Tarjeta manual offline:** guarda referencia y muestra el método real, sin campo de efectivo ni cambio.
-3. **Transferencia manual offline:** conserva referencia al recargar sin conexión y consultar el recibo.
-4. **Otro método offline:** registro manual e historial con referencia persistente.
-5. **Editar reparto en teléfono:** eliminar una parte recupera el cobro simple; el importe exacto y los controles funcionan sin desbordamiento a 390 × 844.
-6. **Actualizar una base 1.0 desde IndexedDB real:** se coloca un archivo SQLite de esquema 1 antes de iniciar la aplicación. La 1.1 abre el recibo original con su cambio y después permite registrar una nueva venta con tarjeta.
+1. Crear producto controlado; entrada con costo; conteo con diferencia; alerta; reinicio sin conexión con acceso por PIN; historial atribuido al usuario; ancho 390 sin desbordamiento de página.
+2. Crear cajero; entrar con su PIN; comprobar ausencia de módulos restringidos; cambiar PIN y permiso individual como administrador; entrar con el nuevo PIN y acceder al historial; desactivar empleado.
+3. Activar caja; intentar cobrar redirige a apertura; registrar fondo; vender con recibido mayor y cambio; retirar efectivo; arqueo con faltante; cerrar; recargar sin conexión y consultar reporte persistente; abrir nuevo turno.
 
-Todos los datos se crean en contextos de prueba aislados. No se precargan productos, pagos ni fotografías de demostración en el perfil real. Las capturas generadas por pruebas documentan la interfaz, no la ejecución Android física.
+Los 11 flujos anteriores cubren ventas, fotos, categorías, notas, clientes, descuentos/impuestos, lector por teclado, cancelaciones, cobros simples/combinados y manuales offline, migración de archivo antiguo en IndexedDB, adaptación de tamaños y bloqueo de segunda pestaña. Se adaptó su inicio/reapertura al acceso local real; no se añadió un bypass de autenticación.
 
-## APK generado para validación local
+Durante desarrollo se corrigieron etiquetas accesibles con texto de ayuda y selectores de los nuevos recorridos. La ejecución completa final pasó; no se cuentan intentos fallidos anteriores como aprobados.
 
-- Archivo: `artifacts/AVILES-POS-1.1-debug.apk`.
-- Tamaño: **13,431,973 bytes**.
-- SHA256: `3b0aff11778d1f525bba4339bb96f4a5c8372f1f5f63761ed5a042d168822e0d`.
-- Misma firma debug que la versión 1.0 y versionCode incrementado a 2.
-- El ZIP público de fuentes no incluye el APK ni claves de firma; incluye el proyecto Android y el procedimiento de compilación.
+## APK generado
 
-## Pendiente de validar físicamente
+- `AVILES-POS-1.2.apk`: 13447613 bytes.
+- SHA256: `e1c0339b295054aa16c59ee177f1a2ca0763e6e3a9c4a07791c28b3854092590`.
+- APK de depuración, misma firma de desarrollo anterior y versionCode incrementado. Sin claves en las fuentes ni archivos de entrega.
+- El ZIP de fuentes contiene el proyecto Android, migraciones, pruebas y documentación. El ZIP completo añade el instalador y una guía de uso, sin datos comerciales.
 
-- Instalación en la Samsung Galaxy Tab A11, orientación horizontal real, fotografía con selector nativo, teclado y barras del sistema.
-- SQLite nativo y migración 1 a 2 sobre una instalación real con datos.
-- Cobro combinado en modo avión, cierre forzado, reinicio de Android y recuperación de tickets/historial.
-- Actualización de APK 1.0 a 1.1 sin desinstalar ni borrar información. Se verificaron certificado y versionCode, pero no se instaló la actualización.
-- Lectores de códigos físicos. Impresoras, roles, caja, devoluciones y respaldos siguen fuera del alcance implementado.
+## Pendiente en dispositivo físico
 
-Tarjeta y transferencia se registran manualmente. No existe integración bancaria, por lo que no se afirma haber procesado una operación real en una terminal o banco. El registro histórico de la primera entrega se conserva en [PRUEBAS-1.0.md](PRUEBAS-1.0.md).
+- Actualización de 1.0/1.1 a 1.2 sobre una instalación con datos, sin desinstalar.
+- Apertura de SQLite nativo, migración, persistencia tras cierre forzado/reinicio y cobros/turnos en modo avión.
+- Rendimiento de PBKDF2 y del catálogo en Galaxy Tab A11; tiempos, consumo y memoria no se han medido en esa tableta.
+- Teclado táctil, selección nativa de foto, orientación/insets y lectores físicos.
+- Impresoras y conexiones reales: siguen sin implementación en esta entrega.
 
-## Entorno reutilizable
-
-El instalador existente y las dependencias no cambian. Se guardó una actualización de start_skill con los 11 flujos y la migración de pagos. La actualización del borrador no publica ni modifica por sí sola el entorno activo; para conservar esos nuevos ajustes en una versión publicada, se deben revisar/guardar en configuración y publicar. La descarga de fuentes por GitHub es independiente de esa publicación.
+No se declara uso comercial certificado, rendimiento medido en Android ni validación física de hardware. Los métodos bancarios siguen siendo registros manuales; no se ha procesado una operación real de banco mediante esta aplicación.

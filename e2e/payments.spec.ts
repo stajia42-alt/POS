@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import initSqlJs from 'sql.js';
-import { navigate, ready, createProduct } from './helpers';
+import { navigate, ready, createProduct, reload } from './helpers';
 import { Database } from '../src/db/database';
 import { WasmDriver } from '../src/db/wasm-driver';
 import { migrate } from '../src/db/migrations';
@@ -49,7 +49,7 @@ test('pagos combinados: reparto exacto, cambio, referencias y confirmación repe
   await expect(page.getByTestId('receipt')).toContainText('SPEI-456');
   await expect(page.getByTestId('receipt')).toContainText('$19.00 MXN');
   await page.screenshot({ path: 'artifacts/capturas/recibo-combinado-1.1.png' });
-  await page.reload();
+  await reload(page);
   await expect(page.getByTestId('app-ready')).toBeVisible();
   await navigate(page, 'Historial de ventas');
   await expect(page.getByText(/1 ventas completadas/)).toBeVisible();
@@ -83,7 +83,7 @@ for (const [label, reference] of [
     await expect(page.getByTestId('receipt')).toContainText(label);
     await expect(page.getByTestId('receipt')).toContainText(reference);
     await expect(page.getByTestId('receipt').getByText('Cambio', { exact: true })).toHaveCount(0);
-    await page.reload();
+    await reload(page);
     await expect(page.getByTestId('app-ready')).toBeVisible();
     await navigate(page, 'Historial de ventas');
     await expect(page.getByText(`${label} · Completada`, { exact: true })).toBeVisible();

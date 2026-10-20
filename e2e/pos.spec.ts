@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { navigate, ready, createProduct } from './helpers';
+import { navigate, ready, createProduct, reload } from './helpers';
 
 test('venta completa: categorías, foto, edición, persistencia, pendiente, efectivo e historial', async ({
   page,
@@ -45,7 +45,7 @@ test('venta completa: categorías, foto, edición, persistencia, pendiente, efec
   await expect(
     page.getByRole('button', { name: 'Ver como cuadrícula', exact: true }),
   ).toBeVisible();
-  await page.reload();
+  await reload(page);
   await expect(page.getByTestId('app-ready')).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Ver como cuadrícula', exact: true }),
@@ -56,7 +56,7 @@ test('venta completa: categorías, foto, edición, persistencia, pendiente, efec
   await page.getByLabel('Nombre o referencia', { exact: true }).fill('Mesa 3');
   await page.getByRole('button', { name: 'Guardar ticket pendiente', exact: true }).click();
   await expect(page.getByText('Tu ticket está vacío', { exact: true })).toBeVisible();
-  await page.reload();
+  await reload(page);
   await expect(page.getByTestId('app-ready')).toBeVisible();
   await navigate(page, 'Tickets pendientes');
   await expect(page.getByText('Mesa 3', { exact: false }).first()).toBeVisible();
@@ -73,7 +73,7 @@ test('venta completa: categorías, foto, edición, persistencia, pendiente, efec
   await page.getByRole('button', { name: 'Nueva venta', exact: true }).click();
   await navigate(page, 'Historial de ventas');
   await expect(page.getByText('1 ventas completadas', { exact: false })).toBeVisible();
-  await page.reload();
+  await reload(page);
   await expect(page.getByTestId('app-ready')).toBeVisible();
   await navigate(page, 'Historial de ventas');
   await page.getByRole('button', { name: /Venta #0001/ }).click();
@@ -98,7 +98,7 @@ test('operación y reinicio sin conexión, lector de teclado y cancelación', as
   await page.getByLabel('Código de barras', { exact: true }).fill('7501234567890');
   await page.getByRole('button', { name: 'Agregar al ticket', exact: true }).click();
   await expect(page.getByTestId('ticket-total')).toHaveText('$40.00 MXN');
-  await page.reload();
+  await reload(page);
   await expect(page.getByTestId('app-ready')).toBeVisible();
   await expect(page.getByTestId('ticket-total')).toHaveText('$40.00 MXN');
   await expect(page.getByText('Sin conexión · Operación local', { exact: true })).toBeVisible();

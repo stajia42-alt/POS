@@ -1,30 +1,36 @@
-# AVILES POS 1.1
+# AVILES POS 1.2
 
-Punto de venta local para tabletas Android, desarrollado con React, TypeScript, Capacitor 8 y SQLite. La primera pantalla es directamente la venta: productos a la izquierda, ticket a la derecha y categorías dinámicas abajo. Código e identidad propios; las referencias visuales del usuario no se distribuyen como recursos de la aplicación.
+Punto de venta local para tabletas Android, desarrollado con React, TypeScript, Capacitor 8 y SQLite. Después del acceso local con PIN se abre la venta: productos a la izquierda, ticket a la derecha y categorías dinámicas abajo. Código e identidad propios; las referencias visuales del usuario no se distribuyen como recursos de la aplicación.
 
-Esta versión conserva la primera entrega y añade pagos manuales y combinados al alcance descrito en la sección 22 de [la especificación](docs/ESPECIFICACION.txt). Los módulos posteriores y la validación física pendiente se detallan en [ENTREGA.md](docs/ENTREGA.md). No está certificado para uso comercial.
+Esta versión conserva ventas y pagos combinados, y añade inventario operativo, turnos de caja y empleados con PIN/permisos. El alcance completo solicitado continúa en desarrollo: variantes, devoluciones, impresoras y otros módulos siguen pendientes, detallados en [AVILES_POS_PROGRESO.md](AVILES_POS_PROGRESO.md). No está certificado para uso comercial.
 
-## Descargar las fuentes
+## Descargas directas
 
-[Descargar AVILES POS 1.1 en ZIP](https://raw.githubusercontent.com/stajia42-alt/POS/descargas-aviles-pos-1-1/descargas/AVILES-POS-1.1-fuentes.zip).
+- [Instalador Android AVILES POS 1.2](https://raw.githubusercontent.com/stajia42-alt/POS/instalador-aviles-pos-1-2/AVILES-POS-1.2.apk).
+- [Todo en un ZIP: APK, fuentes y documentación](https://raw.githubusercontent.com/stajia42-alt/POS/instalador-aviles-pos-1-2/AVILES-POS-1.2-COMPLETO.zip).
+- [Código fuente completo en ZIP](https://raw.githubusercontent.com/stajia42-alt/POS/descargas-aviles-pos-1-2/descargas/AVILES-POS-1.2-fuentes.zip).
 
-Incluye el proyecto completo React/TypeScript, Android, SQLite, pruebas y documentación. El APK y las claves de firma no se publican en el repositorio; el procedimiento para compilar está más abajo. Los cambios de la versión están en [CAMBIOS.md](docs/CAMBIOS.md).
+El APK de depuración se distribuye en una rama separada de instaladores. El ZIP incluye React/TypeScript, proyecto Android, migraciones, pruebas y documentación; no incluye APK, claves, dependencias instaladas ni datos de negocio. Conserva la misma firma de desarrollo anterior. Consulta [CAMBIOS.md](docs/CAMBIOS.md).
 
 ## Empezar
 
 El catálogo inicial está vacío. No se incluyen productos, categorías ni ventas ficticias.
 
-1. Abre el menú lateral y entra en **Categorías** para registrar tus categorías.
+1. En el primer inicio crea el acceso del propietario con nombre, identificador y PIN propio. No hay credenciales predeterminadas. Después abre el menú lateral y entra en **Categorías** para registrar tus categorías.
 2. En **Productos**, crea artículos con nombre, precio en MXN, categoría y fotografía opcional. Puedes incluir código de barras, favoritos y existencias.
 3. En **Configuración**, indica el negocio y el impuesto **añadido**. Deja 0 si los precios ya incluyen impuestos.
 4. Vuelve a **Punto de venta**. Toca productos para agregarlos. Usa los controles de cantidad o toca una línea para editar cantidad y observaciones.
 5. **GUARDAR** conserva el ticket pendiente; **COBRAR** permite registrar efectivo, tarjeta, transferencia u otro método. Solo el efectivo genera cambio. **Dividir pago** permite distribuir el total entre varias formas de pago; el historial conserva sus importes y referencias. Tarjeta y transferencia son registros manuales: verifica el pago en tu terminal o banco antes de confirmar.
 
+Desde **Inventario** registra entradas, salidas, ajustes y conteos. En **Empleados** configura personas y permisos. Para usar caja, activa **Control de caja por turnos** en Configuración y abre un turno desde **Caja y turnos**. El [manual de los módulos 1.2](docs/MODULOS-1.2.md) explica sus operaciones y límites.
+
 La cuadrícula/lista, el carrito activo, las fotografías, los pendientes y las ventas persisten en SQLite. Android opera con los recursos incluidos en el APK; no requiere un servidor Node, cuenta externa ni Internet para vender. Node se usa únicamente para desarrollar y compilar.
 
-## Actualizar desde 1.0
+## Actualizar desde 1.0 o 1.1
 
-La migración de SQLite 1 a 2 conserva productos, fotos, clientes, tickets e importes de ventas anteriores. Los pagos en efectivo originales conservan su identificador, fecha, importe, recibido y cambio; se les asigna posición 0 y referencia vacía. No se reinicia ni se elimina la base completa. El APK 1.1 usa `versionCode` 2 y el mismo identificador. Conserva la firma para actualizar sin desinstalar.
+SQLite migra a esquema 3 de forma transaccional, sin reiniciar el catálogo. Conserva fotos, clientes, pagos y tickets originales. Añade empleados, permisos, caja, auditoría y trazabilidad de inventario. Los registros anteriores no reciben nombres de empleados ni turnos inventados. El primer acceso pide crear al propietario local; los datos previos permanecen.
+
+El APK 1.2 usa el mismo identificador `mx.aviles.pos` y `versionCode` 3. Instálalo encima del anterior manteniendo su firma; no desinstales ni borres almacenamiento. No se puede volver a una versión antigua sobre una base ya migrada: el programa anterior rechazará el esquema nuevo para conservarlo.
 
 Los pagos preparados en el diálogo todavía no están registrados: se confirman juntos y de manera transaccional al completar la venta. Cerrar el diálogo descarta esa distribución preparada, conservando el ticket. No se aceptan pagos incompletos ni se registran anticipos en esta etapa.
 
@@ -78,7 +84,7 @@ Copia el APK a la tableta, permite la instalación desde esa fuente cuando Andro
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Una actualización debe mantener **el mismo identificador y la misma clave de firma** para conservar los datos. No desinstales para resolver un conflicto de firma. No borres el almacenamiento de la aplicación: no hay restauración ni respaldos exportables en 1.1.
+Una actualización debe mantener **el mismo identificador y la misma clave de firma** para conservar los datos. No desinstales para resolver un conflicto de firma. No borres el almacenamiento de la aplicación: no hay restauración ni respaldos exportables en 1.2.
 
 ## Verificación
 

@@ -1,5 +1,15 @@
 # Cambios de AVILES POS
 
+## 1.2.0 — 20 de octubre de 2026
+
+- Conserva la aplicación existente y su pantalla de ventas. Añade acceso local sin cuentas externas.
+- Empleados con PIN PBKDF2/sal, roles, permisos individuales, estados, restablecimiento y bloqueo temporal de intentos.
+- Inventario operativo con entradas/costo promedio, salidas, ajustes, conteos físicos, umbrales/alertas y libro filtrado/paginado.
+- Caja configurable con turnos, fondos, movimientos, arqueo, diferencias e historial; ventas atribuidas a empleado y turno.
+- Auditoría administrativa. Migración aditiva a esquema 3 sin inventar trazabilidad histórica.
+- Android versionCode 3, versión 1.2.0, mismo identificador. No añade dependencias de Internet.
+- No completa las once fases: ver alcance, límites y continuación en `AVILES_POS_PROGRESO.md` y manual en `docs/MODULOS-1.2.md`.
+
 ## 1.1.0 — 20 de octubre de 2026
 
 - Añade registros manuales de tarjeta, transferencia y otros pagos.

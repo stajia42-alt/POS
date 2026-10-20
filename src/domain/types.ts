@@ -1,3 +1,6 @@
+import type { Actor } from './access-types';
+import type { Shift } from './cash';
+
 export interface Category {
   id: string;
   name: string;
@@ -17,6 +20,7 @@ export interface Product {
   favorite: number;
   track_stock: number;
   stock: number;
+  low_stock: number;
   unit: string;
 }
 export interface Sale {
@@ -39,6 +43,9 @@ export interface Sale {
   business_name: string;
   business_address: string;
   business_phone: string;
+  employee_id: string | null;
+  employee_name: string;
+  shift_id: string | null;
 }
 export interface SaleLine {
   id: string;
@@ -80,6 +87,7 @@ export interface Business {
   phone: string;
   taxBps: number;
   receiptFooter: string;
+  cashManagement?: boolean;
 }
 export interface Snapshot {
   categories: Category[];
@@ -91,6 +99,8 @@ export interface Snapshot {
   history: (Sale & { payment_methods: string })[];
   business: Business;
   view: 'grid' | 'list';
+  actor: Actor;
+  shift: Shift | null;
 }
 export interface Receipt {
   sale: Sale;

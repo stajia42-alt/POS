@@ -6,7 +6,7 @@ export async function navigate(page: Page, title: string) {
 }
 export async function ready(page: Page) {
   await page.goto('/');
-  await expect(page.getByTestId('app-ready')).toBeVisible();
+  await unlock(page);
 }
 export async function createProduct(
   page: Page,
@@ -14,6 +14,7 @@ export async function createProduct(
   price = '40.00',
   photo = false,
   categoryName?: string,
+  stock?: number,
 ) {
   await navigate(page, 'Productos');
   await page.getByRole('button', { name: 'Crear producto', exact: true }).first().click();
@@ -55,7 +56,31 @@ export async function createProduct(
     });
     await expect(page.getByRole('button', { name: 'Guardar producto', exact: true })).toBeEnabled();
   }
+  if (stock !== undefined) {
+    await page.getByLabel('Controlar existencias', { exact: true }).check();
+    await page.getByLabel('Existencias actuales', { exact: true }).fill(String(stock));
+    await page.getByLabel('Umbral de stock bajo', { exact: true }).fill('3');
+  }
   await page.getByLabel('Favorito', { exact: true }).check();
   await page.getByRole('button', { name: 'Guardar producto', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
+}
+
+export async function unlock(page: Page, identifier = 'owner', pin = '832641') {
+  await expect(
+    page.getByRole('heading', { name: /Configura al propietario|Acceso del empleado/ }),
+  ).toBeVisible();
+  const setup = await page.getByRole('heading', { name: 'Configura al propietario' }).isVisible();
+  if (setup) await page.getByLabel('Nombre del propietario', { exact: true }).fill('Test owner');
+  await page.getByLabel('Identificador', { exact: true }).fill(identifier);
+  await page.getByLabel(setup ? 'Crear PIN (4 a 8 dígitos)' : 'PIN', { exact: true }).fill(pin);
+  if (setup) await page.getByLabel('Confirmar PIN', { exact: true }).fill(pin);
+  await page
+    .getByRole('button', { name: setup ? 'Crear acceso local' : 'Entrar', exact: true })
+    .click();
+  await expect(page.getByTestId('app-ready')).toBeVisible();
+}
+export async function reload(page: Page) {
+  await page.reload();
+  await unlock(page);
 }
