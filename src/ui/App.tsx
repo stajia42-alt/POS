@@ -31,11 +31,13 @@ import {
   LockKeyhole,
 } from 'lucide-react';
 import type { Pos } from '../domain/pos';
-import { money, parsePercent } from '../domain/money';
+import { money, parsePercent, parseRate } from '../domain/money';
 import type { Category, Customer, Product, Receipt, SaleLine, Snapshot } from '../domain/types';
 import { Modal } from './Modal';
 import { ProductForm } from './ProductForm';
 import { CheckoutForm } from './CheckoutForm';
+import { TablesMap } from './TablesMap';
+import { TableBillActions } from './TableBillActions';
 import { SessionError } from '../domain/access';
 import { ROLE_LABELS, type Permission } from '../domain/access-types';
 import { InventoryPanel } from './InventoryPanel';
@@ -131,7 +133,17 @@ function ProductImage({ product, color }: { product: Product; color?: string }) 
   );
 }
 
-export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onLock: () => void }) {
+export function App({
+  pos,
+  initial,
+  onLock,
+  onRequireOpening,
+}: {
+  pos: Pos;
+  initial: Snapshot;
+  onLock: () => void;
+  onRequireOpening: (data: Snapshot) => void;
+}) {
   const [data, setData] = useState(initial);
   const [page, setPage] = useState<Page>('sales');
   const [sidebar, setSidebar] = useState(false);
@@ -144,6 +156,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
   const [line, setLine] = useState<SaleLine>();
   const [receipt, setReceipt] = useState<Receipt>();
   const [cancelId, setCancelId] = useState('');
+  const [cancelReason, setCancelReason] = useState('');
   const [busy, setBusy] = useState(false);
   const running = useRef(false);
   const [error, setError] = useState('');
@@ -166,6 +179,14 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
     return () => clearTimeout(timer);
   }, [notice]);
 
+  function receive(value: Snapshot) {
+    setData(value);
+    if (value.workspace.mode === 'tables' && value.workspace.table_view === 'map') {
+      setMobileTicket(false);
+      setNotice('');
+    }
+    if (!value.shift) onRequireOpening(value);
+  }
   async function run(action: () => Promise<unknown>, message?: string, close = false) {
     if (running.current) return;
     running.current = true;
@@ -173,7 +194,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
     setError('');
     try {
       await action();
-      setData(await pos.snapshot());
+      receive(await pos.snapshot());
       if (message) setNotice(message);
       if (close) setDialog(null);
     } catch (error) {
@@ -207,6 +228,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
   const go = (next: Page) => {
     if (!allowed[next]) return;
     setPage(next);
+    setNotice('');
     setSearch('');
     setSidebar(false);
     setMobileTicket(false);
@@ -216,6 +238,10 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
     setProduct(value);
     setDialog('product');
   };
+  const showMap =
+    page === 'sales' &&
+    data.workspace.mode === 'tables' &&
+    (data.workspace.table_view === 'map' || !data.table);
   const ticket = data.active;
   const qty = data.lines.reduce((sum, value) => sum + value.quantity, 0);
   const currentCategory =
@@ -395,6 +421,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
                   <small>
                     {date(s.updated_at)}
                     {s.customer_name ? ` · ${s.customer_name}` : ''}
+                    {s.table_name ? ` · Mesa ${s.table_name}` : ''}
                   </small>
                 </div>
                 <strong>{money(s.total)}</strong>
@@ -463,6 +490,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
                   <small>
                     {date(s.paid_at!)}
                     {s.customer_name ? ` · ${s.customer_name}` : ''}
+                    {s.table_name ? ` · Mesa ${s.table_name}` : ''}
                   </small>
                 </div>
                 <div className="align-right">
@@ -550,7 +578,11 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
                   phone: String(form.get('phone')),
                   taxBps: parsePercent(String(form.get('tax'))),
                   receiptFooter: String(form.get('footer')),
-                  cashManagement: form.has('cashManagement'),
+                  cashManagement: true,
+                  operationMode: form.get('operationMode') as 'quick' | 'restaurant' | 'both',
+                  exchangeRate: String(form.get('exchangeRate') || '').trim()
+                    ? parseRate(String(form.get('exchangeRate')))
+                    : null,
                 }),
               'Configuración guardada',
             );
@@ -592,17 +624,34 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
             Mensaje del recibo
             <input name="footer" maxLength={200} defaultValue={data.business.receiptFooter} />
           </label>
-          <label className="check-label">
-            <input
-              type="checkbox"
-              name="cashManagement"
-              defaultChecked={!!data.business.cashManagement}
-            />{' '}
-            Control de caja por turnos
-          </label>
+          <div className="form-row">
+            <label>
+              Modo de operación
+              <select
+                name="operationMode"
+                aria-label="Modo de operación"
+                defaultValue={data.business.operationMode || 'both'}
+              >
+                <option value="quick">Venta rápida</option>
+                <option value="restaurant">Restaurante</option>
+                <option value="both">Ambos</option>
+              </select>
+            </label>
+            <label>
+              Tipo de cambio · MXN por USD
+              <input
+                name="exchangeRate"
+                inputMode="decimal"
+                defaultValue={
+                  data.business.exchangeRate ? (data.business.exchangeRate / 10000).toFixed(4) : ''
+                }
+                placeholder="Sin configurar"
+              />
+            </label>
+          </div>
           <p className="field-hint">
-            Al activarlo, deberás abrir un turno antes de cobrar. No se atribuyen las ventas
-            antiguas a turnos nuevos.
+            La apertura de caja es obligatoria. La tasa se captura manualmente y se conserva en el
+            turno; los cobros USD están pendientes.
           </p>
           <div className="settings-note">
             <Banknote size={23} />
@@ -631,7 +680,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
     onLock,
     onChanged: async () => {
       const value = await pos.snapshot();
-      setData(value);
+      receive(value);
       if (!value.actor.permissions.includes('employees') && page === 'employees') setPage('sales');
     },
   };
@@ -887,6 +936,13 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
           <p>
             Venta #{pad(receipt.sale.number)} · {date(receipt.sale.paid_at!)}
           </p>
+          {receipt.sale.table_name && (
+            <p>
+              Mesa: {receipt.sale.table_name}
+              {receipt.sale.waiter_name ? ` · Mesero: ${receipt.sale.waiter_name}` : ''}
+            </p>
+          )}
+          {receipt.sale.employee_name && <p>Cobró: {receipt.sale.employee_name}</p>}
           {receipt.sale.customer_name && <p>Cliente: {receipt.sale.customer_name}</p>}
           <div className="receipt-lines">
             {receipt.lines.map((l) => (
@@ -1100,6 +1156,14 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
   if (dialog === 'cancel')
     dialogContent = (
       <div className="form-body">
+        <label>
+          Motivo (obligatorio para liberar una mesa)
+          <input
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            maxLength={500}
+          />
+        </label>
         <p>
           ¿Cancelar este ticket? Se conservará el registro de cancelación y no se descontarán
           existencias. No podrás recuperarlo.
@@ -1111,7 +1175,9 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
           <button
             className="danger-button"
             disabled={busy}
-            onClick={() => void run(() => pos.cancel(cancelId), 'Ticket cancelado', true)}
+            onClick={() =>
+              void run(() => pos.cancel(cancelId, cancelReason), 'Ticket cancelado', true)
+            }
           >
             Sí, cancelar ticket
           </button>
@@ -1124,7 +1190,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
         <div className="about-brand">
           <span className="brand-mark">A</span>
           <h2>
-            AVILES POS <span>1.2</span>
+            AVILES POS <span>2.1</span>
           </h2>
         </div>
         <p>
@@ -1140,9 +1206,9 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
           transferencia u otros y permite consultar el recibo en el historial.
         </p>
         <p className="field-hint">
-          Versión 1.2: acceso de empleados con PIN, permisos, inventario operativo y turnos de caja.
-          Pendientes: devoluciones, impresoras, respaldos exportables, variantes y modificadores.
-          Consulta la documentación del proyecto antes de usarlo comercialmente.
+          Versión 2.1, primera etapa: acceso solo por PIN, caja obligatoria, venta rápida y mesas
+          persistentes. Pendientes: devoluciones, impresoras, respaldos exportables, variantes y
+          modificadores. Consulta la documentación del proyecto antes de usarlo comercialmente.
         </p>
         <button className="secondary" onClick={close}>
           Entendido
@@ -1153,7 +1219,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
   return (
     <div className="app-shell" data-testid="app-ready" aria-busy={busy}>
       <div
-        className={`workspace ${page !== 'sales' ? 'admin-workspace' : ''} ${mobileTicket ? 'show-ticket' : ''}`}
+        className={`workspace ${page !== 'sales' || showMap ? 'admin-workspace' : ''} ${mobileTicket ? 'show-ticket' : ''}`}
       >
         <main className="main-panel">
           <header className="main-header">
@@ -1165,13 +1231,43 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
               <Menu size={25} />
             </button>
             <div className="header-title">
-              <h1>{page === 'sales' ? currentCategory : nav.find((n) => n.key === page)?.title}</h1>
+              <h1>
+                {showMap
+                  ? 'Mesas'
+                  : page === 'sales'
+                    ? data.table
+                      ? `Mesa ${data.table.name}`
+                      : currentCategory
+                    : nav.find((n) => n.key === page)?.title}
+              </h1>
               <span>
                 AVILES <b>POS</b>
               </span>
             </div>
+            {page === 'sales' && (
+              <div className="operation-switch" aria-label="Modo de operación">
+                {data.business.operationMode !== 'restaurant' && (
+                  <button
+                    disabled={busy}
+                    aria-pressed={data.workspace.mode === 'quick'}
+                    onClick={() => void run(() => pos.setMode('quick'))}
+                  >
+                    Venta rápida
+                  </button>
+                )}
+                {data.business.operationMode !== 'quick' && can('tables') && (
+                  <button
+                    disabled={busy}
+                    aria-pressed={data.workspace.mode === 'tables'}
+                    onClick={() => void run(() => pos.setMode('tables'))}
+                  >
+                    Mesas
+                  </button>
+                )}
+              </div>
+            )}
             <div className="header-actions">
-              {page === 'sales' && (
+              {page === 'sales' && !showMap && (
                 <>
                   <button
                     className="icon-button light"
@@ -1191,7 +1287,9 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
               )}
             </div>
           </header>
-          {page === 'sales' ? (
+          {showMap ? (
+            <TablesMap {...moduleProps} selectedId={data.table?.table_id} />
+          ) : page === 'sales' ? (
             <>
               <div className="sales-toolbar">
                 <div className="search-box">
@@ -1329,8 +1427,9 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
             admin
           )}
         </main>
-        {page === 'sales' && (
+        {page === 'sales' && !showMap && (
           <aside className="ticket-panel">
+            {data.table && <TableBillActions {...moduleProps} snapshot={data} />}
             <header className="ticket-header">
               <button
                 className="icon-button mobile-back"
@@ -1494,7 +1593,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
           </aside>
         )}
       </div>
-      {page === 'sales' && !mobileTicket && (
+      {page === 'sales' && !showMap && !mobileTicket && (
         <button className="mobile-cart primary" onClick={() => setMobileTicket(true)}>
           <ReceiptText size={20} /> Ver ticket · {qty}
           <strong>{money(ticket.total)}</strong>
@@ -1561,7 +1660,7 @@ export function App({ pos, initial, onLock }: { pos: Pos; initial: Snapshot; onL
                 setDialog('help');
               }}
             >
-              <CircleHelp size={21} /> Acerca de y ayuda <small>1.2</small>
+              <CircleHelp size={21} /> Acerca de y ayuda <small>2.1</small>
             </button>
           </div>
         </Modal>

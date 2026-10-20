@@ -1,38 +1,38 @@
-# AVILES POS 1.2
+# AVILES POS 2.1 — Primera etapa
 
 Punto de venta local para tabletas Android, desarrollado con React, TypeScript, Capacitor 8 y SQLite. Después del acceso local con PIN se abre la venta: productos a la izquierda, ticket a la derecha y categorías dinámicas abajo. Código e identidad propios; las referencias visuales del usuario no se distribuyen como recursos de la aplicación.
 
-Esta versión conserva ventas y pagos combinados, y añade inventario operativo, turnos de caja y empleados con PIN/permisos. El alcance completo solicitado continúa en desarrollo: variantes, devoluciones, impresoras y otros módulos siguen pendientes, detallados en [AVILES_POS_PROGRESO.md](AVILES_POS_PROGRESO.md). No está certificado para uso comercial.
+Esta actualización añade acceso solo por PIN, apertura obligatoria de caja, fondos MXN/USD separados y modo restaurante con mesas persistentes. Conserva catálogo, inventario, clientes, empleados, cobros manuales/combinados y la pantalla de venta rápida. Las fases pendientes se detallan en [AVILES_POS_PROGRESO.md](AVILES_POS_PROGRESO.md). No es la ampliación comercial completa ni está certificado para uso comercial.
 
 ## Descargas directas
 
-- [Instalador Android AVILES POS 1.2](https://raw.githubusercontent.com/stajia42-alt/POS/instalador-aviles-pos-1-2/AVILES-POS-1.2.apk).
-- [Todo en un ZIP: APK, fuentes y documentación](https://raw.githubusercontent.com/stajia42-alt/POS/instalador-aviles-pos-1-2/AVILES-POS-1.2-COMPLETO.zip).
-- [Código fuente completo en ZIP](https://raw.githubusercontent.com/stajia42-alt/POS/descargas-aviles-pos-1-2/descargas/AVILES-POS-1.2-fuentes.zip).
+- [Instalador Android AVILES POS 2.1](https://raw.githubusercontent.com/stajia42-alt/POS/instalador-aviles-pos-2-1/AVILES-POS-2.1.apk).
+- [TODO en un ZIP: APK, fuentes, Android y documentación](https://raw.githubusercontent.com/stajia42-alt/POS/instalador-aviles-pos-2-1/AVILES-POS-2.1-COMPLETO.zip).
+- [Solo fuentes en ZIP](https://raw.githubusercontent.com/stajia42-alt/POS/descargas-aviles-pos-2-1/descargas/AVILES-POS-2.1-fuentes.zip).
 
-El APK de depuración se distribuye en una rama separada de instaladores. El ZIP incluye React/TypeScript, proyecto Android, migraciones, pruebas y documentación; no incluye APK, claves, dependencias instaladas ni datos de negocio. Conserva la misma firma de desarrollo anterior. Consulta [CAMBIOS.md](docs/CAMBIOS.md).
+El instalador de depuración se distribuye en una rama separada. No se incluyen claves ni datos comerciales en ninguna descarga. El ZIP de fuentes contiene el proyecto y su documentación; el ZIP completo añade el APK. Las entregas anteriores siguen en sus ramas originales.
+
+## Actualizar sin borrar información
+
+Instala el APK sobre el anterior con el mismo identificador y firma. Esta entrega usa `mx.aviles.pos`, versión 2.1.0 y versionCode 4. SQLite migra a esquema 4 sin reiniciar datos. No desinstales ni borres almacenamiento. No se puede volver a una versión anterior sobre una base migrada.
+
+**Antes de actualizar desde 1.2, asigna PIN exclusivos a los empleados activos, especialmente al administrador.** Un PIN antiguo exclusivo se reconoce sin usuario. Un PIN compartido por varias personas no identifica a una persona de forma segura y se bloquea: otro administrador con PIN exclusivo debe restablecerlos. Si todos los administradores comparten PIN, resuélvelo en 1.2 antes de instalar; no hay recuperación automática o externa. No se guardan PIN en texto plano.
 
 ## Empezar
 
-El catálogo inicial está vacío. No se incluyen productos, categorías ni ventas ficticias.
+1. Si es la primera instalación, crea al propietario con nombre y PIN propio. Si actualizas una base con empleados, introduce solamente tu PIN. No hay PIN predeterminado.
+2. Sin turno abierto aparece Apertura de caja: captura fondos MXN/USD. La tasa manual de cambio es necesaria para un fondo USD positivo y solo un administrador con permiso puede configurarla. ABRIR TURNO restaura tu cuenta o mesa pendiente.
+3. Crea categorías y productos desde el menú. El catálogo y el mapa iniciales no incluyen datos ficticios.
+4. En Configuración elige Venta rápida, Restaurante o Ambos. Ambos muestra Venta rápida | Mesas en la barra principal.
+5. En Mesas, el administrador crea áreas y activa Editar plano para crear, mover y configurar mesas. Tocar una mesa abre o recupera su cuenta. Volver al mapa guarda la cuenta automáticamente.
+6. Gestionar mesa permite transferir, unir cuentas completas, cambiar mesero, marcar cobro y liberar según permisos. Cobrar completa el ticket y libera la mesa en la misma transacción de pagos e inventario.
+7. Caja y turnos permite movimientos por moneda, arqueo, cierre e historial. Corte de consulta revisa sin cerrar. Al cerrar vuelve la apertura; las cuentas pendientes permanecen.
 
-1. En el primer inicio crea el acceso del propietario con nombre, identificador y PIN propio. No hay credenciales predeterminadas. Después abre el menú lateral y entra en **Categorías** para registrar tus categorías.
-2. En **Productos**, crea artículos con nombre, precio en MXN, categoría y fotografía opcional. Puedes incluir código de barras, favoritos y existencias.
-3. En **Configuración**, indica el negocio y el impuesto **añadido**. Deja 0 si los precios ya incluyen impuestos.
-4. Vuelve a **Punto de venta**. Toca productos para agregarlos. Usa los controles de cantidad o toca una línea para editar cantidad y observaciones.
-5. **GUARDAR** conserva el ticket pendiente; **COBRAR** permite registrar efectivo, tarjeta, transferencia u otro método. Solo el efectivo genera cambio. **Dividir pago** permite distribuir el total entre varias formas de pago; el historial conserva sus importes y referencias. Tarjeta y transferencia son registros manuales: verifica el pago en tu terminal o banco antes de confirmar.
+**Los cobros de ventas siguen siendo MXN.** Fondos y movimientos USD de caja no equivalen a cobros USD ni conversión del recibido/cambio. Tarjeta, transferencia y otros siguen siendo registros manuales; comprueba el pago externamente antes de confirmar. Los pagos combinados se confirman juntos; no son anticipos ni pagos parciales.
 
-Desde **Inventario** registra entradas, salidas, ajustes y conteos. En **Empleados** configura personas y permisos. Para usar caja, activa **Control de caja por turnos** en Configuración y abre un turno desde **Caja y turnos**. El [manual de los módulos 1.2](docs/MODULOS-1.2.md) explica sus operaciones y límites.
+Guía detallada: [MODULOS-2.1.md](docs/MODULOS-2.1.md). Impresoras, comandas, división, pagos USD, autorizaciones delegadas, respaldos/restauración y los demás pendientes constan en el documento de progreso. La identidad y recursos son propios; las referencias visuales del usuario no se distribuyen como recursos.
 
-La cuadrícula/lista, el carrito activo, las fotografías, los pendientes y las ventas persisten en SQLite. Android opera con los recursos incluidos en el APK; no requiere un servidor Node, cuenta externa ni Internet para vender. Node se usa únicamente para desarrollar y compilar.
-
-## Actualizar desde 1.0 o 1.1
-
-SQLite migra a esquema 3 de forma transaccional, sin reiniciar el catálogo. Conserva fotos, clientes, pagos y tickets originales. Añade empleados, permisos, caja, auditoría y trazabilidad de inventario. Los registros anteriores no reciben nombres de empleados ni turnos inventados. El primer acceso pide crear al propietario local; los datos previos permanecen.
-
-El APK 1.2 usa el mismo identificador `mx.aviles.pos` y `versionCode` 3. Instálalo encima del anterior manteniendo su firma; no desinstales ni borres almacenamiento. No se puede volver a una versión antigua sobre una base ya migrada: el programa anterior rechazará el esquema nuevo para conservarlo.
-
-Los pagos preparados en el diálogo todavía no están registrados: se confirman juntos y de manera transaccional al completar la venta. Cerrar el diálogo descarta esa distribución preparada, conservando el ticket. No se aceptan pagos incompletos ni se registran anticipos en esta etapa.
+La aplicación opera con SQLite y recursos incluidos en el APK, sin servidor, computadora o Internet para vender. Node se usa solo para desarrollar y compilar. La versión web guarda SQLite WASM en IndexedDB y sus datos son independientes de Android.
 
 ## Desarrollo
 
@@ -84,7 +84,7 @@ Copia el APK a la tableta, permite la instalación desde esa fuente cuando Andro
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Una actualización debe mantener **el mismo identificador y la misma clave de firma** para conservar los datos. No desinstales para resolver un conflicto de firma. No borres el almacenamiento de la aplicación: no hay restauración ni respaldos exportables en 1.2.
+Una actualización debe mantener **el mismo identificador y la misma clave de firma** para conservar los datos. No desinstales para resolver un conflicto de firma. No borres el almacenamiento de la aplicación: no hay restauración ni respaldos exportables en 2.1.
 
 ## Verificación
 

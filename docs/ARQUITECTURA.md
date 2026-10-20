@@ -8,7 +8,7 @@ Android utiliza `@capacitor-community/sqlite` y su SQLite/SQLCipher nativo, sin 
 
 El navegador mantiene un Web Lock por origen durante la sesión. Una segunda pestaña recibe un aviso y no abre otro escritor. Se considera la versión web una herramienta de desarrollo y validación; Android es la plataforma objetivo. Para catálogos grandes, debe perfilarse la lectura de fotografías y el coste de exportar el archivo en web.
 
-## Esquemas 1, 2 y 3
+## Esquemas 1, 2, 3 y 4
 
 La migración se encuentra en `src/db/migrations.ts`. Usa `PRAGMA user_version`, claves foráneas activadas, índices y restricciones. Se aplica en una transacción; repetirla conserva los datos. Una versión de esquema posterior a la soportada impide abrir la aplicación sin borrar información.
 
@@ -84,3 +84,19 @@ La navegación administrativa se abre desde el cajón lateral. Las categorías p
 - Las funciones futuras deben usar `AccessControl.require` dentro de su transacción y `audit`; ocultar un botón no será suficiente.
 - ESC/POS debe tener un transporte Android separado para cada conexión. Ninguna impresora se considera compatible sin una prueba real.
 - Restauración debe validar integridad, versión y referencias antes de cualquier cambio de base y obtener confirmación del administrador.
+
+## Restaurante y acceso en esquema 4
+
+Se extraen funciones de venta ya existentes a `domain/sales.ts` para compartir creación, activación, pausa y recálculo sin duplicar reglas entre `Pos` y `Tables`. No se cambia tecnología, formato de dinero o adaptadores. La cola transaccional sigue serializando toda operación. El guardado de modo/layout no usa localStorage.
+
+`AccessControl.login(pin)` deriva un índice con PBKDF2-SHA256/600000 y sal de instalación, además de comprobar el hash con sal individual. La migración no intenta invertir hashes: los registros antiguos sin índice se verifican al introducir el PIN. Varias coincidencias activas bloquean la identidad; crear/reactivar/restablecer comprueba unicidad contra registros modernos y antiguos dentro de la transacción. Un índice parcial evita colisiones concurrentes entre modernos. Contador global de intentos en SQLite, sin guardar PIN. La firma antigua de dos argumentos se conserva solo como compatibilidad interna y usa la misma protección, sin omitir ambigüedad o bloqueo; la interfaz normal no la usa.
+
+`employee_workspace` conserva por empleado modo, vista mapa/cuenta, cuenta activa y cuenta rápida. `restoreWorkspace` recupera cuentas abiertas o crea borrador vacío cuando no existe una operación válida, sin duplicar líneas. Al alternar operadores se estaciona la cuenta anterior, conservando mesas vacías y con productos. Las mesas siguen siendo compartidas en el dispositivo. El identificador global `activeSale` indica la cuenta que se edita ahora; no es una segunda copia de la cuenta.
+
+`table_sessions` tiene unicidad de mesa abierta y de venta. Cada apertura reutiliza sesión existente. `Tables` configura plano y cuentas usando transacciones y permisos. Transferir cambia mesa y deja auditoría; unir mueve las líneas existentes a la cuenta destino, marca origen con `merged_into`, conserva instantáneas de origen y registra la relación/líneas en auditoría. El origen no es una devolución ni una venta pagada; futuros reportes deben distinguir uniones de cancelaciones. Cliente/impuesto/descuento deben coincidir y el recálculo aplica redondeo por cuenta.
+
+`Pos.checkoutPayments` valida turno obligatorio, stock y pagos; luego cierra la sesión de mesa en el mismo commit, registra auditoría y crea siguiente borrador. Repetir el ticket pagado conserva la respuesta original. Un fallo de archivo restaura stock, pagos y sesión. No se reutiliza ese cierre completo para anticipos: saldo y pagos parciales requieren modelo posterior.
+
+`Cash` separa movimientos por moneda. En esta etapa `payments.amount` y los pagos de venta siguen siendo MXN; `opening_usd` solo representa el fondo físico y se suma exclusivamente con movimientos USD. La tasa se almacena con escala 10000 y se captura al abrir turno. Campos de cierre guardan ambos contados y diferencias. No se convierten fondos para sumarlos ni se afirman cobros USD. La apertura obligatoria se aplica en UI y en el servicio de cobro, sin confiar en `cashManagement` antiguo.
+
+Migración 4 añade campos y tablas sin reconstrucción destructiva. Los permisos anteriores se conservan; se incorporan permisos de atención a vendedores y de edición/liberación/transferencia a los roles administrativos descritos en el manual. El contador y sal son ajustes locales, no secretos publicados. No se implementa cifrado de base ni recuperación externa.

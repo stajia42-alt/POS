@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { LockKeyhole } from 'lucide-react';
 import type { Pos } from '../domain/pos';
 import type { Snapshot } from '../domain/types';
+import { PinPad } from './PinPad';
+import { OpeningGate } from './OpeningGate';
 import { App } from './App';
 
 export function SessionGate({ pos }: { pos: Pos }) {
@@ -10,6 +12,7 @@ export function SessionGate({ pos }: { pos: Pos }) {
   const [busy, setBusy] = useState(false);
   const lock = useRef(false);
   const [error, setError] = useState('');
+  const [pin, setPin] = useState('');
   useEffect(() => {
     pos.access
       .hasEmployees()
@@ -29,10 +32,11 @@ export function SessionGate({ pos }: { pos: Pos }) {
           throw new Error('Los PIN no coinciden.');
         await pos.access.bootstrap({
           name: String(values.get('name')),
-          identifier: String(values.get('identifier')),
+          identifier: 'owner',
           pin: String(values.get('pin')),
         });
-      } else await pos.access.login(String(values.get('identifier')), String(values.get('pin')));
+      } else await pos.access.login(pin);
+      await pos.restoreWorkspace();
       setData(await pos.snapshot());
       setSetup(false);
     } catch (error) {
@@ -42,17 +46,22 @@ export function SessionGate({ pos }: { pos: Pos }) {
       setBusy(false);
     }
   };
+  const lockSession = () => {
+    pos.access.lock();
+    setData(undefined);
+    setError('');
+    setPin('');
+  };
+  if (data && !data.shift)
+    return <OpeningGate pos={pos} data={data} onOpened={setData} onLock={lockSession} />;
   if (data)
     return (
       <App
         key={data.actor.id}
         pos={pos}
         initial={data}
-        onLock={() => {
-          pos.access.lock();
-          setData(undefined);
-          setError('');
-        }}
+        onLock={lockSession}
+        onRequireOpening={setData}
       />
     );
   return (
@@ -71,7 +80,7 @@ export function SessionGate({ pos }: { pos: Pos }) {
             ? 'Abriendo acceso local…'
             : setup
               ? 'Configura al propietario'
-              : 'Acceso del empleado'}
+              : 'Bienvenido a AVILES POS'}
         </h2>
         {setup === undefined ? null : (
           <>
@@ -88,21 +97,11 @@ export function SessionGate({ pos }: { pos: Pos }) {
               </>
             )}
             <label>
-              Identificador
-              <input
-                name="identifier"
-                required
-                maxLength={40}
-                autoComplete="username"
-                autoCapitalize="none"
-                spellCheck={false}
-                placeholder="Ej. propietario"
-              />
-            </label>
-            <label>
               {setup ? 'Crear PIN (4 a 8 dígitos)' : 'PIN'}
               <input
                 name="pin"
+                value={pin}
+                onChange={(event) => setPin(event.target.value.replace(/[^0-9]/g, '').slice(0, 8))}
                 required
                 type="password"
                 inputMode="numeric"
@@ -112,6 +111,7 @@ export function SessionGate({ pos }: { pos: Pos }) {
                 autoComplete={setup ? 'new-password' : 'current-password'}
               />
             </label>
+            {!setup && <PinPad value={pin} onChange={setPin} busy={busy} />}
             {setup && (
               <label>
                 Confirmar PIN

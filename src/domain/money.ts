@@ -43,3 +43,14 @@ export function totals(
   const total = integer(subtotal - discount + tax);
   return { subtotal, discount, tax, total };
 }
+
+export function parseRate(value: string): number {
+  const text = value.trim().replace(',', '.');
+  if (!/^\d{1,4}(\.\d{1,4})?$/.test(text))
+    throw new Error('Indica un tipo de cambio válido, con hasta cuatro decimales.');
+  const [whole, part = ''] = text.split('.');
+  return integer(Number(whole) * 10000 + Number(part.padEnd(4, '0')), 1, 99999999);
+}
+export function currencyMoney(cents: number, currency: 'MXN' | 'USD') {
+  return `${new Intl.NumberFormat('es-MX', { style: 'currency', currency, currencyDisplay: 'narrowSymbol' }).format(cents / 100)} ${currency}`;
+}

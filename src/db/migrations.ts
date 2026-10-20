@@ -1,6 +1,6 @@
 import type { Database } from './database';
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 const migration1 = [
   `CREATE TABLE categories (id TEXT PRIMARY KEY, name TEXT NOT NULL COLLATE NOCASE UNIQUE, color TEXT NOT NULL)`,
   `CREATE TABLE products (
@@ -85,7 +85,33 @@ const migration3 = [
     counted INTEGER NOT NULL CHECK(counted>=0), actor_id TEXT NOT NULL REFERENCES employees(id), actor_name TEXT NOT NULL,
     reason TEXT NOT NULL, movement_id TEXT NOT NULL REFERENCES inventory_movements(id), created_at TEXT NOT NULL)`,
 ];
-const migrations = [migration1, migration2, migration3];
+const migration4 = [
+  `ALTER TABLE employees ADD COLUMN pin_lookup TEXT`,
+  `CREATE UNIQUE INDEX employee_active_pin ON employees(pin_lookup) WHERE active=1 AND pin_lookup IS NOT NULL`,
+  `INSERT INTO settings(key,value) VALUES('pinLookupSalt',lower(hex(randomblob(24)))),('pinAccess','{"failed":0,"until":null}')`,
+  `ALTER TABLE shifts ADD COLUMN opening_usd INTEGER NOT NULL DEFAULT 0 CHECK(opening_usd>=0)`,
+  `ALTER TABLE shifts ADD COLUMN exchange_rate INTEGER`,
+  `ALTER TABLE shifts ADD COLUMN expected_usd INTEGER`,
+  `ALTER TABLE shifts ADD COLUMN counted_usd INTEGER`,
+  `ALTER TABLE shifts ADD COLUMN difference_usd INTEGER`,
+  `ALTER TABLE cash_movements ADD COLUMN currency TEXT NOT NULL DEFAULT 'MXN' CHECK(currency IN ('MXN','USD'))`,
+  `CREATE TABLE dining_areas(id TEXT PRIMARY KEY,name TEXT NOT NULL UNIQUE COLLATE NOCASE,active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)))`,
+  `CREATE TABLE dining_tables(id TEXT PRIMARY KEY,area_id TEXT NOT NULL REFERENCES dining_areas(id),name TEXT NOT NULL,shape TEXT NOT NULL CHECK(shape IN ('round','square','rectangle')),
+    x INTEGER NOT NULL,y INTEGER NOT NULL,width INTEGER NOT NULL,height INTEGER NOT NULL,capacity INTEGER NOT NULL CHECK(capacity BETWEEN 1 AND 100),active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)))`,
+  `CREATE UNIQUE INDEX dining_table_name ON dining_tables(area_id,name COLLATE NOCASE) WHERE active=1`,
+  `CREATE TABLE table_sessions(id TEXT PRIMARY KEY,table_id TEXT NOT NULL REFERENCES dining_tables(id),sale_id TEXT NOT NULL UNIQUE REFERENCES sales(id),opened_at TEXT NOT NULL,closed_at TEXT,payment_requested INTEGER NOT NULL DEFAULT 0 CHECK(payment_requested IN (0,1)))`,
+  `CREATE UNIQUE INDEX table_open_session ON table_sessions(table_id) WHERE closed_at IS NULL`,
+  `ALTER TABLE sales ADD COLUMN merged_into TEXT REFERENCES sales(id)`,
+  `ALTER TABLE sales ADD COLUMN table_name TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE sales ADD COLUMN waiter_id TEXT REFERENCES employees(id)`,
+  `ALTER TABLE sales ADD COLUMN waiter_name TEXT NOT NULL DEFAULT ''`,
+  `CREATE TABLE employee_workspace(employee_id TEXT PRIMARY KEY REFERENCES employees(id),mode TEXT NOT NULL DEFAULT 'quick' CHECK(mode IN ('quick','tables')),active_sale_id TEXT REFERENCES sales(id),quick_sale_id TEXT REFERENCES sales(id),table_view TEXT NOT NULL DEFAULT 'map' CHECK(table_view IN ('map','bill')))`,
+  `INSERT INTO employee_permissions(employee_id,permission,allowed) SELECT employee_id,'tables',1 FROM employee_permissions WHERE permission='sell' AND allowed=1`,
+  `INSERT INTO employee_permissions(employee_id,permission,allowed) SELECT id,'table_layout',1 FROM employees WHERE role='admin'`,
+  `INSERT INTO employee_permissions(employee_id,permission,allowed) SELECT id,'table_release',1 FROM employees WHERE role='admin'`,
+  `INSERT INTO employee_permissions(employee_id,permission,allowed) SELECT id,'table_transfer',1 FROM employees WHERE role IN ('admin','supervisor')`,
+];
+const migrations = [migration1, migration2, migration3, migration4];
 
 export async function migrate(db: Database, targetVersion = SCHEMA_VERSION): Promise<void> {
   if (!Number.isInteger(targetVersion) || targetVersion < 1 || targetVersion > SCHEMA_VERSION)

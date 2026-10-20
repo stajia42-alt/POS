@@ -46,6 +46,9 @@ export interface Sale {
   employee_id: string | null;
   employee_name: string;
   shift_id: string | null;
+  table_name: string;
+  waiter_id: string | null;
+  waiter_name: string;
 }
 export interface SaleLine {
   id: string;
@@ -88,6 +91,8 @@ export interface Business {
   taxBps: number;
   receiptFooter: string;
   cashManagement?: boolean;
+  operationMode?: 'quick' | 'restaurant' | 'both';
+  exchangeRate?: number | null;
 }
 export interface Snapshot {
   categories: Category[];
@@ -101,6 +106,8 @@ export interface Snapshot {
   view: 'grid' | 'list';
   actor: Actor;
   shift: Shift | null;
+  workspace: { mode: 'quick' | 'tables'; table_view: 'map' | 'bill' };
+  table: import('./tables').TableContext | null;
 }
 export interface Receipt {
   sale: Sale;

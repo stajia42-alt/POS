@@ -107,25 +107,12 @@ test('caja: apertura, venta con cambio, retiro, arqueo, cierre persistente y nue
   page,
   context,
 }) => {
-  await ready(page);
+  await ready(page, '100.00');
   await createProduct(page, 'Producto de caja', '10.00', false, undefined, 10);
-  await navigate(page, 'Configuración');
-  await page.getByLabel('Control de caja por turnos', { exact: true }).check();
-  await page.getByRole('button', { name: 'Guardar configuración', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText('Configuración guardada');
   await navigate(page, 'Punto de venta');
   await page.getByRole('button', { name: 'Agregar Producto de caja', exact: true }).click();
   await page.getByRole('button', { name: 'COBRAR', exact: true }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Caja y turnos', exact: true }).first(),
-  ).toBeVisible();
-  await page.getByRole('button', { name: 'Abrir turno', exact: true }).click();
   let dialog = page.getByRole('dialog');
-  await dialog.getByLabel('Fondo inicial de caja (MXN)', { exact: true }).fill('100.00');
-  await dialog.getByRole('button', { name: 'Abrir el turno', exact: true }).click();
-  await expect(dialog).toHaveCount(0);
-  await navigate(page, 'Punto de venta');
-  await page.getByRole('button', { name: 'COBRAR', exact: true }).click();
   dialog = page.getByRole('dialog');
   await dialog.getByLabel('Efectivo recibido (MXN)', { exact: true }).fill('20.00');
   await dialog.getByRole('button', { name: 'Confirmar cobro', exact: true }).click();
@@ -138,7 +125,7 @@ test('caja: apertura, venta con cambio, retiro, arqueo, cierre persistente y nue
   await page.getByRole('button', { name: 'Movimiento de caja', exact: true }).click();
   dialog = page.getByRole('dialog');
   await dialog.getByLabel('Tipo de movimiento', { exact: true }).selectOption('withdrawal');
-  await dialog.getByLabel('Importe del movimiento (MXN)', { exact: true }).fill('20.00');
+  await dialog.getByLabel('Importe del movimiento', { exact: true }).fill('20.00');
   await dialog.getByLabel('Motivo', { exact: true }).fill('Retiro a caja fuerte');
   await dialog.getByRole('button', { name: 'Guardar movimiento', exact: true }).click();
   await expect(dialog).toHaveCount(0);
@@ -148,9 +135,7 @@ test('caja: apertura, venta con cambio, retiro, arqueo, cierre persistente y nue
   await expect(dialog).toContainText('Faltante: $1.00');
   await dialog.getByRole('button', { name: 'Confirmar cierre', exact: true }).click();
   await expect(dialog).toHaveCount(0);
-  await expect(
-    page.getByRole('heading', { name: 'El turno está cerrado', exact: true }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Apertura de caja', exact: true })).toBeVisible();
   await context.setOffline(true);
   await reload(page);
   await navigate(page, 'Caja y turnos');
@@ -160,9 +145,5 @@ test('caja: apertura, venta con cambio, retiro, arqueo, cierre persistente y nue
   await expect(dialog.getByText('Faltante', { exact: true }).locator('..')).toContainText('$1.00');
   await expect(dialog.getByText('Ventas del turno · 1', { exact: true })).toBeVisible();
   await dialog.getByRole('button', { name: 'Cerrar ventana', exact: true }).click();
-  await page.getByRole('button', { name: 'Abrir turno', exact: true }).click();
-  dialog = page.getByRole('dialog');
-  await dialog.getByRole('button', { name: 'Abrir el turno', exact: true }).click();
-  await expect(dialog).toHaveCount(0);
   await expect(page.getByText('Turno abierto', { exact: true })).toBeVisible();
 });

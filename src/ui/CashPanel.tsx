@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { money, parseMoney } from '../domain/money';
+import { money, parseMoney, currencyMoney } from '../domain/money';
 import { PAYMENT_LABELS } from '../domain/payments';
 import type { ShiftReport } from '../domain/cash';
 import { Modal } from './Modal';
@@ -59,6 +59,50 @@ function Report({ report }: { report: ShiftReport }) {
           </>
         )}
       </dl>
+      <h3>Fondo y movimientos USD</h3>
+      <dl className="report-totals">
+        <div>
+          <dt>Fondo inicial USD</dt>
+          <dd>{currencyMoney(shift.opening_usd, 'USD')}</dd>
+        </div>
+        <div>
+          <dt>Ingresos USD</dt>
+          <dd>{currencyMoney(report.incomingUsd, 'USD')}</dd>
+        </div>
+        <div>
+          <dt>Egresos y retiros USD</dt>
+          <dd>{currencyMoney(report.outgoingUsd, 'USD')}</dd>
+        </div>
+        <div>
+          <dt>Efectivo esperado USD</dt>
+          <dd>{currencyMoney(shift.expected_usd ?? report.expectedUsd, 'USD')}</dd>
+        </div>
+        {shift.counted_usd !== null && (
+          <>
+            <div>
+              <dt>Efectivo contado USD</dt>
+              <dd>{currencyMoney(shift.counted_usd, 'USD')}</dd>
+            </div>
+            <div>
+              <dt>Diferencia USD</dt>
+              <dd>{currencyMoney(shift.difference_usd ?? 0, 'USD')}</dd>
+            </div>
+          </>
+        )}
+      </dl>
+      <p className="field-hint">
+        Tipo de cambio de apertura:{' '}
+        {shift.exchange_rate
+          ? (shift.exchange_rate / 10000).toFixed(4) + ' MXN / USD'
+          : 'Sin configurar'}
+        . Los cobros en USD están pendientes; aquí se registran fondos y movimientos físicos en USD.
+      </p>
+      <dl className="report-totals">
+        <div>
+          <dt>Descuentos de ventas</dt>
+          <dd>{money(report.sales.reduce((sum, sale) => sum + sale.discount, 0))}</dd>
+        </div>
+      </dl>
       <h3>Ventas por método de pago</h3>
       {report.payments.length ? (
         <dl className="report-totals">
@@ -93,7 +137,7 @@ function Report({ report }: { report: ShiftReport }) {
                   {MOVES[move.kind]}
                   <small>{move.reason}</small>
                 </td>
-                <td>{money(move.amount)}</td>
+                <td>{currencyMoney(move.amount, move.currency)}</td>
               </tr>
             ))}
           </tbody>
@@ -136,6 +180,7 @@ export function CashPanel({
   const [dialog, setDialog] = useState<'open' | 'move' | 'close' | null>(null);
   const [historical, setHistorical] = useState<ShiftReport>();
   const [counted, setCounted] = useState('');
+  const [countedUsd, setCountedUsd] = useState('0.00');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const { data, error, notice, busy, run, setError } = useModule(
@@ -151,13 +196,15 @@ export function CashPanel({
         dialog === 'open'
           ? () => pos.cash.open(parseMoney(String(form.get('amount'))))
           : dialog === 'close'
-            ? () => pos.cash.close(data!.current!.shift.id, parseMoney(counted))
+            ? () =>
+                pos.cash.close(data!.current!.shift.id, parseMoney(counted), parseMoney(countedUsd))
             : () =>
                 pos.cash.move({
                   shiftId: data!.current!.shift.id,
                   kind: form.get('kind') as 'in' | 'out' | 'withdrawal',
                   amount: parseMoney(String(form.get('amount'))),
                   reason: String(form.get('reason')),
+                  currency: form.get('currency') as 'MXN' | 'USD',
                 });
       if (
         await run(
@@ -173,6 +220,7 @@ export function CashPanel({
   const open = (value: 'open' | 'move' | 'close') => {
     setError('');
     setCounted('');
+    setCountedUsd('0.00');
     setDialog(value);
   };
   const history = data?.history.filter(
@@ -210,6 +258,20 @@ export function CashPanel({
             <div className="cash-status">
               <strong>Turno abierto</strong>
               <div className="module-actions">
+                {actor.permissions.includes('reports') && (
+                  <button
+                    className="secondary"
+                    disabled={busy}
+                    onClick={() =>
+                      void run(
+                        async () => setHistorical(await pos.cash.getReport(data.current!.shift.id)),
+                        'Corte consultado; el turno sigue abierto',
+                      )
+                    }
+                  >
+                    Corte de consulta
+                  </button>
+                )}
                 {actor.permissions.includes('cash_moves') && (
                   <button className="secondary" onClick={() => open('move')}>
                     Movimiento de caja
@@ -241,10 +303,7 @@ export function CashPanel({
           <div className="settings-note">
             <div>
               <h2>El turno está cerrado</h2>
-              <p>
-                Activa «Control de caja por turnos» en Configuración y abre la caja para atribuir
-                las ventas a un turno. Las ventas anteriores conservan sus registros.
-              </p>
+              <p>Abre el turno para continuar. Las cuentas pendientes y las mesas se conservan.</p>
               {enabled && actor.permissions.includes('open_cash') && (
                 <button className="primary" onClick={() => open('open')}>
                   Abrir turno
@@ -299,7 +358,11 @@ export function CashPanel({
         </>
       )}
       {historical && (
-        <Modal wide title="Reporte de cierre" onClose={() => setHistorical(undefined)}>
+        <Modal
+          wide
+          title={historical.shift.status === 'open' ? 'Corte de consulta' : 'Reporte de cierre'}
+          onClose={() => setHistorical(undefined)}
+        >
           <div className="form-body">
             <Report report={historical} />
           </div>
@@ -350,6 +413,19 @@ export function CashPanel({
                     onChange={(e) => setCounted(e.target.value)}
                   />
                 </label>
+                <p>
+                  Efectivo esperado USD:{' '}
+                  <strong>{currencyMoney(data!.current!.expectedUsd!, 'USD')}</strong>
+                </p>
+                <label>
+                  Efectivo contado (USD)
+                  <input
+                    inputMode="decimal"
+                    required
+                    value={countedUsd}
+                    onChange={(e) => setCountedUsd(e.target.value)}
+                  />
+                </label>
                 {difference !== undefined && (
                   <p role="status">
                     {difference < 0 ? 'Faltante' : difference > 0 ? 'Sobrante' : 'Diferencia'}:{' '}
@@ -363,13 +439,22 @@ export function CashPanel({
               </>
             ) : (
               <label>
-                {dialog === 'open' ? 'Fondo inicial de caja (MXN)' : 'Importe del movimiento (MXN)'}
+                {dialog === 'open' ? 'Fondo inicial de caja (MXN)' : 'Importe del movimiento'}
                 <input
                   name="amount"
                   required
                   inputMode="decimal"
                   defaultValue={dialog === 'open' ? '0.00' : ''}
                 />
+              </label>
+            )}
+            {dialog === 'move' && (
+              <label>
+                Moneda del movimiento
+                <select name="currency" aria-label="Moneda del movimiento">
+                  <option value="MXN">MXN · Pesos</option>
+                  <option value="USD">USD · Dólares</option>
+                </select>
               </label>
             )}
             {dialog === 'move' && (

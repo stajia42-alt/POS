@@ -1,0 +1,1069 @@
+ACTÚA COMO UN EQUIPO DE INGENIERÍA DE SOFTWARE SÉNIOR
+ESPECIALIZADO EN:
+
+- React
+- TypeScript
+- Capacitor
+- Android
+- SQLite
+- Sistemas POS
+- Restaurantes
+- Impresoras ESC/POS
+- Diseño UX/UI profesional
+- Arquitectura offline-first
+- Control de caja
+- Sistemas transaccionales
+
+PROYECTO: AVILES POS
+
+ACTUALIZACIÓN: VERSIÓN 2.1
+
+==================================================
+CONTEXTO DEL PROYECTO
+==================================================
+
+Ya existe una aplicación llamada AVILES POS.
+
+La aplicación fue desarrollada anteriormente
+utilizando React, TypeScript, Capacitor y SQLite.
+
+La versión inicial ya funciona.
+
+Actualmente se están desarrollando otros módulos
+solicitados en actualizaciones anteriores.
+
+TU TAREA ES CONTINUAR EL DESARROLLO.
+
+NO CREES UNA NUEVA APLICACIÓN.
+
+NO REEMPLACES EL PROYECTO EXISTENTE.
+
+NO EMPIECES DESDE CERO.
+
+NO ELIMINES FUNCIONES EXISTENTES.
+
+NO CAMBIES LA ARQUITECTURA SIN JUSTIFICACIÓN.
+
+NO MODIFIQUES LA BASE DE DATOS DE FORMA DESTRUCTIVA.
+
+IMPORTANTE:
+
+Si existen cambios de otra actualización
+en progreso, intégralos cuidadosamente.
+
+No sobrescribas trabajo que todavía
+no haya sido incorporado.
+
+Antes de modificar el código, identifica
+el estado actual del repositorio.
+
+Trabaja sobre una rama nueva de Git.
+
+==================================================
+OBJETIVO GENERAL
+==================================================
+
+Convertir AVILES POS en un sistema profesional
+para restaurantes, cafeterías y comercios.
+
+Debe funcionar completamente en una
+tableta Android de manera independiente.
+
+Dispositivo principal:
+
+Samsung Galaxy Tab A11 de 8.7 pulgadas.
+
+Orientación:
+
+Horizontal.
+
+Base de datos:
+
+SQLite local.
+
+No requiere Internet.
+
+No requiere computadora.
+
+No requiere servidor externo.
+
+Conservar como referencia visual principal
+la experiencia de Loyverse POS.
+
+Utilizar código original y recursos propios.
+
+==================================================
+1. DOS MODOS DE OPERACIÓN
+==================================================
+
+Implementar dos modos dentro
+de la misma aplicación:
+
+MODO 1:
+VENTA RÁPIDA.
+
+MODO 2:
+MAPA DE MESAS.
+
+Ambos deben compartir:
+
+Productos.
+Categorías.
+Inventario.
+Clientes.
+Empleados.
+Caja.
+Métodos de pago.
+Reportes.
+Configuración.
+Impresoras.
+
+Agregar un control visible para alternar entre:
+
+VENTA RÁPIDA | MESAS
+
+VENTA RÁPIDA:
+
+Debe conservar la pantalla de ventas actual.
+
+No modificar innecesariamente
+su distribución ni comportamiento.
+
+MAPA DE MESAS:
+
+Debe mostrar un plano interactivo
+del restaurante.
+
+Al seleccionar una mesa,
+abrir directamente su cuenta.
+
+El usuario debe poder regresar
+al mapa sin perder la venta.
+
+El sistema debe recordar el último
+modo utilizado.
+
+==================================================
+2. MAPA INTERACTIVO DE MESAS
+==================================================
+
+Desarrollar un editor visual de mesas.
+
+Permitir crear áreas:
+
+Salón.
+Terraza.
+Barra.
+Patio.
+Segundo piso.
+Otras áreas personalizadas.
+
+Cada área tendrá su propio mapa.
+
+Permitir:
+
+Agregar mesas.
+Eliminar mesas.
+Editar mesas.
+Mover mesas.
+Cambiar tamaños.
+Cambiar formas.
+Cambiar nombres.
+Cambiar capacidad.
+Guardar posiciones.
+
+Formas:
+
+Redonda.
+Cuadrada.
+Rectangular.
+
+Las posiciones deben guardarse
+en SQLite.
+
+El administrador podrá activar
+un modo de edición.
+
+Los cajeros y meseros solamente
+podrán utilizar el mapa según
+sus permisos.
+
+ESTADOS VISUALES:
+
+Verde:
+Mesa disponible.
+
+Rojo:
+Mesa ocupada.
+
+Naranja:
+Mesa pendiente de cobro.
+
+Azul:
+Mesa seleccionada.
+
+Cada mesa debe mostrar:
+
+Número o nombre.
+Estado.
+Tiempo ocupada.
+Total acumulado.
+
+Al tocar una mesa disponible:
+
+Abrir una nueva cuenta.
+
+Al tocar una mesa ocupada:
+
+Recuperar la cuenta existente.
+
+Permitir:
+
+Transferir mesa.
+Transferir productos.
+Unir mesas.
+Dividir cuentas.
+Cambiar mesero.
+Cerrar mesa.
+Liberar mesa.
+
+No liberar una mesa si tiene
+saldo pendiente, salvo una operación
+administrativa autorizada y registrada.
+
+==================================================
+3. INICIO DE SESIÓN MEDIANTE PIN
+==================================================
+
+Eliminar la necesidad de introducir
+manualmente el nombre de usuario.
+
+Mostrar únicamente:
+
+Pantalla de bienvenida.
+Teclado numérico.
+Campo de PIN.
+Botón de acceso.
+
+Cada empleado tendrá un PIN único.
+
+Al introducir el PIN:
+
+Identificar automáticamente al empleado.
+
+Cargar:
+
+Nombre.
+Rol.
+Permisos.
+Configuración.
+
+No solicitar nombre de usuario.
+
+Permitir cambio rápido de empleado.
+
+No permitir PIN duplicados
+entre empleados activos.
+
+Guardar PIN mediante hash seguro.
+
+No almacenar PIN en texto plano.
+
+Aplicar protección contra intentos
+repetidos de acceso.
+
+==================================================
+4. APERTURA OBLIGATORIA DE CAJA
+==================================================
+
+Antes de realizar cualquier venta,
+el sistema debe verificar si existe
+un turno de caja abierto.
+
+FLUJO:
+
+1. Empleado introduce PIN.
+
+2. Sistema identifica al empleado.
+
+3. Comprueba el estado de caja.
+
+4. Si existe turno abierto:
+   Continuar a ventas.
+
+5. Si no existe turno abierto:
+   Mostrar pantalla de apertura.
+
+PANTALLA DE APERTURA:
+
+Mostrar:
+
+Empleado.
+Fecha.
+Hora.
+Fondo inicial en pesos.
+Fondo inicial en dólares.
+Tipo de cambio vigente.
+
+Botón:
+
+ABRIR TURNO.
+
+Al abrir:
+
+Guardar la operación en SQLite.
+
+Registrar empleado, fecha y hora.
+
+Dirigir automáticamente al empleado
+a la pantalla de ventas.
+
+Si el empleado tenía una venta
+en curso, recuperar esa venta.
+
+Si tenía una mesa abierta,
+regresar a esa mesa cuando corresponda.
+
+Si no tenía operaciones pendientes,
+abrir la pantalla principal.
+
+No permitir registrar pagos
+sin turno abierto.
+
+IMPORTANTE:
+
+Las ventas pendientes pueden existir
+sin estar cobradas.
+
+No eliminarlas al cerrar turno.
+
+==================================================
+5. CIERRE Y CORTE DE CAJA
+==================================================
+
+Implementar cierre de turno.
+
+Mostrar:
+
+Ventas en efectivo MXN.
+Ventas en efectivo USD.
+Ventas con tarjeta.
+Transferencias.
+Otros métodos.
+Entradas de caja.
+Salidas de caja.
+Retiros.
+Devoluciones.
+Descuentos.
+Efectivo esperado.
+Efectivo contado.
+Diferencias.
+
+Permitir contar físicamente:
+
+Billetes y monedas MXN.
+
+Billetes y monedas USD.
+
+Registrar diferencias por moneda.
+
+Generar corte de caja.
+
+Guardar historial.
+
+Permitir imprimir el corte.
+
+Agregar:
+
+CORTE DE CONSULTA.
+
+Este corte permitirá revisar
+las ventas sin cerrar el turno.
+
+No permitir modificar cortes
+cerrados sin un procedimiento
+administrativo auditado.
+
+==================================================
+6. ADMINISTRACIÓN DE IMPRESORAS
+==================================================
+
+Crear módulo:
+
+CONFIGURACIÓN > IMPRESORAS.
+
+Permitir registrar impresoras:
+
+Bluetooth.
+USB OTG.
+Wi-Fi / Ethernet.
+
+Cada impresora tendrá:
+
+Nombre.
+Tipo de conexión.
+Dirección IP cuando corresponda.
+Puerto.
+Dirección Bluetooth cuando corresponda.
+Ancho de papel.
+Codificación de caracteres.
+Estado.
+Área asignada.
+
+Permitir:
+
+Agregar.
+Editar.
+Eliminar.
+Probar conexión.
+Imprimir prueba.
+Asignar funciones.
+
+FUNCIONES:
+
+Ticket de venta.
+Comanda de cocina.
+Comanda de barra.
+Comanda de sushi.
+Corte de caja.
+Otras áreas.
+
+Implementar comunicación real ESC/POS
+mediante una integración compatible
+con Android y Capacitor.
+
+No utilizar simulaciones de impresión
+como implementación final.
+
+==================================================
+7. ÁREAS DE PREPARACIÓN
+==================================================
+
+Crear módulo:
+
+CONFIGURACIÓN > ÁREAS DE PREPARACIÓN.
+
+Permitir crear áreas personalizadas.
+
+Ejemplos:
+
+COCINA.
+BARRA.
+SUSHI.
+POSTRES.
+
+Cada área podrá tener
+una o varias impresoras asignadas.
+
+Los productos deberán permitir
+configurar su área de preparación.
+
+Ejemplo:
+
+Hamburguesa:
+COCINA.
+
+Refresco:
+BARRA.
+
+Rollo California:
+SUSHI.
+
+Al enviar una comanda,
+separar automáticamente los productos
+por área.
+
+Cada impresora recibirá únicamente
+los productos correspondientes.
+
+==================================================
+8. COMANDAS PROFESIONALES
+==================================================
+
+Agregar botón:
+
+ENVIAR COMANDA.
+
+La comanda debe incluir:
+
+Nombre del negocio.
+Número de mesa.
+Área.
+Fecha.
+Hora.
+Empleado.
+Número de comanda.
+Productos.
+Cantidades.
+Modificadores.
+Observaciones.
+
+IMPORTANTE:
+
+No volver a imprimir productos
+enviados anteriormente.
+
+Ejemplo:
+
+Primera comanda:
+
+2 hamburguesas.
+2 refrescos.
+
+Segunda comanda:
+
+1 hamburguesa.
+1 cerveza.
+
+La segunda comanda debe incluir
+únicamente los productos nuevos
+o los cambios que correspondan.
+
+Guardar un historial de envíos.
+
+Estados:
+
+Pendiente.
+Enviado.
+Preparando.
+Listo.
+Entregado.
+
+Si una impresora falla:
+
+No perder la comanda.
+
+Registrar el error.
+
+Permitir reintentar.
+
+Evitar duplicados accidentales.
+
+Distinguir entre una comanda
+pendiente de envío y una enviada
+cuya impresión no pudo confirmarse.
+
+==================================================
+9. COBROS EN PESOS Y DÓLARES
+==================================================
+
+Implementar sistema de doble moneda.
+
+MONEDA PRINCIPAL:
+
+Peso mexicano (MXN).
+
+MONEDA SECUNDARIA:
+
+Dólar estadounidense (USD).
+
+El administrador podrá configurar
+el tipo de cambio.
+
+Ejemplo:
+
+1 USD = 18.00 MXN.
+
+Mostrar total:
+
+$350.00 MXN.
+
+Equivalente:
+
+$19.44 USD.
+
+Permitir recibir:
+
+Pesos.
+Dólares.
+Pago combinado.
+
+Ejemplo:
+
+Total:
+$350 MXN.
+
+Cliente entrega:
+$20 USD.
+
+Tipo de cambio:
+18.00.
+
+Equivalente recibido:
+$360 MXN.
+
+Cambio:
+$10 MXN.
+
+Permitir configurar moneda del cambio.
+
+Registrar:
+
+Monto recibido.
+Moneda.
+Tipo de cambio aplicado.
+Equivalente MXN.
+Cambio entregado.
+Moneda del cambio.
+
+El tipo de cambio de una venta
+debe conservarse históricamente.
+
+No modificar ventas anteriores
+cuando cambie el tipo de cambio.
+
+Utilizar cálculos decimales precisos
+y reglas de redondeo explícitas.
+
+==================================================
+10. DIVISIÓN DE CUENTAS
+==================================================
+
+Implementar:
+
+Dividir por productos.
+
+Dividir por importes.
+
+Dividir entre personas.
+
+Permitir seleccionar productos
+específicos de una mesa.
+
+Permitir pagos parciales.
+
+Permitir pagos combinados.
+
+No duplicar productos ni cobros.
+
+Conservar trazabilidad de pagos.
+
+No liberar mesa hasta liquidar
+el saldo correspondiente.
+
+==================================================
+11. AUTORIZACIONES CON PIN
+==================================================
+
+Cuando un empleado intente realizar
+una operación restringida:
+
+Mostrar ventana de autorización.
+
+Solicitar PIN de supervisor
+o administrador autorizado.
+
+Operaciones:
+
+Descuentos especiales.
+Cancelaciones.
+Devoluciones.
+Cambio manual de precios.
+Reimpresiones restringidas.
+Ajustes de caja.
+Liberación excepcional de mesas.
+
+Registrar:
+
+Empleado solicitante.
+Empleado autorizador.
+Operación.
+Fecha.
+Hora.
+Motivo.
+
+==================================================
+12. GUARDADO AUTOMÁTICO
+==================================================
+
+Implementar persistencia automática
+de ventas y mesas.
+
+Cada modificación importante
+debe guardarse en SQLite.
+
+Ejemplos:
+
+Agregar producto.
+Eliminar producto.
+Modificar cantidad.
+Agregar modificador.
+Cambiar mesa.
+Agregar observación.
+
+Si Android cierra inesperadamente
+la aplicación:
+
+No perder la venta.
+
+Al volver a entrar:
+
+Identificar empleado mediante PIN.
+
+Comprobar turno.
+
+Recuperar venta pendiente.
+
+Restaurar productos y cantidades.
+
+Restaurar modificadores.
+
+Restaurar observaciones.
+
+Restaurar mesa cuando corresponda.
+
+No crear ventas duplicadas.
+
+==================================================
+13. PERSONALIZACIÓN DE TICKETS
+==================================================
+
+Permitir configurar:
+
+Logotipo.
+Nombre del negocio.
+Dirección.
+Teléfono.
+Encabezado.
+Pie de ticket.
+Tamaño de papel.
+Tamaño de letra.
+Copias.
+
+Soportar:
+
+58 mm.
+80 mm.
+
+Imprimir:
+
+Tickets de venta.
+Comandas.
+Cortes.
+Reimpresiones autorizadas.
+
+==================================================
+14. MEJORAS VISUALES PROFESIONALES
+==================================================
+
+ESTA SECCIÓN ES MUY IMPORTANTE.
+
+La aplicación ya funciona,
+pero quiero mejorar considerablemente
+su calidad visual.
+
+No quiero una interfaz genérica.
+
+No quiero pantallas improvisadas.
+
+No quiero botones desalineados.
+
+No quiero diferentes estilos
+en cada módulo.
+
+Mantener la distribución general
+inspirada en Loyverse.
+
+Mejorar:
+
+Tipografía.
+Espaciado.
+Alineación.
+Iconografía.
+Colores.
+Jerarquía visual.
+Ventanas emergentes.
+Formularios.
+Botones.
+Estados visuales.
+Transiciones.
+Animaciones discretas.
+
+Crear un sistema de diseño consistente.
+
+Utilizar:
+
+Variables CSS.
+Componentes reutilizables.
+Escalas de espaciado.
+Tamaños táctiles adecuados.
+Iconos consistentes.
+Colores semánticos.
+
+La interfaz debe sentirse como
+un producto comercial profesional.
+
+No utilizar emojis como sustitutos
+de iconos profesionales.
+
+No saturar las pantallas.
+
+No introducir elementos decorativos
+que reduzcan el espacio de trabajo.
+
+Optimizar específicamente para
+Samsung Galaxy Tab A11 de 8.7 pulgadas.
+
+Mantener orientación horizontal.
+
+Evitar desplazamientos innecesarios.
+
+Los diálogos deben adaptarse
+correctamente al tamaño de pantalla.
+
+Conservar las funciones existentes.
+
+==================================================
+15. CONFIGURACIÓN DE MODOS
+==================================================
+
+Agregar:
+
+CONFIGURACIÓN > MODO DE OPERACIÓN.
+
+Opciones:
+
+VENTA RÁPIDA.
+
+RESTAURANTE.
+
+AMBOS.
+
+VENTA RÁPIDA:
+
+Mostrar pantalla de ventas.
+
+RESTAURANTE:
+
+Mostrar mapa de mesas.
+
+AMBOS:
+
+Permitir alternar entre ambas
+pantallas desde la barra principal.
+
+La configuración debe guardarse
+en SQLite.
+
+No crear aplicaciones separadas.
+
+==================================================
+16. INTEGRIDAD DE DATOS
+==================================================
+
+Utilizar transacciones SQLite
+para operaciones críticas.
+
+Evitar:
+
+Ventas duplicadas.
+Pagos duplicados.
+Comandas duplicadas.
+Movimientos de inventario duplicados.
+Cierres de caja duplicados.
+
+Utilizar identificadores únicos
+e idempotencia cuando corresponda.
+
+Mantener historial de operaciones.
+
+No modificar destructivamente
+la información existente.
+
+==================================================
+17. PRUEBAS OBLIGATORIAS
+==================================================
+
+Probar:
+
+Inicio de sesión por PIN.
+
+Apertura de turno.
+
+Recuperación de venta pendiente.
+
+Creación de mesas.
+
+Movimiento de mesas.
+
+Apertura de mesa.
+
+Cambio de mesa.
+
+Envío de comandas.
+
+Separación por áreas.
+
+Prevención de comandas duplicadas.
+
+Cobro MXN.
+
+Cobro USD.
+
+Cobro combinado.
+
+Cálculo de cambio.
+
+División de cuentas.
+
+Cierre de caja.
+
+Recuperación tras cierre inesperado.
+
+Persistencia SQLite.
+
+Compatibilidad Android.
+
+Ejecutar pruebas automatizadas.
+
+No afirmar que las impresoras
+funcionan físicamente sin haberlas
+probado con hardware real.
+
+==================================================
+18. ORDEN DE IMPLEMENTACIÓN
+==================================================
+
+Trabajar en este orden:
+
+FASE 1:
+Analizar el proyecto existente.
+
+FASE 2:
+Crear respaldo y rama de desarrollo.
+
+FASE 3:
+Implementar acceso mediante PIN.
+
+FASE 4:
+Implementar apertura obligatoria de caja.
+
+FASE 5:
+Implementar los dos modos de operación.
+
+FASE 6:
+Implementar mapa de mesas.
+
+FASE 7:
+Implementar guardado automático.
+
+FASE 8:
+Implementar impresoras y áreas.
+
+FASE 9:
+Implementar comandas.
+
+FASE 10:
+Implementar pagos en dólares.
+
+FASE 11:
+Implementar división de cuentas.
+
+FASE 12:
+Implementar autorizaciones.
+
+FASE 13:
+Mejorar interfaz visual.
+
+FASE 14:
+Ejecutar pruebas de regresión.
+
+FASE 15:
+Preparar compilación Android.
+
+==================================================
+19. REGLAS ABSOLUTAS
+==================================================
+
+NO CREAR OTRO PROYECTO.
+
+NO CAMBIAR EL NOMBRE AVILES POS.
+
+NO ELIMINAR FUNCIONES EXISTENTES.
+
+NO REEMPLAZAR LA BASE DE DATOS.
+
+NO CREAR BOTONES DECORATIVOS.
+
+NO ENTREGAR FUNCIONES SIMULADAS.
+
+NO MODIFICAR LA INTERFAZ SIN NECESIDAD.
+
+NO ELIMINAR LOS MÓDULOS ANTERIORES.
+
+NO REINICIAR EL DESARROLLO DESDE CERO.
+
+NO DECLARAR PRUEBAS NO EJECUTADAS.
+
+NO CAMBIAR LA TECNOLOGÍA PRINCIPAL.
+
+NO INTRODUCIR DEPENDENCIAS DE INTERNET
+PARA REALIZAR VENTAS.
+
+==================================================
+20. ENTREGA FINAL
+==================================================
+
+Entregar:
+
+Código fuente actualizado.
+
+Proyecto Android.
+
+Migraciones SQLite.
+
+Documentación técnica.
+
+Pruebas ejecutadas.
+
+Listado de funciones terminadas.
+
+Listado de funciones pendientes.
+
+APK instalable si el entorno
+permite compilarlo.
+
+Actualizar:
+
+AVILES_POS_PROGRESO.md
+
+Incluir:
+
+Versión.
+Fecha.
+Funciones nuevas.
+Correcciones.
+Cambios de base de datos.
+Resultados de pruebas.
+Problemas conocidos.
+
+==================================================
+INSTRUCCIÓN FINAL
+==================================================
+
+QUIERO UNA ACTUALIZACIÓN REAL.
+
+NO QUIERO OTRA APLICACIÓN.
+
+NO QUIERO UN PROTOTIPO.
+
+NO QUIERO ÚNICAMENTE RECOMENDACIONES.
+
+QUIERO QUE CONTINÚES DESARROLLANDO
+EL PROYECTO EXISTENTE.
+
+Prioriza estabilidad, calidad visual
+y funcionamiento real.
+
+Implementa las funciones por etapas.
+
+No sacrifiques integridad de datos
+para terminar más rápido.
+
+Si no puedes completar todas las fases
+en una sola sesión, deja el proyecto
+compilable y funcional, registra
+exactamente lo pendiente y continúa
+desde ese punto en la siguiente sesión.
+
+COMIENZA EL DESARROLLO.

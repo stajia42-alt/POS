@@ -30,6 +30,7 @@ async function setup(persistence = memory()) {
   await pos.initialize();
   if (await pos.access.hasEmployees()) await pos.access.login('owner', '832641');
   else await pos.access.bootstrap({ name: 'Test owner', identifier: 'owner', pin: '832641' });
+  if (!(await pos.snapshot()).shift) await pos.cash.open(0);
   return { pos, db, persistence };
 }
 async function product(pos: Pos, input: Partial<Product> = {}) {
@@ -318,7 +319,7 @@ describe('pagos múltiples persistentes', () => {
     expect(columns.some((column) => column.name === 'position')).toBe(false);
     persistence.fail = false;
     await migrate(db);
-    expect(await db.read((sql) => sql.query('PRAGMA user_version'))).toEqual([{ user_version: 3 }]);
+    expect(await db.read((sql) => sql.query('PRAGMA user_version'))).toEqual([{ user_version: 4 }]);
   });
   it('completa una venta combinada y conserva referencias y cambio tras reabrir', async () => {
     const { pos, persistence } = await setup();

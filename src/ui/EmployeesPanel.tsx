@@ -13,6 +13,19 @@ import { Modal } from './Modal';
 import { useModule } from './useModule';
 import type { ModuleProps } from './moduleTypes';
 const ACTIONS: Record<string, string> = {
+  'table.area_save': 'Creación o cambio de área',
+  'table.area_delete': 'Eliminación de área',
+  'table.layout_save': 'Diseño de mesa',
+  'table.move': 'Movimiento de mesa',
+  'table.delete': 'Eliminación de mesa',
+  'table.open': 'Apertura de mesa',
+  'table.transfer': 'Transferencia de mesa',
+  'table.merge': 'Unión de cuentas',
+  'table.waiter': 'Asignación de mesero',
+  'table.request_payment': 'Estado de cobro de mesa',
+  'table.release': 'Liberación administrativa de mesa',
+  'table.release_empty': 'Liberación de mesa vacía',
+  'business.exchange_rate': 'Cambio manual de tipo de cambio',
   'employee.bootstrap': 'Creación del propietario',
   'employee.create': 'Creación de empleado',
   'employee.update': 'Cambio de empleado o permisos',
@@ -84,7 +97,9 @@ function EmployeeForm({
           required={!employee}
         />
         <small>
-          {employee ? 'Deja vacío para conservar su PIN actual.' : 'Entre 4 y 8 dígitos.'}
+          {employee
+            ? 'Deja vacío para conservarlo. Al reactivar un empleado debes confirmar un PIN exclusivo.'
+            : 'Entre 4 y 8 dígitos; exclusivo entre empleados activos.'}
         </small>
       </label>
       <label>

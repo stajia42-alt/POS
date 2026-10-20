@@ -1,63 +1,77 @@
-# AVILES POS — Progreso y continuación
+# AVILES POS — Progreso 2.1
 
-Versión actual: **1.2.0**, Android `versionCode` **3**, SQLite esquema **3**. Base conservada: entregas 1.0 y 1.1, incluyendo pagos combinados.
+Versión: **2.1.0, primera etapa**. Fecha: **20 de octubre de 2026**. Android `versionCode` **4**, paquete `mx.aviles.pos`, SQLite esquema **4**.
 
-Punto de restauración: etiqueta `aviles-pos-restauracion-1.1`, commit `42c28b8`. Rama de desarrollo: `desarrollo-aviles-pos-1-2`. Se conserva el mismo proyecto, identificador `mx.aviles.pos` y distribución de ventas; no se crea una aplicación sustituta.
+Continúa sobre **1.2.0**, commit `f8fd1c7f47166e49ba7a8aed5577f89dd97a60cc`, conservando los módulos anteriores. Rama: `desarrollo-aviles-pos-2-1`. Punto de restauración: etiqueta `aviles-pos-restauracion-1.2`; respaldo de código Git bundle verificado antes de editar. Ese respaldo de código no contiene los datos comerciales de la tableta.
 
-## Implementado en esta etapa
+Solicitud actual completa: `docs/ESPECIFICACION-2.1.txt`. El alcance anterior y sus pendientes no desaparecen; se conserva en `docs/PROGRESO-1.2.md`.
 
-- Acceso local del propietario y empleados: nombre, identificador único, PIN, rol y activo/inactivo. Roles administrador/supervisor/cajero con permisos individuales efectivos en la capa comercial. Cambio de empleado conserva el ticket compartido.
-- PIN PBKDF2-SHA256 con sal individual y 600000 iteraciones; sin texto plano. Bloqueo temporal persistente tras intentos fallidos, restablecimiento por otro administrador, protección del último administrador recuperable.
-- Inventario: entradas con costo promedio ponderado opcional, salidas, ajustes con motivo, correcciones desde catálogo, conteos físicos (incluido delta cero), umbrales/alertas, valoración a costo y movimientos paginados/filtrados.
-- Cada movimiento nuevo registra fecha/hora, empleado y nombre, producto, cantidad, motivo, antes/después. El cobro descuenta stock controlado dentro de la misma transacción de pagos.
-- Caja opcional: apertura/fondo, ingresos/egresos/retiros con motivo, arqueo, cierre y diferencias. Ventas con turno y empleado; efectivo aplicado separado del recibido/cambio; historial/reporte de cierres con filtros por fecha, ventas y pagos.
-- Auditoría de accesos y acciones administrativas, consultable en Empleados (últimas 200 acciones). No incluye PIN ni presume autenticado a un acceso fallido.
-- Manual de operación y permisos: `docs/MODULOS-1.2.md`. Cambios, arquitectura, pruebas y fuentes Android incluidos.
+## Funciones nuevas
 
-## Estado de las once fases solicitadas
+- Acceso normal solo con PIN, identificación automática, teclado numérico táctil y cambio de empleado. Sin usuario solicitado al acceder. Hashes con sal, índice PBKDF2 y bloqueo global persistente de intentos, incluso con PIN desconocidos. Prohíbe duplicados entre empleados activos; reactivar exige PIN exclusivo.
+- Apertura obligatoria tras acceso si no existe turno. Fondo MXN, fondo USD, tasa manual de cuatro decimales, empleado, fecha/hora y regreso a la operación guardada. No se registran pagos de ningún método sin turno abierto. No puede desactivarse la caja.
+- Fondos, movimientos y cierre separados por moneda. Efectivo esperado/contado/diferencia MXN y USD. Tasa de apertura histórica. Corte de consulta sin cerrar turno.
+- Configuración Venta rápida / Restaurante / Ambos. Control visible en barra principal y último modo por empleado. Conserva la distribución de venta rápida, inventario y métodos existentes.
+- Áreas y mapa persistente: crear/editar/retirar áreas y mesas, formas, capacidad, dimensiones, posición por arrastre/teclado/formulario, límites del plano. Estados disponible/ocupada/pendiente de cobro/seleccionada con texto y color, tiempo y total.
+- Cuentas de mesa: creación/recuperación sin duplicados, autosave de productos/cantidades/notas, regreso al mapa, transferencia de mesa, unión de cuentas completas, cambio de mesero, liberación vacía o administrativa con motivo/permisos. Una mesa pendiente no puede eliminarse del plano.
+- Recuperación de cuenta rápida o mesa por empleado al volver a acceder, incluso con cambio de turno. Cobra, descuenta stock y libera solo la cuenta liquidada en una transacción. Uniones conservan referencias y detalle original en auditoría.
+- Variables visuales compartidas, controles reutilizables, estados semánticos y ajustes para tableta horizontal. Se corrigió el bloqueo de la primera pulsación después de un arrastre y el recorte de datos en tarjetas pequeñas durante pruebas.
 
-| Fase                     | Implementado y alcance disponible                                                             | Pendiente para declarar la fase completa                                                                        |
-| ------------------------ | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 1. Inventario            | Puntos 1–9, 11, 12 y 14: stock, costos, movimientos, alertas, conteos y descuento de venta    | Variantes (10), compuestos (13), reposición por devolución (15)                                                 |
-| 2. Caja                  | Puntos 1–14: apertura, movimientos, arqueo, cierre, diferencias, historial, ventas y reportes | Reimpresión autorizada (15), dependiente de impresoras                                                          |
-| 3. Empleados             | Accesos, roles, permisos por persona, activos/inactivos, no PIN plano                         | Operaciones de devolución/reimpresión y aplicación efectiva de sus permisos al existir esas funciones           |
-| 4. Clientes/fidelización | Registro, búsqueda, teléfono/correo/notas, asignación e historial básico previo               | Puntos, canje, recompensas, historial/ajustes de puntos                                                         |
-| 5. ESC/POS               | Sin integración implementada; no hay botones que simulen impresión                            | Bluetooth, USB, LAN, detección, configuración, cola, comprobación, anchos, logotipo y cajón                     |
-| 6. Reportes              | Historial de ventas previo; valoración de inventario y reportes de turnos nuevos              | Módulo general por fechas/empleado/producto/categoría/hora, devoluciones, utilidad histórica, gráficas, CSV/PDF |
-| 7. Restaurantes          | Tickets pendientes y notas de preparación previos                                             | Mesas, meseros, transferencias/unión/división, pagos parciales, modificadores, comandas, áreas/estados          |
-| 8. Compras               | Entradas manuales de mercancía con costo                                                      | Proveedores, órdenes, recepción parcial, pendientes e informes de compras                                       |
-| 9. Configuración         | Negocio, MXN, tasa añadida, datos/mensaje de recibo, unidades por producto y control de caja  | Logotipo, numeración configurable, impresión, catálogo configurable de pagos/descuentos, exportación/respaldos  |
-| 10. Respaldo/seguridad   | Migraciones, transacciones, control de acceso y auditoría                                     | Respaldo completo exportable y restauración validada; no se sustituye por guardar el APK                        |
-| 11. Android              | Proyecto y recursos offline, imágenes reducidas, orientación horizontal, compilación          | Ejecución/perfilado en Galaxy Tab A11, SQLite nativo y actualización física con datos, periféricos              |
+## Estado del orden de implementación 2.1
 
-Ninguna fase con pendientes se declara completa. Esta versión es una entrega funcional de continuación, no el sistema comercial completo solicitado.
+| Fase                 | Estado de esta entrega                                                                   | Pendiente                                                                                          |
+| -------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 1. Analizar          | Realizada sobre repositorio limpio 1.2                                                   | —                                                                                                  |
+| 2. Respaldar/rama    | Rama, etiqueta y bundle Git verificado                                                   | Respaldo exportable de datos de Android continúa pendiente                                         |
+| 3. PIN               | Implementado y probado en SQLite/UI                                                      | Recuperación externa; resolver PIN heredados ambiguos requiere administrador con PIN exclusivo     |
+| 4. Apertura          | Implementada: obligatoria, fondos MXN/USD y tasa manual                                  | Validación física de Android                                                                       |
+| 5. Dos modos         | Implementados y persistentes, mismo catálogo/caja                                        | —                                                                                                  |
+| 6. Mapa              | Editor y cuentas operativos, transferencia, unión y mesero                               | Productos específicos, división y asociación de varias mesas a una cuenta                          |
+| 7. Guardado          | Productos/cantidades/notas, mesas, posiciones confirmadas, modo y operación por empleado | Prueba de cierre forzado/reinicio Android físico; modificadores aún no existen                     |
+| 8. Impresoras/áreas  | No implementada en esta etapa                                                            | Transportes ESC/POS reales Bluetooth/USB/LAN, configuración y áreas de preparación                 |
+| 9. Comandas          | No implementada                                                                          | Separación por áreas, deltas, estados, cola, confirmación/reintento sin duplicados                 |
+| 10. Cobros USD       | **No implementados**; fondos USD de caja no equivalen a cobros                           | Conversión de ventas, recibido/cambio por moneda, tasa histórica por pago y pago combinado MXN/USD |
+| 11. División         | No implementada                                                                          | Productos/importes/personas, pagos parciales y saldo, trazabilidad y liberación tras liquidar      |
+| 12. Autorización PIN | Permisos directos conservados y ampliados                                                | Solicitante/autorizador, motivo y autorización por operación mediante PIN ajeno                    |
+| 13. Diseño           | Sistema visual y adaptación de nuevas pantallas implementados                            | Medición/ajuste físico en Galaxy Tab A11; personalización/impresión de tickets                     |
+| 14. Regresión        | Resultados ejecutados en `docs/PRUEBAS.md`                                               | No se declaran probadas funciones aún no implementadas                                             |
+| 15. Android          | Proyecto conservado; resultado de compilación/firma en `docs/PRUEBAS.md`                 | Instalación, migración y ejecución físicas                                                         |
 
-## Verificación
+No se declaran completas las fases que conservan pendientes. El objetivo comercial completo sigue en desarrollo.
 
-Se aprobaron **60 pruebas de lógica/SQLite** y **14 recorridos de navegador**. Compilación Android correcta; APK, firma anterior y recursos empaquetados verificados. Los resultados detallados se mantienen en `docs/PRUEBAS.md`. Las pruebas de navegador se ejecutan sobre SQLite WASM/IndexedDB reales, con datos aislados; no certifican el plugin SQLite nativo. La validación física de Android e impresoras sigue pendiente.
+## Cambios de SQLite
 
-## Cambios de base
+Migración **4**, aditiva y transaccional. Conserva migraciones 1–3, archivo nativo `aviles_pos`, IndexedDB `aviles-pos-v1`, fotos, clientes, pagos e importes anteriores.
 
-Migración 3 aditiva y transaccional sobre esquemas 1/2. Tablas nuevas: `employees`, `employee_permissions`, `administrative_actions`, `shifts`, `cash_movements`, `inventory_counts`. Añade umbral a productos, empleado/turno a ventas y trazabilidad a movimientos. Conserva pagos, fotos, clientes, pendientes, números e importes. La prueba de rollback conserva esquema 2 si falla el disco y permite reintentar.
+- `employees.pin_lookup` e índice único parcial de PIN derivado para activos. Los hashes/sales originales permanecen; no se puede derivar el PIN original desde ellos ni inventar el índice de una credencial antigua sin conocer el PIN.
+- Configuración de sal de instalación y contador global de acceso. Ningún PIN plano.
+- Campos USD/tasa/contado/diferencia en `shifts`; moneda por movimiento de caja. Los registros anteriores siguen siendo MXN con fondo USD cero.
+- `dining_areas`, `dining_tables`, `table_sessions` y unicidad de sesión abierta por mesa.
+- `sales.table_name`, `waiter_id`, `waiter_name`, `merged_into`, preservando los campos comerciales originales.
+- `employee_workspace` con modo, vista, cuenta activa y cuenta rápida por empleado. No duplica líneas ni pagos para recuperar una operación.
+- Permisos nuevos para mapas, atención, transferencia y liberación. Los antiguos se conservan.
 
-Los usuarios, turnos y existencias anteriores desconocidos permanecen nulos o vacíos en registros antiguos. No se inventan datos históricos. Al actualizar se crea el acceso del propietario sin borrar negocio. El control de caja queda inicialmente desactivado; se activa expresamente en Configuración.
+Se verifican rollback de migración y conservación de datos; no se reinicia ni reconstruye destructivamente la base. Una versión anterior rechazará el esquema 4; no se debe instalar una versión antigua sobre esta base.
 
-## Limitaciones y riesgos conocidos
+## Verificación y límites
 
-- Sin tableta física ni emulador ejecutado en esta nube. Compilar y verificar la firma no prueba la actualización o ejecución en la Samsung.
-- APK de depuración. No se ha preparado firma de producción comercial. Se debe instalar sobre el anterior con la misma firma, sin desinstalar ni borrar datos.
-- Todavía no hay respaldo exportable/restauración ni recuperación externa del único PIN administrativo. El APK no contiene los datos de negocio.
-- Acceso local por PIN, sin cifrado de SQLite. No protege de extracción o modificación por quien controle el sistema operativo.
-- Cantidades enteras; no venta por peso fraccionario. Sin devolución de ventas pagadas. Tarjeta/transferencia se registran manualmente, sin integración bancaria.
-- Un solo turno abierto y ticket activo compartido por dispositivo; sin sincronización entre dispositivos.
-- Actividad administrativa muestra las últimas 200 acciones; inventario sí dispone de paginación de movimientos. Catálogos/fotos, historial de ventas y reportes de caja completos requieren perfilado para grandes volúmenes.
-- No se ha medido rendimiento ni consumo en Galaxy Tab A11. No hay compatibilidad de impresoras certificada.
+El registro de comandos, pruebas ejecutadas, APK y hashes se mantiene en `docs/PRUEBAS.md`. La guía operativa está en `docs/MODULOS-2.1.md`. Navegador usa SQLite WASM/IndexedDB reales en contextos de prueba aislados. Compilar Android no certifica SQLite nativo, táctil físico ni rendimiento en Galaxy Tab A11.
+
+- APK de depuración; firma de desarrollo conservada para actualizar. Sin dispositivo/emulador ejecutado ni impresora física probada.
+- PIN repetidos heredados: un PIN ambiguo no inicia sesión. Configurar PIN exclusivos en 1.2 antes de actualizar, especialmente del administrador. Si ya se migró, otro administrador con PIN exclusivo debe restablecerlos. Sin ninguno no hay recuperación automática; no se proporciona un acceso que omita la seguridad.
+- Acceso local sin cifrado de SQLite, sin respaldo/restauración de datos ni recuperación externa del único PIN administrativo.
+- Un dispositivo, una caja abierta, sin sincronización entre tabletas. Las operaciones de cada empleado se recuerdan, pero mesas y pendientes siguen compartidos y sujetos a permisos.
+- Solo unidades enteras, pagos de venta en MXN y cierre completo del ticket. No cobrar USD ni anticipos hasta implementar las fases correspondientes.
+- No hay devoluciones, puntos, variantes/compuestos, compras/proveedores, exportaciones generales ni respaldos; esos pendientes anteriores siguen vigentes.
+- Mapas densos/superpuestos, catálogos grandes y tiempos de migración de muchos PIN antiguos requieren perfilado. Posiciones se guardan al finalizar el gesto; no se afirma conservar un arrastre interrumpido antes de soltar.
+- El estado Pendiente de cobro no representa un pago. Unir cuentas completas no equivale a división o cobro parcial. Un mesero asignado no sustituye al empleado que ejecutó el cobro.
 
 ## Punto exacto para continuar
 
-1. Retomar `desarrollo-aviles-pos-1-2`. No reiniciar la base. Ejecutar `npm ci`, `npm test`, `npm run build`, `npm run test:e2e`; para Android activar `scripts/cloud-env.sh` y ejecutar `npm run android:debug`.
-2. Completar la fase 1 con una migración **4** nueva: modelo de variantes/atributos y componentes, formularios del catálogo y selección al vender, instantáneas de la variante vendida. La expansión de componentes y el descuento deben ejecutarse en la transacción de `Pos.checkoutPayments` usando el libro de inventario; conservar los productos anteriores como productos simples.
-3. Implementar devoluciones vinculadas a líneas/pagos originales: impedir devolver más unidades de las vendidas, conservar importes originales, autorizar `refunds`, reponer stock correctamente y registrar salida de caja en el turno abierto que corresponda. Probar repeticiones, devolución parcial y rollback, sin cambiar el cierre histórico original.
-4. Integrar reimpresión autorizada al desarrollar la fase 5: exigir `reprint`, transacciones de cola y transporte Android real; nunca declarar éxito sin la confirmación que permita el protocolo. Esto cierra los pendientes de fases 2 y 3.
-5. Continuar fidelización, impresoras, reportes, restaurantes, compras, configuración y respaldo según la especificación. Capturar costo histórico por línea antes de afirmar utilidad bruta histórica. No confundir cobro combinado completo con anticipo/cobro parcial.
-6. Antes de uso comercial, probar instalación/actualización con datos, migración, modo avión, cobros, cierre forzado y reinicio en la Galaxy Tab A11; probar cada impresora/transporte físico y medir rendimiento con catálogo grande. Conservar claves fuera del repositorio y diseñar el respaldo/restauración antes de depender comercialmente de los datos locales.
+1. Retomar `desarrollo-aviles-pos-2-1`, leer esta guía y `docs/MODULOS-2.1.md`. Ejecutar `npm ci`, `npm test`, `npm run build`, `npm run test:e2e`; Android con `source scripts/cloud-env.sh` y `npm run android:debug`. No empezar otro proyecto ni modificar migraciones 1–4.
+2. Continuar **fase 8** con migración 5: impresoras y áreas de preparación, producto/área, configuración de funciones y transportes nativos Android para Bluetooth, USB OTG y TCP LAN. Conservar parámetros y errores en SQLite. Probar protocolos y permisos reales; no declarar impresión exitosa por aceptar bytes en una cola.
+3. Fase 9: comandas numeradas, instantáneas/deltas por línea/área, cola e idempotencia. Distinguir pendiente, enviado y resultado incierto; una impresión incierta requiere resolución para evitar doble preparación. Añadir pruebas sin afirmar validación física sin hardware.
+4. Fase 10: ampliar pagos con moneda/recibido/conversión/tasa/cambio, reglas precisas de redondeo y neto físico por moneda. Conservar los pagos MXN anteriores y el cálculo de stock; no reutilizar `opening_usd` como un pago. Las tasas de turno ya son históricas, pero cada pago USD necesitará su propia instantánea.
+5. Fase 11: modelo de saldo/abonos y divisiones con referencia a línea original, sin reutilizar el cobro completo como si fuera un anticipo. Transferencia de productos y asociación de mesas deben conservar impuestos/descuentos/redondeos y no liberar mesas con saldo.
+6. Fase 12: autorizaciones puntuales con PIN del autorizador, permisos vigentes, motivo, vínculo a operación exacta y registro de solicitante/ejecutor; no cambiar la sesión global como sustituto de una autorización.
+7. Completar personalización/impresión de tickets y los pendientes de 1.2. Antes de uso comercial, implementar respaldo/restauración y probar actualización con datos, cierre forzado, modo avión, táctil, memoria/rendimiento e impresoras en la Galaxy Tab A11 real.

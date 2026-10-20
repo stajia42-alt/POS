@@ -13,6 +13,10 @@ export const PERMISSION_LABELS = {
   settings: 'Modificar configuración',
   reprint: 'Reimprimir tickets',
   employees: 'Administrar empleados y permisos',
+  tables: 'Atender mesas',
+  table_layout: 'Editar áreas y mapa de mesas',
+  table_transfer: 'Transferir cuentas y cambiar mesero',
+  table_release: 'Liberar mesas con cuenta pendiente',
 } as const;
 export type Permission = keyof typeof PERMISSION_LABELS;
 export type Role = 'admin' | 'supervisor' | 'cashier';
@@ -34,8 +38,10 @@ export const DEFAULT_PERMISSIONS: Record<Role, readonly Permission[]> = {
     'close_cash',
     'cash_moves',
     'reprint',
+    'tables',
+    'table_transfer',
   ],
-  cashier: ['sell', 'open_cash'],
+  cashier: ['sell', 'open_cash', 'tables'],
 };
 export interface Actor {
   id: string;

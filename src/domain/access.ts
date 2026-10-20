@@ -21,6 +21,7 @@ interface Credentials {
   role: Role;
   active: number;
   pin_hash: string;
+  pin_lookup: string | null;
   salt: string;
   iterations: number;
   failed_attempts: number;
@@ -119,6 +120,7 @@ export class AccessControl {
     const name = textRequired(input.name, 'el nombre del propietario');
     const code = identifier(input.identifier);
     const encoded = await encodePin(input.pin);
+    const lookup = await this.lookup(input.pin);
     const actorId = await this.db.transaction(async (sql) => {
       if ((await sql.query<{ n: number }>('SELECT COUNT(*) AS n FROM employees'))[0].n)
         throw new Error('El propietario ya está configurado. Inicia sesión.');
@@ -127,6 +129,7 @@ export class AccessControl {
         "INSERT INTO employees(id,name,identifier,role,active,pin_hash,salt,iterations,created_at) VALUES(?,?,?,'admin',1,?,?,?,?)",
         [id, name, code, encoded.hash, encoded.salt, ITERATIONS, timestamp()],
       );
+      await sql.run('UPDATE employees SET pin_lookup=? WHERE id=?', [lookup, id]);
       await permissions(sql, id, [...DEFAULT_PERMISSIONS.admin]);
       await audit(sql, { id, name }, 'employee.bootstrap', id);
       return id;
@@ -134,63 +137,105 @@ export class AccessControl {
     this.actorId = actorId;
     return this.current();
   }
-  async login(code: string, pin: string) {
+  private async lookup(pin: string) {
+    const [salt] = await this.db.read((sql) =>
+      sql.query<{ value: string }>("SELECT value FROM settings WHERE key='pinLookupSalt'"),
+    );
+    return derive(pin, salt.value, ITERATIONS);
+  }
+  private async uniquePin(sql: SqlDriver, pin: string, lookup: string, except: string) {
+    const others = await sql.query<Credentials>(
+      'SELECT * FROM employees WHERE active=1 AND id<>?',
+      [except],
+    );
+    for (const other of others) {
+      if (
+        other.pin_lookup === lookup ||
+        (!other.pin_lookup &&
+          equalHash(await derive(pin, other.salt, other.iterations), other.pin_hash))
+      )
+        throw new Error('Ese PIN ya está asignado a otro empleado activo. Elige uno diferente.');
+    }
+  }
+  async login(pinOrIdentifier: string, compatibilityPin?: string) {
     this.lock();
     const generation = this.sessionGeneration;
+    const pin = compatibilityPin ?? pinOrIdentifier;
     validatePin(pin);
-    const normalized = identifier(code);
-    // PBKDF2 runs outside the DB queue; recheck credentials and lockout atomically afterwards.
-    const [candidate] = await this.db.read((sql) =>
-      sql.query<Credentials>('SELECT * FROM employees WHERE identifier=? COLLATE NOCASE', [
-        normalized,
-      ]),
-    );
-    const calculated = await derive(
-      pin,
-      candidate?.salt || 'unknown-user',
-      candidate?.iterations || ITERATIONS,
-    );
-    const outcome = await this.db.transaction(async (sql) => {
-      const [row] = await sql.query<Credentials>(
-        'SELECT * FROM employees WHERE identifier=? COLLATE NOCASE',
-        [normalized],
+    const getState = async (sql: SqlDriver) =>
+      JSON.parse(
+        (await sql.query<{ value: string }>("SELECT value FROM settings WHERE key='pinAccess'"))[0]
+          .value,
+      ) as { failed: number; until: string | null };
+    const state = await this.db.read(getState);
+    if (state.until && new Date(state.until).getTime() > Date.now())
+      throw new Error(
+        'Acceso bloqueado temporalmente por intentos fallidos. Espera antes de reintentar.',
       );
-      if (!row || !row.active) return { error: 'Identificador o PIN no válido.' };
-      if (row.locked_until && new Date(row.locked_until).getTime() > Date.now())
+    const lookup = await this.lookup(pin);
+    const candidates = await this.db.read((sql) =>
+      sql.query<Credentials>(
+        'SELECT * FROM employees WHERE active=1 AND (pin_lookup=? OR pin_lookup IS NULL)',
+        [lookup],
+      ),
+    );
+    const matches: Credentials[] = [];
+    for (const candidate of candidates)
+      if (equalHash(await derive(pin, candidate.salt, candidate.iterations), candidate.pin_hash))
+        matches.push(candidate);
+    const outcome = await this.db.transaction(async (sql) => {
+      if (generation !== this.sessionGeneration)
+        return { error: 'El acceso se canceló. Inicia sesión de nuevo.' };
+      const state = await getState(sql);
+      if (state.until && new Date(state.until).getTime() > Date.now())
         return {
           error:
             'Acceso bloqueado temporalmente por intentos fallidos. Espera antes de reintentar.',
         };
+      const current = await sql.query<Credentials>(
+        'SELECT * FROM employees WHERE active=1 AND (pin_lookup=? OR pin_lookup IS NULL)',
+        [lookup],
+      );
+      const valid = current.filter((row) =>
+        matches.some(
+          (match) =>
+            match.id === row.id && match.pin_hash === row.pin_hash && match.salt === row.salt,
+        ),
+      );
+      const row = valid.length === 1 ? valid[0] : undefined;
+      const expectedIdentifier =
+        compatibilityPin !== undefined ? identifier(pinOrIdentifier) : null;
       if (
-        !candidate ||
-        candidate.pin_hash !== row.pin_hash ||
-        candidate.salt !== row.salt ||
-        !equalHash(calculated, row.pin_hash)
+        !row ||
+        (expectedIdentifier && row.identifier !== expectedIdentifier) ||
+        (row.locked_until && new Date(row.locked_until).getTime() > Date.now())
       ) {
-        const failed = row.failed_attempts + 1;
+        const failed = state.failed + 1;
         const until =
           failed >= 5
             ? new Date(
                 Date.now() + Math.min(300, 30 * 2 ** Math.min(failed - 5, 4)) * 1000,
               ).toISOString()
             : null;
-        await sql.run('UPDATE employees SET failed_attempts=?,locked_until=? WHERE id=?', [
-          failed,
-          until,
-          row.id,
+        await sql.run("UPDATE settings SET value=? WHERE key='pinAccess'", [
+          JSON.stringify({ failed, until }),
         ]);
-        await sql.run(
-          'INSERT INTO administrative_actions(id,actor_id,actor_name,action,target,details,created_at) VALUES(?,NULL,?,?,?,?,?)',
-          [newId(), 'Acceso no autenticado', 'employee.login_failed', row.id, '{}', timestamp()],
-        );
+        await audit(sql, null, 'employee.login_failed', 'pin', { ambiguous: valid.length > 1 });
         return {
           error: until
             ? 'Acceso bloqueado temporalmente por intentos fallidos.'
-            : 'Identificador o PIN no válido.',
+            : valid.length > 1
+              ? 'Este PIN se repite en empleados anteriores a la actualización. Un administrador con PIN exclusivo debe restablecer los PIN repetidos.'
+              : 'PIN no válido o empleado inactivo.',
         };
       }
-      await sql.run('UPDATE employees SET failed_attempts=0,locked_until=NULL WHERE id=?', [
-        row.id,
+      await this.uniquePin(sql, pin, lookup, row.id);
+      await sql.run(
+        'UPDATE employees SET pin_lookup=?,failed_attempts=0,locked_until=NULL WHERE id=?',
+        [lookup, row.id],
+      );
+      await sql.run("UPDATE settings SET value=? WHERE key='pinAccess'", [
+        JSON.stringify({ failed: 0, until: null }),
       ]);
       await audit(sql, row, 'employee.login', row.id);
       return { id: row.id };
@@ -218,14 +263,18 @@ export class AccessControl {
     if (!Object.hasOwn(ROLE_LABELS, input.role) || ![0, 1].includes(input.active))
       throw new Error('Rol o estado no válido.');
     const encoded = input.pin ? await encodePin(input.pin) : undefined;
+    const lookup = input.pin ? await this.lookup(input.pin) : undefined;
     return this.db.transaction(async (sql) => {
       const actor = await this.require(sql, 'employees');
       const id = input.id || newId();
       const [old] = await sql.query<Credentials>('SELECT * FROM employees WHERE id=?', [id]);
       if (!old && !encoded) throw new Error('Establece un PIN para el nuevo empleado.');
+      if (old && !old.active && input.active && !encoded)
+        throw new Error('Confirma un PIN exclusivo al reactivar al empleado.');
+      if (input.active && input.pin && lookup) await this.uniquePin(sql, input.pin, lookup, id);
       await sql.run(
-        `INSERT INTO employees(id,name,identifier,role,active,pin_hash,salt,iterations,created_at) VALUES(?,?,?,?,?,?,?,?,?)
-        ON CONFLICT(id) DO UPDATE SET name=excluded.name,identifier=excluded.identifier,role=excluded.role,active=excluded.active,pin_hash=excluded.pin_hash,salt=excluded.salt,iterations=excluded.iterations`,
+        `INSERT INTO employees(id,name,identifier,role,active,pin_hash,salt,iterations,created_at,pin_lookup) VALUES(?,?,?,?,?,?,?,?,?,?)
+        ON CONFLICT(id) DO UPDATE SET name=excluded.name,identifier=excluded.identifier,role=excluded.role,active=excluded.active,pin_hash=excluded.pin_hash,salt=excluded.salt,iterations=excluded.iterations,pin_lookup=excluded.pin_lookup`,
         [
           id,
           name,
@@ -236,6 +285,7 @@ export class AccessControl {
           encoded?.salt || old.salt,
           encoded ? ITERATIONS : old.iterations,
           timestamp(),
+          lookup ?? old?.pin_lookup ?? null,
         ],
       );
       if (encoded)

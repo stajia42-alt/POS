@@ -9,6 +9,11 @@ export interface Shift {
   id: string;
   status: 'open' | 'closed';
   opening: number;
+  opening_usd: number;
+  exchange_rate: number | null;
+  expected_usd: number | null;
+  counted_usd: number | null;
+  difference_usd: number | null;
   opened_by: string;
   opened_name: string;
   opened_at: string;
@@ -26,6 +31,7 @@ export interface CashMovement {
   employee_name: string;
   kind: 'in' | 'out' | 'withdrawal';
   amount: number;
+  currency: 'MXN' | 'USD';
   reason: string;
   created_at: string;
 }
@@ -38,6 +44,9 @@ export interface ShiftReport {
   cashSales: number;
   incoming: number;
   outgoing: number;
+  expectedUsd: number;
+  incomingUsd: number;
+  outgoingUsd: number;
 }
 
 export async function shiftReport(sql: SqlDriver, id: string): Promise<ShiftReport> {
@@ -57,27 +66,35 @@ export async function shiftReport(sql: SqlDriver, id: string): Promise<ShiftRepo
   );
   const cashSales = payments.find((payment) => payment.method === 'cash')?.amount || 0;
   const incoming = movements
-    .filter((move) => move.kind === 'in')
+    .filter((move) => move.kind === 'in' && move.currency === 'MXN')
     .reduce((sum, move) => sum + move.amount, 0);
   const outgoing = movements
-    .filter((move) => move.kind !== 'in')
+    .filter((move) => move.kind !== 'in' && move.currency === 'MXN')
     .reduce((sum, move) => sum + move.amount, 0);
   const expected = shift.opening + cashSales + incoming - outgoing;
   integer(expected);
-  return { shift, payments, movements, sales, expected, cashSales, incoming, outgoing };
-}
-async function cashEnabled(sql: SqlDriver) {
-  const [{ value }] = await sql.query<{ value: string }>(
-    "SELECT value FROM settings WHERE key='business'",
-  );
-  if (!(JSON.parse(value) as Business).cashManagement)
-    throw new Error('Activa el control de caja en Configuración para usar turnos.');
+  const incomingUsd = movements
+    .filter((move) => move.currency === 'USD' && move.kind === 'in')
+    .reduce((n, m) => n + m.amount, 0);
+  const outgoingUsd = movements
+    .filter((move) => move.currency === 'USD' && move.kind !== 'in')
+    .reduce((n, m) => n + m.amount, 0);
+  const expectedUsd = integer(shift.opening_usd + incomingUsd - outgoingUsd);
+  return {
+    shift,
+    payments,
+    movements,
+    sales,
+    expected,
+    cashSales,
+    incoming,
+    outgoing,
+    expectedUsd,
+    incomingUsd,
+    outgoingUsd,
+  };
 }
 export async function checkoutShift(sql: SqlDriver, cashAmount: number) {
-  const [{ value }] = await sql.query<{ value: string }>(
-    "SELECT value FROM settings WHERE key='business'",
-  );
-  if (!(JSON.parse(value) as Business).cashManagement) return null;
   const [shift] = await sql.query<Shift>("SELECT * FROM shifts WHERE status='open'");
   if (!shift) throw new Error('El turno está cerrado. Abre la caja antes de cobrar.');
   const report = await shiftReport(sql, shift.id);
@@ -113,7 +130,13 @@ export class Cash {
         actor.permissions.includes('cash_moves');
       const report = current && canCount ? await shiftReport(sql, current.id) : null;
       return {
-        current: current ? { shift: current, expected: report?.expected ?? null } : null,
+        current: current
+          ? {
+              shift: current,
+              expected: report?.expected ?? null,
+              expectedUsd: report?.expectedUsd ?? null,
+            }
+          : null,
         report: canReport ? report : null,
         history,
       };
@@ -126,19 +149,34 @@ export class Cash {
       return report;
     });
   }
-  open(opening: number) {
+  open(opening: number, openingUsd = 0, exchangeRate?: number) {
     integer(opening);
+    integer(openingUsd);
+    if (exchangeRate !== undefined) integer(exchangeRate, 1, 99999999);
     return this.db.transaction(async (sql) => {
       const actor = await this.access.require(sql, 'open_cash');
-      await cashEnabled(sql);
+      const [saved] = await sql.query<{ value: string }>(
+        "SELECT value FROM settings WHERE key='business'",
+      );
+      const b = JSON.parse(saved.value) as Business;
+      const rate = exchangeRate ?? b.exchangeRate ?? null;
+      if (openingUsd > 0 && !rate)
+        throw new Error('Configura el tipo de cambio antes de registrar un fondo en dólares.');
+      if (exchangeRate !== undefined && exchangeRate !== b.exchangeRate) {
+        await this.access.require(sql, 'settings');
+        await sql.run("UPDATE settings SET value=? WHERE key='business'", [
+          JSON.stringify({ ...b, exchangeRate: rate, cashManagement: true }),
+        ]);
+        await audit(sql, actor, 'business.exchange_rate', 'business', { exchangeRate: rate });
+      }
       if ((await sql.query<Shift>("SELECT * FROM shifts WHERE status='open'")).length)
         throw new Error('Ya existe un turno abierto.');
       const id = newId();
       await sql.run(
-        "INSERT INTO shifts(id,status,opening,opened_by,opened_name,opened_at) VALUES(?,'open',?,?,?,?)",
-        [id, opening, actor.id, actor.name, timestamp()],
+        "INSERT INTO shifts(id,status,opening,opening_usd,exchange_rate,opened_by,opened_name,opened_at) VALUES(?,'open',?,?,?,?,?,?)",
+        [id, opening, openingUsd, rate, actor.id, actor.name, timestamp()],
       );
-      await audit(sql, actor, 'cash.open', id, { opening });
+      await audit(sql, actor, 'cash.open', id, { opening, openingUsd, exchangeRate: rate });
       return id;
     });
   }
@@ -146,9 +184,12 @@ export class Cash {
     shiftId: string;
     kind: 'in' | 'out' | 'withdrawal';
     amount: number;
+    currency?: 'MXN' | 'USD';
     reason: string;
   }) {
     integer(input.amount, 1);
+    const currency = input.currency || 'MXN';
+    if (!['MXN', 'USD'].includes(currency)) throw new Error('Moneda no válida.');
     const reason = textRequired(input.reason, 'el motivo', 500);
     if (!['in', 'out', 'withdrawal'].includes(input.kind))
       throw new Error('Movimiento de caja no válido.');
@@ -156,30 +197,46 @@ export class Cash {
       const actor = await this.access.require(sql, 'cash_moves');
       const report = await shiftReport(sql, input.shiftId);
       if (report.shift.status !== 'open') throw new Error('El turno está cerrado.');
-      const next = report.expected + (input.kind === 'in' ? input.amount : -input.amount);
+      const next =
+        (currency === 'USD' ? report.expectedUsd : report.expected) +
+        (input.kind === 'in' ? input.amount : -input.amount);
       if (next < 0) throw new Error('El movimiento supera el efectivo esperado en caja.');
       integer(next);
       const id = newId();
       await sql.run(
-        'INSERT INTO cash_movements(id,shift_id,employee_id,employee_name,kind,amount,reason,created_at) VALUES(?,?,?,?,?,?,?,?)',
-        [id, input.shiftId, actor.id, actor.name, input.kind, input.amount, reason, timestamp()],
+        'INSERT INTO cash_movements(id,shift_id,employee_id,employee_name,kind,amount,reason,created_at,currency) VALUES(?,?,?,?,?,?,?,?,?)',
+        [
+          id,
+          input.shiftId,
+          actor.id,
+          actor.name,
+          input.kind,
+          input.amount,
+          reason,
+          timestamp(),
+          currency,
+        ],
       );
       await audit(sql, actor, `cash.${input.kind}`, id, {
         shiftId: input.shiftId,
         amount: input.amount,
+        currency,
       });
       return id;
     });
   }
-  close(id: string, counted: number) {
+  close(id: string, counted: number, countedUsd?: number) {
     integer(counted);
+    if (countedUsd !== undefined) integer(countedUsd);
     return this.db.transaction(async (sql) => {
       const actor: Actor = await this.access.require(sql, 'close_cash');
       const report = await shiftReport(sql, id);
       if (report.shift.status === 'closed')
         return { shift: report.shift, expected: report.expected };
+      if (report.expectedUsd > 0 && countedUsd === undefined)
+        throw new Error('Cuenta también el efectivo en dólares antes de cerrar.');
       await sql.run(
-        "UPDATE shifts SET status='closed',closed_by=?,closed_name=?,closed_at=?,expected=?,counted=?,difference=? WHERE id=?",
+        "UPDATE shifts SET status='closed',closed_by=?,closed_name=?,closed_at=?,expected=?,counted=?,difference=?,expected_usd=?,counted_usd=?,difference_usd=? WHERE id=?",
         [
           actor.id,
           actor.name,
@@ -187,6 +244,9 @@ export class Cash {
           report.expected,
           counted,
           counted - report.expected,
+          report.expectedUsd,
+          countedUsd ?? 0,
+          (countedUsd ?? 0) - report.expectedUsd,
           id,
         ],
       );
@@ -194,6 +254,9 @@ export class Cash {
         expected: report.expected,
         counted,
         difference: counted - report.expected,
+        expectedUsd: report.expectedUsd,
+        countedUsd: countedUsd ?? 0,
+        differenceUsd: (countedUsd ?? 0) - report.expectedUsd,
       });
       const [shift] = await sql.query<Shift>('SELECT * FROM shifts WHERE id=?', [id]);
       return { shift, expected: report.expected };

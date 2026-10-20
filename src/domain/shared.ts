@@ -10,13 +10,21 @@ export function textRequired(value: string, label: string, max = 120): string {
 }
 export function audit(
   sql: SqlDriver,
-  actor: Pick<Actor, 'id' | 'name'>,
+  actor: Pick<Actor, 'id' | 'name'> | null,
   action: string,
   target: string,
   details: object = {},
 ) {
   return sql.run(
     'INSERT INTO administrative_actions(id,actor_id,actor_name,action,target,details,created_at) VALUES(?,?,?,?,?,?,?)',
-    [newId(), actor.id, actor.name, action, target, JSON.stringify(details), timestamp()],
+    [
+      newId(),
+      actor?.id ?? null,
+      actor?.name ?? 'Acceso no autenticado',
+      action,
+      target,
+      JSON.stringify(details),
+      timestamp(),
+    ],
   );
 }

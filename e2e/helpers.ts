@@ -4,9 +4,9 @@ export async function navigate(page: Page, title: string) {
   await page.getByRole('button', { name: 'Abrir menú', exact: true }).click();
   await page.getByRole('button', { name: title, exact: true }).click();
 }
-export async function ready(page: Page) {
+export async function ready(page: Page, opening = '0.00') {
   await page.goto('/');
-  await unlock(page);
+  await unlock(page, 'owner', '832641', opening);
 }
 export async function createProduct(
   page: Page,
@@ -66,18 +66,30 @@ export async function createProduct(
   await expect(page.getByRole('dialog')).toHaveCount(0);
 }
 
-export async function unlock(page: Page, identifier = 'owner', pin = '832641') {
+export async function signIn(page: Page, pin = '832641') {
   await expect(
-    page.getByRole('heading', { name: /Configura al propietario|Acceso del empleado/ }),
+    page.getByRole('heading', { name: /Configura al propietario|Bienvenido a AVILES POS/ }),
   ).toBeVisible();
   const setup = await page.getByRole('heading', { name: 'Configura al propietario' }).isVisible();
   if (setup) await page.getByLabel('Nombre del propietario', { exact: true }).fill('Test owner');
-  await page.getByLabel('Identificador', { exact: true }).fill(identifier);
   await page.getByLabel(setup ? 'Crear PIN (4 a 8 dígitos)' : 'PIN', { exact: true }).fill(pin);
   if (setup) await page.getByLabel('Confirmar PIN', { exact: true }).fill(pin);
   await page
     .getByRole('button', { name: setup ? 'Crear acceso local' : 'Entrar', exact: true })
     .click();
+  await expect(
+    page.locator('[data-testid="app-ready"], [data-testid="opening-required"]'),
+  ).toBeVisible();
+}
+export async function unlock(page: Page, _identifier = 'owner', pin = '832641', opening = '0.00') {
+  await signIn(page, pin);
+  if (await page.getByTestId('opening-required').isVisible()) {
+    await page.getByLabel('Fondo inicial de caja (MXN)', { exact: true }).fill(opening);
+    await page.getByLabel('Fondo inicial en dólares (USD)', { exact: true }).fill('0.00');
+    const rate = page.getByLabel('Tipo de cambio · MXN por 1 USD', { exact: true });
+    if (await rate.isEditable()) await rate.fill('18.0000');
+    await page.getByRole('button', { name: 'ABRIR TURNO', exact: true }).click();
+  }
   await expect(page.getByTestId('app-ready')).toBeVisible();
 }
 export async function reload(page: Page) {

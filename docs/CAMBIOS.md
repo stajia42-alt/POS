@@ -1,5 +1,16 @@
 # Cambios de AVILES POS
 
+## 2.1.0 — 20 de octubre de 2026 — Primera etapa
+
+- Continúa desde 1.2 en una rama nueva y con punto de restauración verificado.
+- PIN sin usuario, identificación automática, exclusividad en activos y limitación de intentos desconocidos. Conserva derivados anteriores; bloquea PIN ambiguos heredados.
+- Hace obligatoria la apertura de turno. Añade fondos/movimientos/arqueo USD independientes de MXN y tasa manual histórica. Corte de consulta sin cerrar.
+- Añade modos de operación y mapa SQLite de áreas/mesas, edición táctil, estados, cuentas persistentes, transferencia, unión y mesero.
+- Recupera cuenta rápida o mesa por empleado; conserva pendientes al cerrar caja. Pago e inventario liberan mesa atómicamente.
+- Migra aditivamente a esquema 4. Android versionCode 4, mismo paquete y firma de desarrollo. Sin nuevas dependencias ni ventas dependientes de Internet.
+- Ajusta estados y controles visuales manteniendo la distribución de venta rápida. Corrige primer toque posterior a un arrastre.
+- Alcance parcial: continúan pendientes impresoras/comandas, cobros USD, división/abonos y autorizaciones delegadas, además de pendientes anteriores. Consultar el progreso.
+
 ## 1.2.0 — 20 de octubre de 2026
 
 - Conserva la aplicación existente y su pantalla de ventas. Añade acceso local sin cuentas externas.

@@ -1,10 +1,21 @@
 import type { Database, SqlDriver } from '../db/database';
-import { integer, totals } from './money';
+import { integer } from './money';
 import { preparePayments } from './payments';
 import { AccessControl } from './access';
 import { Inventory, recordStock } from './inventory';
 import { Cash, checkoutShift } from './cash';
 import { audit } from './shared';
+import {
+  business,
+  setting,
+  saleById,
+  editable,
+  linesFor,
+  recalculate,
+  newDraft,
+  activateSale,
+} from './sales';
+import { Tables } from './tables';
 import type {
   Business,
   Category,
@@ -27,61 +38,6 @@ const required = (value: string, label: string) => {
   return result;
 };
 
-async function business(sql: SqlDriver): Promise<Business> {
-  const [row] = await sql.query<{ value: string }>(
-    "SELECT value FROM settings WHERE key = 'business'",
-  );
-  return JSON.parse(row.value) as Business;
-}
-
-async function setting(sql: SqlDriver, key: string, value: string) {
-  await sql.run(
-    'INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
-    [key, value],
-  );
-}
-
-async function saleById(sql: SqlDriver, saleId: string): Promise<Sale> {
-  const [sale] = await sql.query<Sale>('SELECT * FROM sales WHERE id = ?', [saleId]);
-  if (!sale) throw new Error('El ticket ya no está disponible.');
-  return sale;
-}
-
-async function editable(sql: SqlDriver, saleId: string) {
-  const sale = await saleById(sql, saleId);
-  if (sale.status !== 'draft') throw new Error('Este ticket no está abierto para edición.');
-  return sale;
-}
-
-async function linesFor(sql: SqlDriver, saleId: string) {
-  return sql.query<SaleLine>('SELECT * FROM sale_lines WHERE sale_id = ? ORDER BY rowid', [saleId]);
-}
-
-async function recalculate(sql: SqlDriver, saleId: string) {
-  const sale = await saleById(sql, saleId);
-  const t = totals(await linesFor(sql, saleId), sale.discount_bps, sale.tax_bps);
-  await sql.run(
-    'UPDATE sales SET subtotal=?, discount=?, tax=?, total=?, updated_at=? WHERE id=?',
-    [t.subtotal, t.discount, t.tax, t.total, now(), saleId],
-  );
-}
-
-async function newDraft(sql: SqlDriver) {
-  const b = await business(sql);
-  const saleId = id();
-  const [{ next }] = await sql.query<{ next: number }>(
-    'SELECT COALESCE(MAX(number), 0) + 1 AS next FROM sales',
-  );
-  const date = now();
-  await sql.run(
-    `INSERT INTO sales(id,number,status,tax_bps,business_name,business_address,business_phone,created_at,updated_at)
-    VALUES(?,?,'draft',?,?,?,?,?,?)`,
-    [saleId, next, b.taxBps, b.name, b.address, b.phone, date, date],
-  );
-  await setting(sql, 'activeSale', saleId);
-  return saleId;
-}
-
 async function receipt(sql: SqlDriver, saleId: string): Promise<Receipt> {
   const sale = await saleById(sql, saleId);
   const payments = await sql.query<Payment>(
@@ -97,12 +53,24 @@ export class Pos {
   readonly access: AccessControl;
   readonly inventory: Inventory;
   readonly cash: Cash;
+  readonly tables: Tables;
   constructor(readonly db: Database) {
     this.access = new AccessControl(db);
     this.inventory = new Inventory(db, this.access);
     this.cash = new Cash(db, this.access);
+    this.tables = new Tables(db, this.access);
   }
 
+  private async requireTable(sql: SqlDriver, saleId: string) {
+    if (
+      (
+        await sql.query('SELECT id FROM table_sessions WHERE sale_id=? AND closed_at IS NULL', [
+          saleId,
+        ])
+      ).length
+    )
+      await this.access.require(sql, 'tables');
+  }
   async initialize() {
     await this.db.transaction(async (sql) => {
       const [active] = await sql.query<{ value: string }>(
@@ -142,12 +110,91 @@ export class Pos {
           : [],
         business: await business(sql),
         view: view.value,
+        workspace: (
+          await sql.query<{ mode: 'quick' | 'tables'; table_view: 'map' | 'bill' }>(
+            'SELECT mode,table_view FROM employee_workspace WHERE employee_id=?',
+            [actor.id],
+          )
+        )[0] || { mode: 'quick', table_view: 'map' },
+        table:
+          (
+            await sql.query<import('./tables').TableContext>(
+              `SELECT ts.id,ts.table_id,ts.sale_id,ts.opened_at,ts.payment_requested,t.name,a.name AS area_name FROM table_sessions ts JOIN dining_tables t ON t.id=ts.table_id JOIN dining_areas a ON a.id=t.area_id WHERE ts.sale_id=? AND ts.closed_at IS NULL`,
+              [active.value],
+            )
+          )[0] || null,
         actor,
         shift:
           (
             await sql.query<import('./cash').Shift>("SELECT * FROM shifts WHERE status='open'")
           )[0] || null,
       };
+    });
+  }
+
+  restoreWorkspace() {
+    return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql);
+      const [pref] = await sql.query<{
+        active_sale_id: string | null;
+        mode: 'quick' | 'tables';
+        table_view: 'map' | 'bill';
+      }>('SELECT * FROM employee_workspace WHERE employee_id=?', [actor.id]);
+      const b = await business(sql);
+      const [active] = await sql.query<{ value: string }>(
+        "SELECT value FROM settings WHERE key='activeSale'",
+      );
+      let selected = pref?.active_sale_id
+        ? (
+            await sql.query<Sale>(
+              "SELECT * FROM sales WHERE id=? AND status IN ('draft','parked')",
+              [pref.active_sale_id],
+            )
+          )[0]
+        : undefined;
+      if (selected && selected.table_name && !actor.permissions.includes('tables'))
+        selected = undefined;
+      if (!selected && !(await sql.query('SELECT employee_id FROM employee_workspace')).length)
+        selected = await saleById(sql, active.value);
+      if (selected && ['draft', 'parked'].includes(selected.status))
+        await activateSale(sql, actor.id, selected.id);
+      else await newDraft(sql, actor.id);
+      const mode =
+        b.operationMode === 'restaurant' && actor.permissions.includes('tables')
+          ? 'tables'
+          : b.operationMode === 'quick' || !actor.permissions.includes('tables')
+            ? 'quick'
+            : pref?.mode || 'quick';
+      await sql.run('UPDATE employee_workspace SET mode=? WHERE employee_id=?', [mode, actor.id]);
+    });
+  }
+  setMode(mode: 'quick' | 'tables') {
+    if (!['quick', 'tables'].includes(mode)) throw new Error('Modo de operación no válido.');
+    return this.db.transaction(async (sql) => {
+      const actor = await this.access.require(sql);
+      const b = await business(sql);
+      if (mode === 'tables') {
+        await this.access.require(sql, 'tables');
+        if (b.operationMode === 'quick') throw new Error('El modo restaurante está desactivado.');
+      } else {
+        if (b.operationMode === 'restaurant') throw new Error('La venta rápida está desactivada.');
+        const [pref] = await sql.query<{ quick_sale_id: string | null }>(
+          'SELECT quick_sale_id FROM employee_workspace WHERE employee_id=?',
+          [actor.id],
+        );
+        const [quick] = pref?.quick_sale_id
+          ? await sql.query<Sale>(
+              "SELECT * FROM sales WHERE id=? AND status IN ('draft','parked')",
+              [pref.quick_sale_id],
+            )
+          : [];
+        if (quick) await activateSale(sql, actor.id, quick.id);
+        else await newDraft(sql, actor.id);
+      }
+      await sql.run(
+        `INSERT INTO employee_workspace(employee_id,mode,table_view) VALUES(?,?,'map') ON CONFLICT(employee_id) DO UPDATE SET mode=excluded.mode,table_view='map'`,
+        [actor.id, mode],
+      );
     });
   }
 
@@ -252,6 +299,7 @@ export class Pos {
     return this.db.transaction(async (sql) => {
       await this.access.require(sql, 'sell');
       await editable(sql, saleId);
+      await this.requireTable(sql, saleId);
       const [product] = await sql.query<Product>('SELECT * FROM products WHERE id=? AND active=1', [
         productId,
       ]);
@@ -270,6 +318,10 @@ export class Pos {
         );
       }
       await recalculate(sql, saleId);
+      await sql.run(
+        'UPDATE table_sessions SET payment_requested=0 WHERE sale_id=? AND closed_at IS NULL',
+        [saleId],
+      );
     });
   }
 
@@ -278,6 +330,7 @@ export class Pos {
     return this.db.transaction(async (sql) => {
       await this.access.require(sql, 'sell');
       await editable(sql, saleId);
+      await this.requireTable(sql, saleId);
       if (quantity === 0)
         await sql.run('DELETE FROM sale_lines WHERE id=? AND sale_id=?', [lineId, saleId]);
       else
@@ -288,6 +341,10 @@ export class Pos {
           saleId,
         ]);
       await recalculate(sql, saleId);
+      await sql.run(
+        'UPDATE table_sessions SET payment_requested=0 WHERE sale_id=? AND closed_at IS NULL',
+        [saleId],
+      );
     });
   }
 
@@ -299,6 +356,7 @@ export class Pos {
     return this.db.transaction(async (sql) => {
       const actor = await this.access.require(sql, 'sell');
       const previous = await editable(sql, saleId);
+      await this.requireTable(sql, saleId);
       if (previous.discount_bps !== input.discountBps) await this.access.require(sql, 'discounts');
       let customerName = '';
       if (input.customerId) {
@@ -326,8 +384,9 @@ export class Pos {
 
   park(saleId: string, label: string) {
     return this.db.transaction(async (sql) => {
-      await this.access.require(sql, 'sell');
+      const actor = await this.access.require(sql, 'sell');
       await editable(sql, saleId);
+      await this.requireTable(sql, saleId);
       if (!(await linesFor(sql, saleId)).length)
         throw new Error('Agrega al menos un producto para guardar el ticket.');
       await sql.run("UPDATE sales SET status='parked',label=?,updated_at=? WHERE id=?", [
@@ -335,38 +394,63 @@ export class Pos {
         now(),
         saleId,
       ]);
-      await newDraft(sql);
+      await newDraft(sql, actor.id);
+      await sql.run("UPDATE employee_workspace SET table_view='map' WHERE employee_id=?", [
+        actor.id,
+      ]);
     });
   }
 
   resume(saleId: string) {
     return this.db.transaction(async (sql) => {
-      await this.access.require(sql, 'sell');
+      const actor = await this.access.require(sql, 'sell');
       const selected = await saleById(sql, saleId);
       if (selected.status !== 'parked') throw new Error('El ticket ya no está pendiente.');
-      const [active] = await sql.query<{ value: string }>(
-        "SELECT value FROM settings WHERE key='activeSale'",
-      );
-      const currentLines = await linesFor(sql, active.value);
-      await sql.run('UPDATE sales SET status=?,updated_at=? WHERE id=?', [
-        currentLines.length ? 'parked' : 'cancelled',
-        now(),
-        active.value,
+      const session =
+        (
+          await sql.query('SELECT id FROM table_sessions WHERE sale_id=? AND closed_at IS NULL', [
+            saleId,
+          ])
+        ).length > 0;
+      if (session) await this.access.require(sql, 'tables');
+      await activateSale(sql, actor.id, saleId);
+      await sql.run('UPDATE employee_workspace SET mode=?,table_view=? WHERE employee_id=?', [
+        session ? 'tables' : 'quick',
+        session ? 'bill' : 'map',
+        actor.id,
       ]);
-      await sql.run("UPDATE sales SET status='draft',updated_at=? WHERE id=?", [now(), saleId]);
-      await setting(sql, 'activeSale', saleId);
     });
   }
 
-  cancel(saleId: string) {
+  cancel(saleId: string, reason = '') {
     return this.db.transaction(async (sql) => {
       const actor = await this.access.require(sql, 'cancel_sales');
       const sale = await saleById(sql, saleId);
+      const session =
+        (
+          await sql.query('SELECT id FROM table_sessions WHERE sale_id=? AND closed_at IS NULL', [
+            saleId,
+          ])
+        ).length > 0;
+      if (session) {
+        await this.access.require(sql, 'table_release');
+        if (!reason.trim())
+          throw new Error('Indica el motivo de la liberación excepcional de la mesa.');
+      }
       if (!['draft', 'parked'].includes(sale.status))
         throw new Error('Solo puedes cancelar tickets abiertos o pendientes.');
       await sql.run("UPDATE sales SET status='cancelled',updated_at=? WHERE id=?", [now(), saleId]);
-      if (sale.status === 'draft') await newDraft(sql);
-      await audit(sql, actor, 'ticket.cancel', saleId);
+      await sql.run('UPDATE table_sessions SET closed_at=? WHERE sale_id=? AND closed_at IS NULL', [
+        now(),
+        saleId,
+      ]);
+      if (sale.status === 'draft') await newDraft(sql, actor.id);
+      await sql.run("UPDATE employee_workspace SET table_view='map' WHERE employee_id=?", [
+        actor.id,
+      ]);
+      await audit(sql, actor, session ? 'table.release' : 'ticket.cancel', saleId, {
+        reason: reason.trim().slice(0, 500),
+      });
     });
   }
 
@@ -385,6 +469,7 @@ export class Pos {
         return receipt(sql, saleId);
       }
       await editable(sql, saleId);
+      await this.requireTable(sql, saleId);
       const lines = await linesFor(sql, saleId);
       if (!lines.length) throw new Error('El ticket está vacío.');
       await recalculate(sql, saleId);
@@ -440,7 +525,14 @@ export class Pos {
         payments: payments.length,
         shiftId,
       });
-      await newDraft(sql);
+      await sql.run('UPDATE table_sessions SET closed_at=? WHERE sale_id=? AND closed_at IS NULL', [
+        date,
+        saleId,
+      ]);
+      await newDraft(sql, actor.id);
+      await sql.run("UPDATE employee_workspace SET table_view='map' WHERE employee_id=?", [
+        actor.id,
+      ]);
       return receipt(sql, saleId);
     });
   }
@@ -466,16 +558,29 @@ export class Pos {
       phone: clean(input.phone, 40),
       taxBps: input.taxBps,
       receiptFooter: clean(input.receiptFooter, 200),
-      cashManagement: !!input.cashManagement,
+      cashManagement: true,
+      operationMode: input.operationMode || 'both',
+      exchangeRate: input.exchangeRate ?? null,
     };
     return this.db.transaction(async (sql) => {
       const actor = await this.access.require(sql, 'settings');
+      if (input.cashManagement === false)
+        throw new Error('El control de caja es obligatorio y no se puede desactivar.');
+      if (!['quick', 'restaurant', 'both'].includes(value.operationMode!))
+        throw new Error('Modo de operación no válido.');
+      if (value.exchangeRate !== null) integer(value.exchangeRate!, 1, 99999999);
       if (
-        !value.cashManagement &&
-        (await sql.query("SELECT id FROM shifts WHERE status='open'")).length
+        value.operationMode === 'quick' &&
+        (await sql.query('SELECT id FROM table_sessions WHERE closed_at IS NULL')).length
       )
-        throw new Error('Cierra el turno antes de desactivar el control de caja.');
+        throw new Error('Liquida las mesas abiertas antes de desactivar el modo restaurante.');
       await setting(sql, 'business', JSON.stringify(value));
+      if (value.operationMode === 'quick')
+        await sql.run("UPDATE employee_workspace SET mode='quick',table_view='map'");
+      if (value.operationMode === 'restaurant')
+        await sql.run(
+          "UPDATE employee_workspace SET mode='tables',table_view='map' WHERE employee_id IN (SELECT employee_id FROM employee_permissions WHERE permission='tables' AND allowed=1)",
+        );
       await audit(sql, actor, 'business.update', 'business', {
         taxBps: value.taxBps,
         cashManagement: value.cashManagement,

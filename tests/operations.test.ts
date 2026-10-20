@@ -21,7 +21,7 @@ function memory(): Persistence & { data?: Uint8Array; fail?: boolean } {
     },
   };
 }
-async function setup(store = memory()) {
+async function setup(store = memory(), open = false) {
   const db = new Database(new WasmDriver(sqlite, store, await store.load()));
   await migrate(db);
   const pos = new Pos(db);
@@ -33,6 +33,7 @@ async function setup(store = memory()) {
       identifier: 'owner',
       pin: '832641',
     });
+  if (open && !(await pos.snapshot()).shift) await pos.cash.open(0);
   return { db, pos, store };
 }
 async function addProduct(pos: Pos, stock = 10, tracking = 1) {
@@ -91,7 +92,7 @@ describe('acceso y permisos en operaciones reales', () => {
       identifier: 'cashier2',
       pin: '739154',
       role: 'cashier',
-      active: 1,
+      active: 0,
       permissions: ['sell'],
     });
     const rows = await db.read((sql) =>
@@ -108,7 +109,7 @@ describe('acceso y permisos en operaciones reales', () => {
     expect(JSON.stringify(await pos.access.auditHistory())).not.toContain('739154');
   });
   it('no permite escalar permisos desde los servicios y atribuye ventas al cajero', async () => {
-    const { pos } = await setup();
+    const { pos } = await setup(memory(), true);
     const productId = await addProduct(pos);
     const id = await cashier(pos);
     const ownerSale = await sale(pos, productId);
@@ -183,19 +184,22 @@ describe('acceso y permisos en operaciones reales', () => {
       await expect(pos.access.login('cashier', '000000')).rejects.toThrow(
         index === 4 ? 'bloqueado' : 'no válido',
       );
-    const { pos: reopened, db } = await setup(store);
-    await expect(reopened.access.login('cashier', '739154')).rejects.toThrow('bloqueado');
-    const [row] = await db.read((sql) =>
-      sql.query<{ failed_attempts: number; locked_until: string }>(
-        "SELECT failed_attempts,locked_until FROM employees WHERE identifier='cashier'",
-      ),
+    const db = new Database(new WasmDriver(sqlite, store, await store.load()));
+    await migrate(db);
+    const reopened = new Pos(db);
+    await expect(reopened.access.login('739154')).rejects.toThrow('bloqueado');
+    const [saved] = await db.read((sql) =>
+      sql.query<{ value: string }>("SELECT value FROM settings WHERE key='pinAccess'"),
     );
-    expect(row.failed_attempts).toBe(5);
-    expect(new Date(row.locked_until).getTime()).toBeGreaterThan(Date.now());
+    const state = JSON.parse(saved.value);
+    expect(state.failed).toBe(5);
+    expect(new Date(state.until).getTime()).toBeGreaterThan(Date.now());
     await db.transaction((sql) =>
-      sql.run("UPDATE employees SET locked_until='2000-01-01' WHERE identifier='cashier'"),
+      sql.run("UPDATE settings SET value=? WHERE key='pinAccess'", [
+        JSON.stringify({ ...state, until: '2000-01-01' }),
+      ]),
     );
-    await reopened.access.login('cashier', '739154');
+    await reopened.access.login('739154');
     expect((await reopened.access.current()).identifier).toBe('cashier');
   });
   it('un bloqueo explícito cancela un inicio de sesión todavía en curso', async () => {
@@ -342,22 +346,23 @@ describe('inventario con trazabilidad', () => {
 });
 
 describe('caja, pagos e inventario en una transacción', () => {
-  it('conserva el flujo previo sin turnos y exige apertura al activar caja', async () => {
-    const { pos } = await setup();
+  it('exige apertura incluso si la base anterior tenía desactivada la caja', async () => {
+    const { pos, db } = await setup();
     const productId = await addProduct(pos);
-    const first = await sale(pos, productId);
-    expect((await pos.checkout(first, 1000)).sale.shift_id).toBeNull();
-    await enableCash(pos);
-    const next = await sale(pos, productId);
-    await expect(pos.checkout(next, 1000)).rejects.toThrow('turno está cerrado');
-    expect((await pos.snapshot()).products[0].stock).toBe(9);
+    const saleId = await sale(pos, productId);
+    await db.transaction((sql) =>
+      sql.run(
+        "UPDATE settings SET value=json_set(value,'$.cashManagement',0) WHERE key='business'",
+      ),
+    );
+    await expect(pos.checkout(saleId, 1000)).rejects.toThrow('turno está cerrado');
+    expect((await pos.snapshot()).products[0].stock).toBe(10);
     await pos.cash.open(5000);
     await expect(pos.cash.open(0)).rejects.toThrow('Ya existe');
     await expect(
       pos.saveBusiness({ ...(await pos.snapshot()).business, cashManagement: false }),
-    ).rejects.toThrow('Cierra el turno');
-    const receipt = await pos.checkout(next, 1000);
-    expect(receipt.sale.shift_id).not.toBeNull();
+    ).rejects.toThrow('obligatorio');
+    expect((await pos.checkout(saleId, 1000)).sale.shift_id).not.toBeNull();
   });
   it('calcula el efectivo con pagos aplicados, cambio, ingresos, egresos y retiros', async () => {
     const { pos, store } = await setup();

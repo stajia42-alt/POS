@@ -11,6 +11,11 @@ export function useModule<T>(
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
+  useEffect(() => {
+    if (!notice) return;
+    const timer = setTimeout(() => setNotice(''), 4500);
+    return () => clearTimeout(timer);
+  }, [notice]);
   const writing = useRef(false);
   const generation = useRef(0);
   const load = useRef(loader);
