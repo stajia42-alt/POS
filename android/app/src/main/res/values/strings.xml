@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AVILES POS</string>
+    <string name="title_activity_main">AVILES POS</string>
+    <string name="package_name">mx.aviles.pos</string>
+    <string name="custom_url_scheme">mx.aviles.pos</string>
+</resources>

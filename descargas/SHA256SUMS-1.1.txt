@@ -1,0 +1,2 @@
+3b0aff11778d1f525bba4339bb96f4a5c8372f1f5f63761ed5a042d168822e0d  AVILES-POS-1.1-debug.apk
+e4576dbd243ae33505faaa145f3a3f31c56bed1febc9fbe079b374daedcd87e7  AVILES-POS-1.1-fuentes.zip
