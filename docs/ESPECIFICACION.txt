@@ -1,0 +1,879 @@
+ACTÚA COMO:
+
+Un equipo de ingeniería de software sénior especializado en:
+
+- Desarrollo de aplicaciones Android.
+- React y TypeScript.
+- Capacitor.
+- SQLite.
+- Sistemas de punto de venta (POS).
+- Interfaces táctiles profesionales.
+- Impresoras térmicas ESC/POS.
+- Arquitecturas offline-first.
+- Gestión de inventarios.
+- Sistemas comerciales.
+- Diseño UX/UI.
+- Pruebas automatizadas.
+- Compilación de aplicaciones APK.
+
+PROYECTO:
+AVILES POS
+
+OBJETIVO GENERAL:
+
+Desarrollar desde cero una aplicación profesional de
+punto de venta para tabletas Android.
+
+La aplicación tendrá como referencia principal a
+LOYVERSE POS.
+
+Quiero reproducir lo más fielmente posible:
+
+1. La distribución visual.
+2. La experiencia de navegación.
+3. El comportamiento de los botones.
+4. La organización de productos.
+5. El sistema de tickets.
+6. La gestión de ventas.
+7. Los módulos administrativos.
+8. La facilidad de uso.
+9. El funcionamiento táctil.
+10. Las características funcionales del sistema.
+
+IMPORTANTE:
+
+La aplicación debe utilizar código original.
+
+No copiar código fuente, logotipos, fotografías
+protegidas ni otros recursos propietarios de Loyverse.
+
+La referencia es su experiencia visual y funcional.
+
+El resultado debe ser un producto independiente
+llamado AVILES POS.
+
+==================================================
+1. DISPOSITIVO PRINCIPAL
+==================================================
+
+Dispositivo objetivo:
+
+Samsung Galaxy Tab A11.
+
+Pantalla:
+8.7 pulgadas.
+
+Sistema:
+Android.
+
+Orientación:
+Horizontal.
+
+Instalación:
+APK.
+
+Funcionamiento:
+100% independiente.
+
+No debe necesitar:
+
+- Computadora Windows.
+- Servidor externo.
+- SQL Server.
+- Conexión permanente a Internet.
+- Suscripciones.
+- Servicios de terceros para realizar ventas.
+
+Toda la operación básica debe ejecutarse
+directamente en la tableta.
+
+La interfaz debe adaptarse automáticamente
+a diferentes resoluciones Android.
+
+==================================================
+2. TECNOLOGÍAS
+==================================================
+
+Utilizar:
+
+Frontend:
+React + TypeScript.
+
+Estilos:
+CSS moderno.
+
+Aplicación Android:
+Capacitor.
+
+Base de datos:
+SQLite nativo.
+
+Persistencia:
+SQLite mediante un plugin compatible con Capacitor.
+
+Arquitectura:
+Offline-first.
+
+Administración de estado:
+Una solución mantenible y adecuada para React.
+
+Pruebas:
+Vitest y pruebas funcionales donde corresponda.
+
+Compilación:
+Android Studio y Gradle.
+
+No utilizar localStorage como base de datos principal.
+
+No utilizar datos simulados como sustituto
+de funcionalidades reales.
+
+No depender de un servidor Node.js
+para operar dentro de la tableta.
+
+==================================================
+3. REGLA PRINCIPAL DE DISEÑO
+==================================================
+
+ADJUNTO TRES IMÁGENES DE REFERENCIA.
+
+Estas imágenes representan el diseño visual
+que debe seguir AVILES POS.
+
+Analiza cuidadosamente:
+
+- Proporciones.
+- Distribución.
+- Espaciado.
+- Colores.
+- Botones.
+- Tipografía.
+- Cuadrícula.
+- Navegación.
+- Ticket lateral.
+- Barra superior.
+- Barra inferior.
+- Ventanas emergentes.
+
+NO CREAR UNA INTERFAZ GENÉRICA.
+
+NO UTILIZAR UN DASHBOARD ADMINISTRATIVO
+COMO PANTALLA PRINCIPAL.
+
+La pantalla principal debe ser directamente
+el punto de venta.
+
+El diseño debe parecerse visualmente
+a las referencias proporcionadas.
+
+No modificar arbitrariamente el diseño
+durante futuras actualizaciones.
+
+==================================================
+4. PANTALLA PRINCIPAL
+==================================================
+
+Diseñar una pantalla horizontal dividida
+en dos áreas principales.
+
+IZQUIERDA:
+
+Área de productos.
+
+DERECHA:
+
+Ticket de venta.
+
+Proporción inicial aproximada:
+
+70% productos.
+30% ticket.
+
+Ajustar estas proporciones según la
+resolución real para garantizar legibilidad.
+
+BARRA SUPERIOR:
+
+Color verde similar al de las referencias.
+
+Incluir:
+
+- Botón de menú lateral.
+- Nombre de categoría actual.
+- Botón de búsqueda.
+- Botón de escáner.
+- Acceso a clientes.
+- Menú de opciones.
+
+ÁREA DE PRODUCTOS:
+
+Mostrar productos en cuadrícula.
+
+Cada producto puede incluir:
+
+- Fotografía.
+- Nombre.
+- Precio.
+- Categoría.
+- Variantes disponibles.
+
+Las tarjetas deben tener tamaños uniformes.
+
+Las fotografías deben adaptarse sin deformarse.
+
+Permitir desplazamiento vertical.
+
+BARRA INFERIOR:
+
+Mostrar categorías.
+
+Ejemplos:
+
+Favoritos.
+Bebidas.
+Alimentos.
+Postres.
+Servicios.
+Otros.
+
+Las categorías deben ser dinámicas.
+
+No deben estar programadas como valores fijos.
+
+==================================================
+5. DOS MODOS DE VISUALIZACIÓN
+==================================================
+
+Implementar:
+
+MODO A:
+Cuadrícula de productos.
+
+MODO B:
+Lista de productos.
+
+CUADRÍCULA:
+
+Fotografías grandes.
+Nombre del producto.
+Precio.
+Selección táctil.
+
+LISTA:
+
+Fotografía pequeña.
+Nombre.
+Precio.
+Selección táctil.
+
+Agregar un botón para cambiar de vista.
+
+Guardar la preferencia en SQLite.
+
+Al reiniciar la aplicación,
+recordar la última vista seleccionada.
+
+==================================================
+6. TICKET DE VENTA
+==================================================
+
+El ticket debe permanecer visible
+en el panel derecho.
+
+Mostrar:
+
+- Productos agregados.
+- Cantidades.
+- Precios unitarios.
+- Modificadores.
+- Descuentos.
+- Subtotal.
+- Impuestos.
+- Total.
+
+Utilizar pesos mexicanos.
+
+Formato:
+
+$1,250.00 MXN
+
+No utilizar euros ni dólares
+como moneda predeterminada.
+
+Permitir:
+
+Agregar productos.
+Eliminar productos.
+Modificar cantidades.
+Aplicar descuentos.
+Editar observaciones.
+Seleccionar clientes.
+
+BOTONES INFERIORES:
+
+GUARDAR.
+COBRAR.
+
+Ambos botones deben ser grandes,
+verdes y fáciles de presionar.
+
+==================================================
+7. PRODUCTOS
+==================================================
+
+Crear un módulo completo de productos.
+
+Cada producto debe permitir:
+
+- Nombre.
+- Código interno.
+- Código de barras.
+- Descripción.
+- Categoría.
+- Precio.
+- Costo.
+- Fotografía.
+- Estado activo/inactivo.
+- Control de inventario.
+- Existencias.
+- Unidad de medida.
+
+Permitir productos sin fotografía.
+
+Permitir productos con variantes.
+
+Ejemplo:
+
+Refresco.
+
+Variantes:
+
+355 ml.
+600 ml.
+1 litro.
+
+Cada variante puede tener
+un precio diferente.
+
+==================================================
+8. MODIFICADORES
+==================================================
+
+Implementar grupos de modificadores.
+
+Ejemplo:
+
+Hamburguesa.
+
+Grupo:
+TIPO DE PAPAS.
+
+Opciones:
+
+Sin papas.
+Papas francesas.
+Papas sazonadas.
+
+Permitir configurar:
+
+- Selección obligatoria.
+- Selección opcional.
+- Mínimo de selecciones.
+- Máximo de selecciones.
+- Precio adicional.
+- Orden de visualización.
+
+Los modificadores deben quedar asociados
+al producto vendido.
+
+No crear productos principales duplicados
+para representar cada modificador.
+
+==================================================
+9. CARRITO Y VENTAS
+==================================================
+
+Al seleccionar un producto:
+
+Agregarlo al ticket.
+
+Si requiere modificadores:
+
+Mostrar ventana de selección.
+
+Si el producto ya existe en el ticket
+con la misma configuración:
+
+Incrementar cantidad.
+
+Si tiene modificadores diferentes:
+
+Mantener líneas separadas.
+
+Permitir:
+
+Cambiar cantidades.
+Eliminar líneas.
+Agregar notas.
+Aplicar descuentos.
+Cancelar operaciones.
+
+Utilizar cálculos monetarios precisos.
+
+No utilizar operaciones de punto flotante
+sin control para calcular importes.
+
+==================================================
+10. COBROS
+==================================================
+
+Implementar pantalla de cobro.
+
+Métodos iniciales:
+
+Efectivo.
+Tarjeta.
+Transferencia.
+Otro.
+
+Los pagos con tarjeta y transferencia
+se registrarán manualmente.
+
+No simular integración con terminales bancarias.
+
+Permitir:
+
+- Pago exacto.
+- Pago con cambio.
+- Pagos divididos.
+- Pagos combinados.
+- Descuentos.
+- Impuestos configurables.
+
+Registrar cada pago de manera persistente.
+
+Una venta no debe duplicarse
+si el usuario presiona dos veces COBRAR.
+
+==================================================
+11. GUARDAR TICKETS
+==================================================
+
+El botón GUARDAR debe permitir
+guardar una venta pendiente.
+
+Las ventas pendientes deben poder:
+
+Consultarse.
+Recuperarse.
+Modificarse.
+Cobrarse.
+Cancelarse.
+
+No descontar inventario definitivamente
+hasta completar la venta.
+
+==================================================
+12. BASE DE DATOS SQLITE
+==================================================
+
+Diseñar una base de datos normalizada.
+
+Incluir tablas para:
+
+- Productos.
+- Categorías.
+- Variantes.
+- Modificadores.
+- Grupos de modificadores.
+- Ventas.
+- Detalles de ventas.
+- Modificadores vendidos.
+- Pagos.
+- Clientes.
+- Empleados.
+- Permisos.
+- Turnos.
+- Movimientos de caja.
+- Inventario.
+- Movimientos de inventario.
+- Configuración.
+- Tickets pendientes.
+
+Utilizar:
+
+Claves primarias.
+Claves foráneas.
+Índices.
+Transacciones.
+Migraciones versionadas.
+
+No eliminar ni reconstruir la base de datos
+durante las actualizaciones.
+
+Todas las operaciones críticas deben
+ser transaccionales.
+
+==================================================
+13. CAJA
+==================================================
+
+Implementar:
+
+Apertura de caja.
+Fondo inicial.
+Entradas de efectivo.
+Salidas de efectivo.
+Cierre de caja.
+Arqueo.
+Diferencias.
+Historial de turnos.
+
+Registrar:
+
+Usuario.
+Fecha.
+Hora.
+Importes.
+Motivos.
+
+==================================================
+14. INVENTARIO
+==================================================
+
+Implementar:
+
+Existencias.
+Entradas.
+Salidas.
+Ajustes.
+Costos.
+Alertas.
+Historial de movimientos.
+
+Cada venta completada debe generar
+el movimiento de inventario correspondiente.
+
+Las devoluciones deben generar
+movimientos inversos cuando corresponda.
+
+==================================================
+15. CLIENTES
+==================================================
+
+Crear catálogo de clientes.
+
+Campos:
+
+Nombre.
+Teléfono.
+Correo.
+Observaciones.
+Historial de compras.
+
+Preparar la arquitectura para
+programas de fidelización.
+
+==================================================
+16. EMPLEADOS
+==================================================
+
+Implementar usuarios locales.
+
+Roles:
+
+Administrador.
+Cajero.
+Supervisor.
+
+Permisos configurables.
+
+Ejemplos:
+
+Realizar ventas.
+Aplicar descuentos.
+Cancelar ventas.
+Realizar devoluciones.
+Modificar precios.
+Consultar reportes.
+Administrar productos.
+Cerrar caja.
+
+No permitir que un cajero
+modifique funciones administrativas
+sin autorización.
+
+==================================================
+17. IMPRESORAS
+==================================================
+
+Preparar integración ESC/POS.
+
+Tipos:
+
+Bluetooth.
+USB OTG.
+Wi-Fi / LAN.
+
+Compatibilidad objetivo:
+
+Impresoras térmicas de 58 mm y 80 mm.
+
+Implementar:
+
+Configuración.
+Prueba de impresión.
+Impresión de tickets.
+Reimpresión autorizada.
+Apertura de cajón compatible.
+
+La comunicación con impresoras
+debe implementarse mediante una
+capa nativa Android cuando sea necesario.
+
+No considerar una impresora compatible
+hasta probar su protocolo y conexión.
+
+==================================================
+18. REPORTES
+==================================================
+
+Implementar progresivamente:
+
+Ventas diarias.
+Ventas por periodo.
+Ventas por producto.
+Ventas por categoría.
+Ventas por empleado.
+Métodos de pago.
+Descuentos.
+Devoluciones.
+Utilidad estimada.
+Movimientos de caja.
+
+Permitir exportar información.
+
+==================================================
+19. RESPALDOS
+==================================================
+
+Implementar:
+
+Crear respaldo.
+Exportar respaldo.
+Restaurar respaldo.
+
+El respaldo debe incluir:
+
+Base de datos.
+Configuraciones.
+Fotografías.
+Información comercial.
+
+Validar la integridad antes de restaurar.
+
+No sobrescribir información
+sin confirmación del administrador.
+
+==================================================
+20. FUNCIONAMIENTO SIN INTERNET
+==================================================
+
+Todas las funciones principales deben
+operar sin conexión.
+
+No utilizar APIs externas
+para operaciones esenciales.
+
+No perder ventas al cerrar la aplicación.
+
+No perder información al reiniciar Android.
+
+No depender de un navegador externo.
+
+==================================================
+21. REGLAS DE DESARROLLO
+==================================================
+
+REGLA 1:
+
+Crear un único proyecto mantenible.
+
+REGLA 2:
+
+No reemplazar el proyecto completo
+en cada actualización.
+
+REGLA 3:
+
+No eliminar funciones existentes.
+
+REGLA 4:
+
+No modificar la interfaz acordada
+sin autorización.
+
+REGLA 5:
+
+No utilizar botones decorativos
+que aparenten funcionar.
+
+REGLA 6:
+
+No inventar resultados de pruebas.
+
+REGLA 7:
+
+No afirmar que una función está terminada
+si solamente contiene datos simulados.
+
+REGLA 8:
+
+Utilizar componentes reutilizables.
+
+REGLA 9:
+
+Separar la interfaz de la lógica de negocio.
+
+REGLA 10:
+
+Documentar las modificaciones.
+
+REGLA 11:
+
+No modificar ni borrar bases de datos
+existentes durante actualizaciones.
+
+REGLA 12:
+
+Mantener compatibilidad con Android.
+
+REGLA 13:
+
+No comenzar una nueva versión desde cero
+cuando ya exista una base funcional.
+
+==================================================
+22. PRIMERA ENTREGA
+==================================================
+
+Desarrollar AVILES POS 1.0.
+
+Esta primera entrega debe incluir:
+
+1. Proyecto React + TypeScript.
+2. Configuración de Capacitor.
+3. Proyecto Android.
+4. SQLite local.
+5. Pantalla principal de ventas.
+6. Diseño basado en las imágenes.
+7. Vista de cuadrícula.
+8. Vista de lista.
+9. Categorías dinámicas.
+10. Productos con fotografías.
+11. Carrito funcional.
+12. Cambio de cantidades.
+13. Eliminación de productos.
+14. Cálculo de totales.
+15. Cobro en efectivo.
+16. Cálculo de cambio.
+17. Registro de ventas.
+18. Historial de ventas.
+19. Tickets pendientes.
+20. Configuración básica del negocio.
+
+No implementar funciones falsas
+para aparentar que la aplicación
+está completa.
+
+==================================================
+23. PRUEBAS OBLIGATORIAS
+==================================================
+
+Antes de entregar:
+
+Verificar compilación.
+
+Verificar base de datos.
+
+Verificar persistencia.
+
+Verificar cálculos monetarios.
+
+Verificar recuperación de tickets.
+
+Verificar que una venta no se duplique.
+
+Verificar navegación.
+
+Verificar funcionamiento offline.
+
+Verificar orientación horizontal.
+
+Verificar que el diseño no se desborde
+en pantallas pequeñas.
+
+Ejecutar las pruebas disponibles.
+
+Informar claramente cuáles pruebas
+se ejecutaron y cuáles requieren
+un dispositivo Android físico.
+
+==================================================
+24. ENTREGA FINAL
+==================================================
+
+Entregar:
+
+1. Código fuente completo.
+2. Estructura del proyecto.
+3. Instrucciones de instalación.
+4. Instrucciones de compilación.
+5. Base de datos y migraciones.
+6. Registro de pruebas.
+7. Lista de funciones terminadas.
+8. Lista de funciones pendientes.
+9. APK instalable si el entorno
+   permite compilarlo.
+
+Si no es posible generar el APK,
+entregar el proyecto Android completo
+y explicar el procedimiento exacto
+para compilarlo.
+
+==================================================
+25. INSTRUCCIÓN FINAL
+==================================================
+
+NO QUIERO UNA AUDITORÍA COMO RESULTADO FINAL.
+
+NO QUIERO ÚNICAMENTE RECOMENDACIONES.
+
+NO QUIERO UN DISEÑO ESTÁTICO.
+
+NO QUIERO UNA APLICACIÓN HTML QUE
+SOLAMENTE SIMULE UN PUNTO DE VENTA.
+
+QUIERO QUE PROGRAMES EL PROYECTO REAL.
+
+Analiza primero las imágenes adjuntas.
+
+Después establece la estructura técnica.
+
+Comienza inmediatamente el desarrollo
+de AVILES POS 1.0.
+
+Trabaja por etapas verificables.
+
+No declares funciones terminadas
+sin implementación y pruebas.
+
+Conserva la estructura visual
+de Loyverse como referencia principal.
+
+El objetivo final es desarrollar
+un punto de venta profesional
+que pueda instalarse y utilizarse
+comercialmente en tabletas Android.
+
+COMIENZA AHORA.
