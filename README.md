@@ -1,3 +1,22 @@
+# AVILES POS 2.2.2 — Tickets y comandas por IP
+
+- [Descargar APK 2.2.2 con impresoras](AVILES-POS-2.2.2-IMPRESORAS-PRUEBAS.apk)
+- [Guía para configurar tu impresora](CONFIGURAR-IMPRESORA-2.2.2.md)
+- [Proyecto completo, fuentes, APK y pruebas](AVILES-POS-2.2.2-ENTREGA.zip)
+- [Solo fuentes y proyecto Android](AVILES-POS-2.2.2-FUENTES.zip)
+- [Verificación](VERIFICACION-2.2.2.json)
+- [Pantalla de impresoras](CAPTURA-2.2.2-IMPRESORAS.png) · [Comanda](CAPTURA-2.2.2-COMANDA.png)
+
+En la app: Menú → Impresoras → Agregar impresora. Usa la misma IP que en Loyverse, puerto 9100 salvo que tu configuración use otro, y papel de 80 mm. Marca tickets, comandas o ambos y pulsa Imprimir prueba.
+
+Tickets al cobrar y comandas por cambios al guardar/cobrar/enviar. Incluye notas, cancelaciones, rutas por categorías y registro persistente; los envíos inciertos requieren revisar papel antes de repetir. Las copias requieren permiso y están identificadas. Enviado significa escritura TCP completada, sin confirmación física.
+
+Preparado para actualizar AVILES POS PRUEBAS conservando su base. La instalación original 2.1 mantiene datos separados. No se requiere desinstalar ni limpiar almacenamiento.
+
+158 pruebas de la suite completa, 25 flujos de interfaz y 8 pruebas Java/TCP aprobadas; además pasó la nueva regresión de migración desde esquema 5 en el archivo de 8 pruebas de upgrade. Compilación Android, certificado y recursos verificados. **La impresora física del usuario y la instalación de este APK en su dispositivo siguen pendientes de prueba.** Las capturas usan datos aislados.
+
+---
+
 # AVILES POS 2.2.1 — Corrección de pruebas
 
 - [Descargar APK 2.2.1](AVILES-POS-2.2.1-CORRECCION-PRUEBAS.apk)

@@ -1,0 +1,51 @@
+{
+  "versionName": "2.2.2-pruebas",
+  "versionCode": 7,
+  "applicationId": "mx.aviles.pos.pruebas",
+  "appLabel": "AVILES POS 2.2.2 PRUEBAS",
+  "schemaVersion": 6,
+  "newSchemaMigration": true,
+  "samePackageAndCertificateAsInstalledTestEdition": true,
+  "higherVersionCodeThanPreviousTestEdition": true,
+  "updatesOriginal21Installation": false,
+  "physicalBlueStacksInstallationTested": false,
+  "physicalPrinterTested": false,
+  "printerValidation": "PENDIENTE DE PRUEBA FISICA",
+  "userConfirmedPrinter": "ESC/POS, 80mm, IP from Android/Loyverse",
+  "printerTransport": "Native Android TCP/IP, default port9100, configurable",
+  "printerFormat": "ESC/POS PC850, optional partial cut",
+  "ticketsAndKitchenImplemented": true,
+  "persistentQueue": true,
+  "kitchenDeltas": true,
+  "automaticRetryOfUncertainDelivery": false,
+  "socketWriteConfirmsPaper": false,
+  "fullUnitSuiteTestsPassed": 158,
+  "unitTestFilesPassed": 14,
+  "additionalSchema5UpgradeRegressionPassed": true,
+  "targetedMigrationTestsPassed": 8,
+  "e2eFlowsPassed": 25,
+  "nativeTcpTestsPassed": 8,
+  "formatPassed": true,
+  "androidAssemblyPassed": true,
+  "nativePrinterClassesPackaged": true,
+  "apkSignatureVerified": true,
+  "certificateSha256": "ec6eafcdae1c570936a0b2dc17294f1f44839d5e903b1b5c0c1d58298834eed5",
+  "zipAlignment16Kb": true,
+  "webAssetsExactlyMatchBuild": 11,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86",
+    "x86_64"
+  ],
+  "artifacts": {
+    "AVILES-POS-2.2.2-IMPRESORAS-PRUEBAS.apk": {
+      "bytes": 13519699,
+      "sha256": "6d5575e291b3c9b19093961b61f98e0b9844f32b615e412352d8a0392478c6b5"
+    },
+    "AVILES-POS-2.2.2-FUENTES.zip": {
+      "bytes": 5890512,
+      "sha256": "9df0f614d1e9161607231172fc735ac695fce13ffb51fe8e2066b372439c7841"
+    }
+  }
+}
