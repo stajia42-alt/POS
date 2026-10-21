@@ -1,3 +1,15 @@
+# Instalación de prueba en BlueStacks con una versión anterior instalada
+
+- [Descargar APK para instalar junto a la versión anterior](AVILES-POS-2.2-BLUESTACKS-PRUEBAS.apk)
+- [Fuentes y proyecto Android con variante de prueba](AVILES-POS-2.2-BLUESTACKS-FUENTES.zip)
+- [Verificación de esta variante](VERIFICACION-BLUESTACKS.json)
+
+Se identifica como **AVILES POS 2.2 PRUEBAS** y usa `mx.aviles.pos.pruebas`. Es el mismo código 2.2 en una instalación separada. No reemplaza ni importa los datos de la versión anterior; al iniciar crea su propio propietario/PIN. La compilación, firma, arquitecturas y aislamiento de identificador están verificados; la instalación en el BlueStacks del usuario queda pendiente de su prueba.
+
+**No desinstales ni borres datos de la versión anterior.** Una actualización real de esa instalación sigue necesitando su clave de firma original.
+
+---
+
 # AVILES POS 2.2 — Descargas de prueba
 
 - [Entrega completa: APK, fuentes, Android, documentación y capturas](AVILES-POS-2.2-ENTREGA.zip)

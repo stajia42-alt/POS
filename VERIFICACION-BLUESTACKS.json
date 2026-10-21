@@ -1,0 +1,23 @@
+{
+  "applicationId": "mx.aviles.pos.pruebas",
+  "productionApplicationIdUnchanged": "mx.aviles.pos",
+  "appLabel": "AVILES POS 2.2 PRUEBAS",
+  "versionName": "2.2.0-pruebas",
+  "versionCode": 5,
+  "independentData": true,
+  "importsPreviousData": false,
+  "compatibleUpdateOfPreviousInstallation": false,
+  "assemblyPassed": true,
+  "apkSignatureVerified": true,
+  "zipAlignment16Kb": true,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86",
+    "x86_64"
+  ],
+  "identicalWebAssets": 11,
+  "physicalBlueStacksInstallationTested": false,
+  "sha256": "e4c1fe7180d2ae0245dd832bc9260d9894bd5b3bee941b1845c3eb18c39cbe64",
+  "bytes": 13510139
+}
