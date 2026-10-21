@@ -1,0 +1,29 @@
+{
+  "applicationId": "mx.aviles.pos",
+  "versionName": "2.2.0",
+  "versionCode": 5,
+  "schemaVersion": 5,
+  "apkBytes": 13525659,
+  "apkSha256": "32d6830b7d6210318a9a334099aba0f7c99464b1fb5c8216aa4b7850d7f7cc2b",
+  "signingCertificateSha256": "ec6eafcdae1c570936a0b2dc17294f1f44839d5e903b1b5c0c1d58298834eed5",
+  "previousApkCertificateSha256": "8b8918bc440fd84984f0a4de6aef8cb584e4eb61dde22f1b2ac0e7fd11f04754",
+  "compatibleUpdateSignature": false,
+  "unitTestsPassed": 121,
+  "browserFlowsPassed": 23,
+  "sqliteHistoricalSchemasMigrated": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "zipAlignment16Kb": true,
+  "packagedWebAssetsMatched": 11,
+  "arm64SQLiteIncluded": true,
+  "androidBuildPassed": true,
+  "physicalDeviceTested": false,
+  "androidNativeSQLiteTested": false,
+  "androidDocumentPickerTested": false,
+  "releaseSigningWithOriginalKeyTested": false,
+  "printerReview": "NO DISPONIBLE",
+  "baselineZipSha256": "86a1a88da5e6550fb3d84b68f71d663d9ee51f9e62999d54e2c86c6de630add9"
+}
