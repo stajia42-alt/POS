@@ -1,0 +1,41 @@
+{
+  "versionName": "2.2.1-pruebas",
+  "versionCode": 6,
+  "applicationId": "mx.aviles.pos.pruebas",
+  "appLabel": "AVILES POS 2.2.1 PRUEBAS",
+  "schemaVersion": 5,
+  "newSchemaMigration": false,
+  "samePackageAndCertificateAsInstalledTestEdition": true,
+  "higherVersionCodeThanPreviousTestEdition": true,
+  "updatesOriginal21Installation": false,
+  "physicalBlueStacksInstallationTested": false,
+  "userConfirmedPreviousTestApkInstalls": true,
+  "printersAvailableInReceivedSources": false,
+  "loyverseApkInspected": false,
+  "loyverseInspectionLimitation": "Uploaded APK exceeds 32 MiB transfer limit",
+  "unitTestsPassed": 127,
+  "e2eFlowsPassed": 24,
+  "finalVisualFlowsPassed": 2,
+  "formatPassed": true,
+  "androidAssemblyPassed": true,
+  "apkSignatureVerified": true,
+  "certificateSha256": "ec6eafcdae1c570936a0b2dc17294f1f44839d5e903b1b5c0c1d58298834eed5",
+  "zipAlignment16Kb": true,
+  "webAssetsExactlyMatchBuild": 11,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86",
+    "x86_64"
+  ],
+  "artifacts": {
+    "AVILES-POS-2.2.1-CORRECCION-PRUEBAS.apk": {
+      "bytes": 13523895,
+      "sha256": "5117d5add1ec78b695cd629d52a5cecdc4a2f99f38a8e1dd748d5bfcdb8a687a"
+    },
+    "AVILES-POS-2.2.1-FUENTES.zip": {
+      "bytes": 5660029,
+      "sha256": "7f4d1d600136740621a8e2b30888dfb00fa4e1abd8987f8c24a187757c3d6556"
+    }
+  }
+}

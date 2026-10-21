@@ -1,3 +1,21 @@
+# AVILES POS 2.2.1 — Corrección de pruebas
+
+- [Descargar APK 2.2.1](AVILES-POS-2.2.1-CORRECCION-PRUEBAS.apk)
+- [Fuentes, proyecto Android, documentación, capturas y resultados](AVILES-POS-2.2.1-FUENTES.zip)
+- [Entrega completa](AVILES-POS-2.2.1-ENTREGA.zip)
+- [Verificación](VERIFICACION-2.2.1.json)
+- [Vista de venta](CAPTURA-2.2.1-VENTA.png) · [Inventario directo](CAPTURA-2.2.1-INVENTARIO.png)
+
+Recupera la distribución de venta de 2.1. Inventario abre en existencias y movimientos; recetas, ingredientes y compras quedan en Más opciones. Repara bloqueos de edición/reposición de stock negativo y permite volver de receta a producto con conteo físico. Conserva las funciones avanzadas.
+
+Preparado para actualizar **AVILES POS 2.2 PRUEBAS**, la edición que el usuario confirmó que pudo instalar. Tiene el mismo identificador y certificado, con código de versión superior. No requiere desinstalar ni limpiar datos. La comprobación de esta corrección en el BlueStacks del usuario sigue pendiente. La app original 2.1 mantiene datos separados y no se actualiza con esta variante.
+
+127 pruebas y 24 flujos web aprobados; 2 flujos visuales finales, build y compilación Android verificados. Estas pruebas no certifican periféricos ni SQLite nativo. Las capturas usan datos aislados de prueba.
+
+**Impresoras pendientes:** el módulo no está en el APK 2.1 recibido ni en las ramas AVILES inspeccionadas. No se implementó un reemplazo ni se declara que imprima. El APK de referencia Loyverse no se pudo abrir por superar el límite de transferencia de 32 MiB del entorno.
+
+---
+
 # Instalación de prueba en BlueStacks con una versión anterior instalada
 
 - [Descargar APK para instalar junto a la versión anterior](AVILES-POS-2.2-BLUESTACKS-PRUEBAS.apk)
