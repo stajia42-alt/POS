@@ -1,0 +1,63 @@
+{
+  "release": "1.0.11 RC13",
+  "source": "ParkingPOS_RC12_COMPLETO_PARA_CHATGPT_WORK.zip",
+  "validated_at": "2026-10-21T23:06:14.065727-07:00",
+  "environment": {
+    "os": "Linux x64",
+    "node": "v24.19.0",
+    "sqlite": "3.53.2",
+    "betterSqlite3": "12.11.1",
+    "express": "5.3.0",
+    "chromium": "Chromium 154.0.8037.57 built on Debian GNU/Linux 13 (trixie)"
+  },
+  "tests": {
+    "tests": 138,
+    "pass": 138,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "browser": {
+    "ok": true,
+    "steps": [
+      "Administrador con PIN sencillo y apertura Día con tipo de cambio decimal",
+      "Entrada sin placa, escaneo con Enter, pago MXN, cambio y salida con impresión automática",
+      "Constancia de boleto perdido, cargo único, pago USD y ventas sin reinicio a medianoche",
+      "Corte Día con diferencia real; Noche empieza en cero ventas y conserva el folio heredado",
+      "Respaldo, cambio a cajero y reimpresión último folio con autorización del dueño, sin cambiar sesión",
+      "Fallo de impresora conserva pago; reintento no cobra ni abre cajón otra vez; cierre Noche con conciliación pendiente"
+    ],
+    "consoleErrors": [],
+    "payments": 4,
+    "entryPrintJobs": 5,
+    "receiptTypes": [
+      "PAYMENT",
+      "LOST",
+      "PAYMENT",
+      "DIA",
+      "PAYMENT",
+      "PAYMENT",
+      "NOCHE"
+    ],
+    "drawerPulses": 4,
+    "hardware": "Simulado; requiere validar papel, CODE128 y cajón en Windows."
+  },
+  "database_schema": 9,
+  "windows_installer": {
+    "built": false,
+    "reason": "Electron 44.7.0 ABI 149: no official better-sqlite3 12.11.1 Windows x64 prebuild (404); node-gyp cannot cross-compile this native module from Linux."
+  },
+  "windows_updater": {
+    "source_provided": true,
+    "manifest_generated": false,
+    "powershell_parser": "passed; official PowerShell checksum verified",
+    "actual_windows_execution": "not performed"
+  },
+  "hardware_validation": "not performed; Windows printer, scanner and cash drawer required",
+  "customer_historical_reconciliation": "not performed; customer database not supplied",
+  "cloud_config": {
+    "install_script": "saved",
+    "start_skill": "saved",
+    "published": false
+  }
+}

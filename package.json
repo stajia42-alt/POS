@@ -1,0 +1,90 @@
+{
+  "name": "parking-pos-desktop",
+  "version": "1.0.11",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js",
+    "test:ui": "node scripts/browser-check.js",
+    "recover": "node scripts/recover.js",
+    "desktop": "electron-builder install-app-deps && electron .",
+    "dist:win": "electron-builder --win nsis --x64",
+    "dist:win:dir": "electron-builder --win dir --x64",
+    "test:desktop": "node --test test/desktop.test.js"
+  },
+  "dependencies": {
+    "express": "5.3.0",
+    "better-sqlite3": "12.11.1"
+  },
+  "description": "Parking POS para estacionamientos - aplicación de escritorio independiente",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1",
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3"
+  },
+  "productName": "Parking POS",
+  "main": "desktop/main.js",
+  "build": {
+    "appId": "mx.aviles.parkpos.desktop",
+    "productName": "Parking POS",
+    "artifactName": "ParkingPOS_Setup_${version}_${arch}.${ext}",
+    "directories": {
+      "output": "INSTALADOR_WINDOWS",
+      "buildResources": "desktop"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "**/*.node"
+    ],
+    "files": [
+      "desktop/**/*",
+      "assets/**/*",
+      "lib/**/*",
+      "migrations/**/*",
+      "public/**/*",
+      "server.js",
+      "ticket-escpos.js",
+      "package.json",
+      "node_modules/**/*",
+      "!**/*.map",
+      "!**/{test,tests,example,examples}/**"
+    ],
+    "extraResources": [
+      {
+        "from": "print-worker.ps1",
+        "to": "print-worker.ps1"
+      },
+      {
+        "from": "print-raw.ps1",
+        "to": "print-raw.ps1"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "desktop/icon.ico",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Parking POS",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "npmRebuild": true,
+    "nodeGypRebuild": false
+  }
+}

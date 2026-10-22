@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "steps": [
+    "Crear administrador y abrir turno",
+    "Entrada, consulta, cobro MXN, cambio y salida",
+    "Tipo de cambio decimal, retiro y corte X térmico simulado",
+    "Referencia Libra 3 configurable",
+    "Alta de pensión por placa",
+    "Usuario cajero y respaldo manual",
+    "Corte Z con diferencia cero e impresión simulada",
+    "Boleto perdido, cobro USD, adicional por tolerancia y devolución sin borrar pago",
+    "Renovación de pensión registrada en caja",
+    "Inicio de sesión de cajero con navegación restringida"
+  ],
+  "consoleErrors": [],
+  "printedReports": [
+    "X",
+    "Z"
+  ]
+}

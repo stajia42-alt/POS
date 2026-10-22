@@ -1,0 +1,33 @@
+PARKING POS 1.0 — PAQUETE COMPLETO PARA PRUEBAS FINALES
+
+1. Cierra la versión anterior. Conserva la carpeta completa de datos.
+2. Extrae TODO este ZIP en una carpeta nueva, no ejecutes desde el ZIP.
+3. Usa Windows 10/11 x64 con Node.js 24 x64 instalado.
+4. Ejecuta INICIAR_WINDOWS.cmd. La primera instalación necesita Internet.
+5. Crea el administrador (contraseña de mínimo 10 caracteres).
+6. Abre caja con fondo MXN, fondo USD y tipo de cambio opcional.
+7. En Impresora, escribe el nombre exacto de Windows, guarda y prueba.
+8. En Tarifas, configura los importes. Libra 3 es una referencia opcional.
+
+DATOS: %LOCALAPPDATA%\ParkingPOS\parking.db
+Se conserva la ruta de la versión anterior en Windows.
+Antes de migrar una base existente se hace un respaldo consistente.
+Este ZIP NO incluye una base real ni movimientos de ejemplo para producción.
+
+FLUJO: Nueva entrada > Consultar boleto > Cobrar > CONFIRMAR SALIDA.
+Cobrar no libera el cajón. La tolerancia corre desde el último pago.
+El cambio se entrega siempre en MXN. Revisa los pesos disponibles en caja.
+X consulta; Z cierra el turno. Ambos se imprimen desde sus botones.
+
+CLIENTES: registra placa y beneficio en Clientes y pensiones; captura esa
+placa al entrar. La placa puede quedar vacía para una entrada ordinaria.
+
+RESPALDOS: cada hora y al iniciar; manuales desde Administración.
+Restauración normal: caja cerrada, administrador y reinicio del servidor.
+Recuperación de base dañada: RECUPERAR_WINDOWS.cmd, con servidor cerrado.
+
+PRUEBAS: PROBAR_WINDOWS.cmd usa bases temporales, no la caja real.
+PROBAR_INTERFAZ_WINDOWS.cmd instala Chromium y ejecuta la prueba de interfaz.
+
+Lee MEJORAS_Y_VALIDACION.md y docs/OPERACION_Y_RECUPERACION.md.
+Windows y la impresora física NO se probaron en este entorno Linux.

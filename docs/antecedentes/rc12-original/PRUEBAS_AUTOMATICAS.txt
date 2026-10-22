@@ -1,0 +1,50 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> parking-pos@1.0.0 test
+> node --test test/*.test.js
+
+✔ Dinero: redondeo decimal exacto y tipos inválidos (1.777249ms)
+✔ Libra 3: todos los límites y fracción de 12h (0.281142ms)
+✔ Tarifas: tolerancia, fracciones, máximos y monotonía (2.092412ms)
+✔ Pensión día/noche, exentos, convenios y vencimiento (13.459676ms)
+✔ API: cobro MXN, insuficiente, reintento, salida, capacidad (142.38301ms)
+✔ API: tasa decimal conserva pagos anteriores, USD y cambio disponible (80.025463ms)
+✔ API: salida en límite, vencimiento, adicional y boleto perdido una vez (71.348581ms)
+✔ API: movimientos MXN/USD, corte X/Z, diferencias e impresión (79.23132ms)
+✔ API: cancelación autorizada, devolución MXN y permisos de cajero (174.492677ms)
+✔ API: clientes por placa y cobro de renovación sin duplicar (63.384619ms)
+✔ API: cambios de tarifa no alteran boleto emitido, entrada repetida recupera folio (56.32042ms)
+✔ SQLite: respaldo consistente y restauración rechaza pérdida de históricos (51.531216ms)
+✔ SQLite: migración v0.8 conserva filas, cambio MXN antiguo y respaldo previo (8.232645ms)
+✔ SQLite: restauración de respaldo verificado al reiniciar (9.717035ms)
+✔ API: dos cobros simultáneos y solicitud alterada no duplican ingresos (53.525001ms)
+✔ API: pago concurrente con claves distintas solo confirma uno (52.082805ms)
+✔ API: autorización, origen, contraseña e invalidación de sesiones (147.963972ms)
+✔ API: reportes usan día local Tijuana y mantienen historial al cerrar (58.751251ms)
+✔ API: falla de impresión conserva entrada y reintento no la reimprime (51.284986ms)
+✔ SQLite: segunda instancia se rechaza sin tocar base existente (4.796505ms)
+✔ Recargo nocturno solo en tiempo no cubierto por pensión (0.589014ms)
+✔ SQLite: recuperación fuera de línea archiva base dañada y valida respaldo (8.930583ms)
+✔ SQLite: migración revierte íntegra si hay varios turnos abiertos (4.22129ms)
+✔ ESC/POS comienza con inicialización y tabla CP850 (17.572753ms)
+✔ folio único en cuerpo, código de barras y talón (1.135195ms)
+✔ CODE128-B m73 n y 14 caracteres con módulo ancho 2 (0.746221ms)
+✔ reimpresión de folio antiguo mantiene sus 18 caracteres (0.491939ms)
+✔ marca fecha y hora real en zona Tijuana con segundos (0.655976ms)
+✔ sección desprendible antes de corte físico opcional (0.77949ms)
+✔ boleto de prueba lleva una marca visible y mantiene formato (1.902547ms)
+✔ políticas extensas se distribuyen en 42 columnas (0.22675ms)
+✔ acentos se codifican mediante CP850 (0.184907ms)
+✔ logo monocromático se incrusta en GS v 0 y valida dimensiones (0.803417ms)
+✔ rechaza logo inválido sin generar comandos corruptos (0.418569ms)
+✔ emite boletos idénticos en entradas repetidas sin dependencia temporal (0.838029ms)
+✔ el JavaScript del navegador conserva sintaxis válida (0.946011ms)
+✔ configuración se guarda fuera de pagos y tarifas, impresión directa usa spool RAW (0.353831ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1263.171497

@@ -1,0 +1,182 @@
+Código sintácticamente válido (7 archivos).
+
+TAP version 13
+# Subtest: Windows conserva los datos previos de SQLite en LOCALAPPDATA\\ParkingPOS
+ok 1 - Windows conserva los datos previos de SQLite en LOCALAPPDATA\\ParkingPOS
+  ---
+  duration_ms: 1.103333
+  type: 'test'
+  ...
+# Subtest: El servidor de escritorio usa solo loopback y un puerto disponible
+ok 2 - El servidor de escritorio usa solo loopback y un puerto disponible
+  ---
+  duration_ms: 10.754208
+  type: 'test'
+  ...
+# Subtest: La ruta RAW se selecciona fuera del ASAR en el instalador
+ok 3 - La ruta RAW se selecciona fuera del ASAR en el instalador
+  ---
+  duration_ms: 0.88297
+  type: 'test'
+  ...
+# Subtest: Impresión automática y escaneo apuntan al mismo folio y conservan idempotencia
+ok 4 - Impresión automática y escaneo apuntan al mismo folio y conservan idempotencia
+  ---
+  duration_ms: 0.478521
+  type: 'test'
+  ...
+# Subtest: La aplicación aísla Node del navegador y limita navegación
+ok 5 - La aplicación aísla Node del navegador y limita navegación
+  ---
+  duration_ms: 0.217317
+  type: 'test'
+  ...
+# Subtest: La página contiene selector de impresoras y conserva los controles existentes
+ok 6 - La página contiene selector de impresoras y conserva los controles existentes
+  ---
+  duration_ms: 1.110554
+  type: 'test'
+  ...
+# Subtest: Error de arranque es claro y no promete recuperación inexistente
+ok 7 - Error de arranque es claro y no promete recuperación inexistente
+  ---
+  duration_ms: 0.259852
+  type: 'test'
+  ...
+# Subtest: El escáner en pantalla principal reconoce CODE128 hexadecimal y llama a lookup
+ok 8 - El escáner en pantalla principal reconoce CODE128 hexadecimal y llama a lookup
+  ---
+  duration_ms: 1.812171
+  type: 'test'
+  ...
+# (node:3031) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: ESC/POS preserva saltos de línea y no los transforma en ? (regresión importante)
+ok 9 - ESC/POS preserva saltos de línea y no los transforma en ? (regresión importante)
+  ---
+  duration_ms: 20.721862
+  type: 'test'
+  ...
+# Subtest: CODE128 genera vista previa con mismo folio del ticket real y zona blanca
+ok 10 - CODE128 genera vista previa con mismo folio del ticket real y zona blanca
+  ---
+  duration_ms: 3.902722
+  type: 'test'
+  ...
+# Subtest: Tarifa de Libra 3 respeta límite de 60, 120, 360, 720, 1440 minutos y adicionales
+ok 11 - Tarifa de Libra 3 respeta límite de 60, 120, 360, 720, 1440 minutos y adicionales
+  ---
+  duration_ms: 0.657882
+  type: 'test'
+  ...
+# Subtest: Las rutas de entrada e impresión y su vínculo escaneable permanecen presentes
+ok 12 - Las rutas de entrada e impresión y su vínculo escaneable permanecen presentes
+  ---
+  duration_ms: 0.698763
+  type: 'test'
+  ...
+# Subtest: Código del navegador mantiene sintaxis válida incluyendo nueva vista previa
+ok 13 - Código del navegador mantiene sintaxis válida incluyendo nueva vista previa
+  ---
+  duration_ms: 1.722175
+  type: 'test'
+  ...
+# Subtest: La migración 003 agrega campos e índice sin modificar registros históricos (SQLite integrado)
+ok 14 - La migración 003 agrega campos e índice sin modificar registros históricos (SQLite integrado)
+  ---
+  duration_ms: 6.046253
+  type: 'test'
+  ...
+# Subtest: ESC/POS comienza con inicialización y tabla CP850
+ok 15 - ESC/POS comienza con inicialización y tabla CP850
+  ---
+  duration_ms: 16.87959
+  type: 'test'
+  ...
+# Subtest: folio único en cuerpo, código de barras y talón
+ok 16 - folio único en cuerpo, código de barras y talón
+  ---
+  duration_ms: 0.674226
+  type: 'test'
+  ...
+# Subtest: CODE128-B m73 n y 14 caracteres con módulo ancho 2
+ok 17 - CODE128-B m73 n y 14 caracteres con módulo ancho 2
+  ---
+  duration_ms: 0.572603
+  type: 'test'
+  ...
+# Subtest: reimpresión de folio antiguo mantiene sus 18 caracteres
+ok 18 - reimpresión de folio antiguo mantiene sus 18 caracteres
+  ---
+  duration_ms: 0.627686
+  type: 'test'
+  ...
+# Subtest: marca fecha y hora real en zona Tijuana con segundos
+ok 19 - marca fecha y hora real en zona Tijuana con segundos
+  ---
+  duration_ms: 0.914108
+  type: 'test'
+  ...
+# Subtest: sección desprendible antes de corte físico opcional
+ok 20 - sección desprendible antes de corte físico opcional
+  ---
+  duration_ms: 1.633191
+  type: 'test'
+  ...
+# Subtest: boleto de prueba lleva una marca visible y mantiene formato
+ok 21 - boleto de prueba lleva una marca visible y mantiene formato
+  ---
+  duration_ms: 3.043316
+  type: 'test'
+  ...
+# Subtest: políticas extensas se distribuyen en 42 columnas
+ok 22 - políticas extensas se distribuyen en 42 columnas
+  ---
+  duration_ms: 0.167092
+  type: 'test'
+  ...
+# Subtest: acentos se codifican mediante CP850
+ok 23 - acentos se codifican mediante CP850
+  ---
+  duration_ms: 0.641627
+  type: 'test'
+  ...
+# Subtest: logo monocromático se incrusta en GS v 0 y valida dimensiones
+ok 24 - logo monocromático se incrusta en GS v 0 y valida dimensiones
+  ---
+  duration_ms: 1.317315
+  type: 'test'
+  ...
+# Subtest: rechaza logo inválido sin generar comandos corruptos
+ok 25 - rechaza logo inválido sin generar comandos corruptos
+  ---
+  duration_ms: 0.626294
+  type: 'test'
+  ...
+# Subtest: emite boletos idénticos en entradas repetidas sin dependencia temporal
+ok 26 - emite boletos idénticos en entradas repetidas sin dependencia temporal
+  ---
+  duration_ms: 1.054279
+  type: 'test'
+  ...
+# Subtest: el JavaScript del navegador conserva sintaxis válida
+ok 27 - el JavaScript del navegador conserva sintaxis válida
+  ---
+  duration_ms: 1.178827
+  type: 'test'
+  ...
+# Subtest: configuración se guarda fuera de pagos y tarifas, impresión directa usa spool RAW
+ok 28 - configuración se guarda fuera de pagos y tarifas, impresión directa usa spool RAW
+  ---
+  duration_ms: 0.319933
+  type: 'test'
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 28
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.948594

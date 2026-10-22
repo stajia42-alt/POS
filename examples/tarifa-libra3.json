@@ -1,0 +1,31 @@
+{
+  "mode": "blocks",
+  "graceMinutes": 0,
+  "blocks": [
+    {
+      "until": 60,
+      "cents": 5000
+    },
+    {
+      "until": 120,
+      "cents": 7000
+    },
+    {
+      "until": 360,
+      "cents": 10000
+    },
+    {
+      "until": 720,
+      "cents": 13000
+    },
+    {
+      "until": 1440,
+      "cents": 20000
+    }
+  ],
+  "additionalMinutes": 720,
+  "additionalHourCents": 20000,
+  "lostTicketCents": 20000,
+  "dailyMaxCents": 0,
+  "nightSurchargeCents": 0
+}

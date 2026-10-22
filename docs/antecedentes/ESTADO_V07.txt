@@ -1,0 +1,17 @@
+PARKING POS 0.7 PRELIMINAR - NO USAR EN PRODUCCION
+
+Incluido en esta entrega incremental:
+- Ingresos y retiros de caja en MXN con motivo obligatorio y registro de auditoria.
+- Corte X y Z: efectivo esperado contempla movimientos de caja.
+- Consulta de movimientos del turno.
+- Reporte basico de cobros por intervalo de fechas, con MXN y USD separados.
+- Se conserva el diseno de v0.6.1 y sus flujos existentes.
+
+PENDIENTE (no afirmar que esta implementado):
+- Autenticacion real, perfiles, permisos y cancelaciones autorizadas.
+- Tarifas nocturnas y topes diarios; reglas especiales.
+- Personalizacion de tickets, comprobantes termicos y tolerancia postpago.
+- Pruebas integrales en Windows y con impresora fisica.
+- Seguridad y respaldos antes de uso comercial.
+
+IMPORTANTE: La interfaz y el servidor pasaron comprobaciones estaticas de sintaxis, NO pruebas funcionales end-to-end. Trabajar con copia de la base de datos y operaciones ficticias.

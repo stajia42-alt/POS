@@ -1,0 +1,12 @@
+PARKING POS v0.6 - PAGOS EN MXN Y USD
+
+1. Respaldar la base de datos existente antes de instalar.
+2. Extraer en carpeta nueva y ejecutar INICIAR_WINDOWS.cmd.
+3. Abrir caja con fondo inicial MXN; opcionalmente configurar USD.
+4. El tipo de cambio se puede actualizar en Corte de caja durante el turno.
+5. Cobro: elegir Efectivo MXN o Dolares USD. El cambio se entrega en MXN.
+6. Corte X/Z: ventas totales en MXN, efectivo esperado en pesos, dolares recibidos por separado.
+
+IMPORTANTE: Prototipo. Probar con operaciones ficticias y una impresora real antes de usar con clientes.
+Los dolares cobrados se conservan en caja en USD y el cambio se entrega en MXN.
+El corte Z compara los pesos contados; muestra los dolares recibidos por separado.

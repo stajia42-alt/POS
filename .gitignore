@@ -1,0 +1,9 @@
+node_modules/
+INSTALADOR_WINDOWS/
+ParkingPOS/
+.cache/
+*.log
+.env
+.env.local
+test-results/
+playwright-report/

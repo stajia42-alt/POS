@@ -1,0 +1,11 @@
+{
+  "release": "1.0.8 RC10",
+  "source": "RC9",
+  "verified_tests": "69 tests offline",
+  "limits": [
+    "No Electron compile on Windows",
+    "No thermal printer testing",
+    "No integrated Express and native better-sqlite3 test on this platform"
+  ],
+  "migration": 8
+}
